@@ -7,6 +7,7 @@
 \DeclareMathOperator{\Regret}{Regret}
 \DeclareMathOperator{\Wealth}{Wealth}
 \newcommand{\R}{\mathbb{R}}
+\renewcommand{\H}{\mathcal{H}}
 \newcommand{\indicator}{\mathbf{1}}
 
 \newtheorem{theorem}{Theorem}
@@ -22,7 +23,7 @@
 \begin{abstract}
 Starting from Krichevsky-Trofimov estimator for estimating
 the bias of a coin, we derive an algorithm for online linear
-optimization over any Hilbert space.
+optimization over a Hilbert space.
 \end{abstract}
 
 \section{Introduction}
@@ -46,8 +47,10 @@ data compression problem and show a bound on number of bits used by the KT
 estimator.  Second, in section~\ref{section:log-loss}, we generalize the online
 data compression problem to an online prediction with log loss and we show that
 a obvious generalization of the KT estimator yields and algorithm with the same
-bound. Finally, in section~\ref{section:linear-prediction}, we explain the
-connection with linear prediction problem.
+bound. In section~\ref{section:online-linear-optimization-1D}, we explain the
+connection with one-dimensional online linear optimization problem.
+Finally, in section~\ref{section:online-linear-optimization-hilbert-space},
+we generalize it to online linear optimization over a Hilbert space.
 
 \section{Online Data Compression}
 \label{section:online-data-compression}
@@ -55,8 +58,8 @@ connection with linear prediction problem.
 Consider an online data compression problem where we predict a stream of bits;
 in each round we predict the next bit based on the previous bits.  More
 formally, in each round $t=1,2,\dots$, we predict probability $p_t \in [0,1]$
-that the next bit equals one, and then the next bit $q_t \in \{0, 1\}$.
-Our prediction $p_t$ is scored according to log-loss:
+that the next bit equals one, and then the next bit $q_t \in \{0, 1\}$ is
+observed.  Our prediction $p_t$ is scored according to log-loss:
 $$
 \ell(p_t, q_t) = q_t \ln\left( \frac{1}{p_t}\right) + (1-q_t) \ln  \left( \frac{1}{1 - p_t} \right) \; .
 $$
@@ -70,8 +73,8 @@ predicts the same prediction
 $$
 p^* = \argmin_{p \in [0,1]} \sum_{t=1}^T \ell(p, q_t) \; .
 $$
-Note that $p^*$ can calculate only with the knowledge of all the outcomes $q_1,
-q_2, \dots, q_T$. Hence the name offline.
+Note that $p^*$ can be calculated only with the knowledge of all the outcomes $q_1,
+q_2, \dots, q_T$; hence the name \emph{offline}.
 
 Let
 $$
@@ -99,22 +102,23 @@ difference between the loss of the algorithm and the loss of the baseline
 $$
 \sum_{t=1}^T \ell(p_t, q_t) - \sum_{t=1}^T \ell(p^*, q_t) \; ,
 $$
-which can be viewed as the cost for not knowing the fraction of bits set to $1$.
+which can be viewed as the cost for not knowing the fraction of bits set to $1$
+ahead of time.
 
 \subsection{KT estimator}
 
-We consider an algorithm that in round $t$ predicts according to KT estimator
+We consider an algorithm that in round $t$ chooses its prediction $p_t$ according to KT estimator
 $$
 p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t} = \frac{\frac{1}{2} + a_{t-1}}{t} \; .
 $$
 We show the following equality of loss of the algorithm:
 
-\begin{lemma}
+\begin{lemma}[KT Estimator]
 For any sequence $q_1, q_2, \dots, q_T \in \{0,1\}$, the log-loss of KT predictions is
 $$
 \sum_{t=1}^T \ell(p_t, q_t) =  - \ln \left( \frac{\Gamma(a_T + 1/2) \cdot \Gamma(b_T + 1/2)}{\pi \cdot T!} \right)
 $$
-where $a_T = \sum_{t=1}^T q_t$ and $b_T = T - a_T$ and $\Gamma(x)$ is the Euler's Gamma function.
+where $a_T = \sum_{t=1}^T q_t$ and $b_T = T - a_T$ and $\Gamma(x) = \int_0^\infty x^{u-1} e^{-x} du$ is the Euler's Gamma function.
 \end{lemma}
 
 \begin{proof}
@@ -171,6 +175,7 @@ Combining the two lemmas we get
 \end{align*}
 
 \section{Online Log Loss Game}
+\label{section:log-loss}
 
 We consider a generalization of the data compression game where $q_t$ is not restricted
 the set $\{0,1\}$ but it is allowed to be any real number in the interval $[0,1]$.
@@ -225,17 +230,18 @@ Since $\ell(p,q)$ is linear in $q$ and convex in $p$, we have
 \end{align*}
 where $H(x) = - x \ln(x) - (1-x) \ln (1-x)$ is the binary entropy function.
 
-\section{More general game}
+\section{Online Optimization in One Dimension}
+\label{section:online-linear-optimization-1D}
 
 Consider an online game where each round we predict $w_t \in \R$
 and the adversary chooses $g_t \in [-1,1]$. The algorithm tries to maximize
-its cumulative gain $\sum_{t=1}^T w_t x_t$. The goal of algorithm
+its cumulative gain $\sum_{t=1}^T g_t w_t$. The goal of algorithm
 is to have small regret after $T$ rounds w.r.t. competitor $u \in \R$:
 $$
-\Regret_T(u) = \sum_{t=1}^t g_t u - \sum_{t=1}^T w_t x_t \; .
+\Regret_T(u) = \sum_{t=1}^t g_t u - \sum_{t=1}^T g_t w_t \; .
 $$
 
-We can view algorithms of certain form, which we call betting algorithms.  A
+We consider algorithms of certain form, which we call betting algorithms.  A
 betting algorithm starts with $\Wealth_0 = 1$ dollars.
 In every round, it chooses a ``fraction'' $\beta_t \in [-1,1]$ of its current
 wealth to bet. The algorithm predicts
@@ -254,7 +260,7 @@ $$
 
 \subsection{KT estimator for $\beta_t$}
 
-We use KT estimator to define predictions $\beta_t$. Let
+We use KT estimator to define fractions $\beta_t$. Let
 \begin{align*}
 q_t & = \frac{1 + g_t}{2} \\
 a_T & = \sum_{t=1}^T q_t \; , \\
@@ -263,12 +269,15 @@ p^* & =  \argmin_{p \in [0,1]} \sum_{t=1}^T \ell(p, q_t) = \frac{a_T}{a_T + b_T}
 \end{align*}
 We use the corresponding KT estimator
 $$
-p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t} = \frac{\frac{1}{2} + a_{t-1}}{t}
+p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t} = \frac{\frac{1}{2} + a_{t-1}}{t} = \frac{1}{2} + \frac{1}{2t} \sum_{i=1}^{t-1} g_i
 $$
 to define $\beta_t$ as
 $$
-\beta_t = 2p_t - 1 \; .
+\beta_t = 2p_t - 1 = \frac{1}{t} \sum_{i=1}^{t-1} g_i \; .
 $$
+
+\subsection{Wealth Lower Bound}
+
 The following inequality will be useful
 $$
 \ln\left(1 + \beta g \right) \ge \left( \frac{1+g}{2} \right) \ln \left(1 + \beta\right) + \left( \frac{1-g}{2} \right) \ln \left(1 - \beta \right)
@@ -276,6 +285,7 @@ $$
 $$
 
 We lower bound logarithm of the wealth as follows
+\allowdisplaybreaks
 \begin{align*}
 \ln \Wealth_T
 & = \ln \prod_{t=1}^T (1 + g_t\beta_t) \\
@@ -290,5 +300,66 @@ We lower bound logarithm of the wealth as follows
 \end{align*}
 where $D(u,v) = u \ln(u/v) + (1-v) \ln((1-u)/(1-v))$ is the Kullback-Leibler divergence
 between Bernoulli random variables with parameters $u,v$.
+
+\section{Online Linear Optimization over Hilbert Space}
+\label{section:online-linear-optimization-hilbert-space}
+
+Consider an online game where each round we predict $w_t$ in a Hilbert space $\H$
+and the adversary chooses $g_t \in \H$ such that $\|g_t\| \le 1$.
+The algorithm tries to maximize its cumulative gain $\sum_{t=1}^T \langle g_t, w_t \rangle$.
+The goal of algorithm is to have small regret after $T$ rounds w.r.t. competitor $u \in \H$:
+$$
+\Regret_T(u) = \sum_{t=1}^t \langle g_t, u \rangle - \sum_{t=1}^T \langle g_t, w_t \rangle \; .
+$$
+
+We consider algorithms of certain form, which we call betting algorithms.  A
+betting algorithm starts with $\Wealth_0 = 1$ dollars.
+In every round, it chooses a ``fraction'' $\beta_t \in \H$, $\|\beta\| \le 1$
+of its current wealth to bet. The algorithm predicts
+$$
+w_t = \beta_t \cdot \Wealth_{t-1}
+$$
+where $\Wealth_t = 1 + \sum_{i=1}^t \langle g_t, w_t \rangle$. After making its prediction,
+the algorithm's wealth is
+$$
+\Wealth_t = \langle g_t, w_t \rangle + \Wealth_{t-1} = \langle g_t, \beta_t \rangle \Wealth_{t-1} + \Wealth_t = (1 + \langle g_t, \beta_t \rangle) \Wealth_{t-1} \; .
+$$
+Hence
+$$
+\Wealth_T = \prod_{t=1}^T (1 + \langle g_t, \beta_t \rangle) \; .
+$$
+
+\subsection{KT estimator for $\beta_t$}
+
+The algorithms chooses fraction
+$$
+\beta_t = \frac{1}{t} \sum_{i=1}^{t-1} g_i \; .
+$$
+
+\subsection{Wealth Lower Bound}
+
+We prove a lower bound
+$$
+\ln \Wealth_T
+\ge - \ln\left(
+\frac{\Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!}
+\right)
+$$
+
+We prove the inequality by induction on $T$. In the base case $T=0$, the
+left-hand side is zero since $\Wealth_0 = 1$, and the right-hand side is zero
+as well since $\sum_{t=1}^T g_t = 0$ and $\Gamma(\frac{1}{2}) = \sqrt{\pi}$.
+For $T \ge 1$, we use induction hypothesis and some algebraic manipulation
+
+\begin{align*}
+\ln \Wealth_T
+& = \ln \prod_{t=1}^T (1 + \langle g_t, \beta_t \rangle) \\
+& =  \sum_{t=1}^T \ln (1 + \langle g_t, \beta_t \rangle) \\
+& =  \ln (1 + \langle g_T, \beta_T \rangle) + \sum_{t=1}^{T-1} \ln (1 + \langle g_t, \beta_t \rangle) \\
+& \ge \ln (1 + \langle g_T, \beta_T \rangle)
+- \ln\left( \frac{\Gamma \left(\frac{T-1}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \right) \\
+& = \ln \left(1 + \frac{1}{T} \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle \right)
+- \ln\left( \frac{\Gamma \left(\frac{T-1}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \right) \\
+\end{align*}
 
 \end{document}
