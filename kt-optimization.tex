@@ -341,25 +341,17 @@ $$
 We prove a lower bound
 $$
 \ln \Wealth_T
-\ge - \ln\left(
-\frac{\Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!}
-\right)
+\ge
+\frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!}
 $$
 
 We prove the inequality by induction on $T$. In the base case $T=0$, the
-left-hand side is zero since $\Wealth_0 = 1$, and the right-hand side is zero
+left-hand side is $\Wealth_0 = 1$, and the right-hand side equals $1$
 as well since $\sum_{t=1}^T g_t = 0$ and $\Gamma(\frac{1}{2}) = \sqrt{\pi}$.
-For $T \ge 1$, we use induction hypothesis and some algebraic manipulation
-
+For $T \ge 1$, we use induction hypothesis and some algebraic manipulation:
 \begin{align*}
-\ln \Wealth_T
-& = \ln \prod_{t=1}^T (1 + \langle g_t, \beta_t \rangle) \\
-& =  \sum_{t=1}^T \ln (1 + \langle g_t, \beta_t \rangle) \\
-& =  \ln (1 + \langle g_T, \beta_T \rangle) + \sum_{t=1}^{T-1} \ln (1 + \langle g_t, \beta_t \rangle) \\
-& \ge \ln (1 + \langle g_T, \beta_T \rangle)
-- \ln\left( \frac{\Gamma \left(\frac{T-1}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \right) \\
-& = \ln \left(1 + \frac{1}{T} \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle \right)
-- \ln\left( \frac{\Gamma \left(\frac{T-1}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \right) \\
+& \Wealth_T \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
+& = (1 + \langle g_T, \beta_T \rangle) \Wealth_{T-1} \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
 \end{align*}
 
 \end{document}
