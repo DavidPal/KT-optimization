@@ -338,9 +338,46 @@ $$
 
 \subsection{Wealth Lower Bound}
 
+\begin{lemma}
+Let $h:[0,\infty) \to \R$ be a twice-differentiable function that satisfies $\frac{h'(x)}{h''(x)} \ge x$ for all $x \ge 0$.
+Then,
+$$
+\forall u,v \in \H \qquad
+\langle u, v \rangle + h(\|u + v\|) \ge \min \left\{ \|u\| \cdot \|v\| + h(\|v\| + \|u\|), - \|u\| \cdot \|v\| + h(|\|u\| - \|v\||) \right\} \; .
+$$
+\end{lemma}
+
+\begin{proof}
+If $u$ or $v$ is zero, the inequality clearly holds. From now on we assume that $u,v$ are non-zero.
+Let $c$ be the cosine of the angle of between $u$ and $v$. More formally,
+$$
+c = \frac{\langle u, v \rangle}{\|u\| \cdot \|v\|} \; .
+$$
+With this notation, the left hand is
+$$
+\langle u, v \rangle + h(\|u + v\|) = c \|u\| \cdot \|v\|  + h(\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}) \; .
+$$
+We consider the last expression as a function of $c$ and we call it $f(c)$. The statement of the lemma
+is equivalent with
+$$
+\forall c \in [-1,1] \qquad \qquad f(c) \ge \min \left\{f(+1), f(-1)\right\} \; .
+$$
+The last inequality is clearly true if $f:[-1,1] \to \R$ is concave. We now check that $f$ is indeed concave,
+which we prove by showing that the second derivative is non-positive. The first derivate of $f$ is
+$$
+f'(c) = \|u\| \cdot \|v\| + \frac{h'(\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}) \cdot \|u\| \cdot \|v\|}{\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}} \; .
+$$
+The second derivative of $f$ is
+$$
+f''(c) = \|u\|^2 \cdot \|v\|^2 \cdot \frac{h''(\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|})  - \frac{1}{\sqrt{\|u\|^2 + \|v\|^2 + 2c \|u\| \cdot \|v\|}} \cdot h'(\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|})  }{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|} \; .
+$$
+If we consider $x=\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}$, the assumption $\frac{h'(x)}{h''(x)} \ge x$
+implies that $f'(c)$ is non-positive. This finishes the proof.
+\end{proof}
+
 We prove a lower bound
 $$
-\ln \Wealth_T
+\Wealth_T
 \ge
 \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!}
 $$
@@ -353,5 +390,33 @@ For $T \ge 1$, we use induction hypothesis and some algebraic manipulation:
 & \Wealth_T \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
 & = (1 + \langle g_T, \beta_T \rangle) \Wealth_{T-1} \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
 \end{align*}
+Let's view the last expression as function of $g_t$. That is, let for any $u \in \H$,
+$$
+\Phi(u) = (1 + \langle u, \beta_T \rangle) \Wealth_{T-1} \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|u + \sum_{t=1}^{T-t} g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|u + \sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot T!} \; .
+$$
+We claim that $\Phi(u)$ is concave. This key insight is that $\Gamma(\cdot)$ is logaritmically convex. In more detail,
+\begin{itemize}
+\item $\log(\Gamma(\cdot))$ is convex and increasing on $(0, \infty)$; see Bohr-Mollerup theorem.
+\item $u \mapsto \frac{T+1}{2} + \frac{1}{2}\left\|u + \sum_{t=1}^{T-t} g_t \right\|$ and $u \mapsto \frac{T+1}{2} - \frac{1}{2} \left\|u + \sum_{t=1}^{T-1} g_t \right\|$ are convex on $\H$.
+\item $u \mapsto \log \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|u + \sum_{t=1}^{T-t} g_t \right\| \right) + \log \Gamma\left( \frac{T+1}{2} - \frac{1}{2} \left\|u + \sum_{t=1}^{T-1} g_t \right\|\right)$
+is convex by composition and summation.
+\item $\exp(\cdot)$ is convex and increasing on $(-\infty, \infty)$
+\item $u \mapsto \exp\left\{\log \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|u + \sum_{t=1}^{T-t} g_t \right\| \right) + \log \Gamma\left( \frac{T+1}{2} - \frac{1}{2} \left\|u + \sum_{t=1}^{T-1} g_t \right\|\right) \right\}$
+is convex by composition
+\item $u \mapsto \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|u + \sum_{t=1}^{T-t} g_t \right\| \right) \cdot \Gamma\left( \frac{T+1}{2} - \frac{1}{2} \left\|u + \sum_{t=1}^{T-1} g_t \right\|\right)$
+is convex
+\end{itemize}
+Thus, we see that $\Phi(u)$ is concave.
+
+We now claim that
+$$
+\forall u \in \H \qquad \qquad \Phi(u) \ge \min_{s \in \{+1,-1\}} \Phi\left( r \|u\| \cdot \|\beta_T\| \right) \; .
+$$
+To see that note that we can write $\Phi(u)$ as
+$$
+\Phi(u) = a \langle u, \beta_T \rangle + h(\|u + b \beta_T\|) + c
+$$
+where $a,b,c$ are positive constants; this representation follows from that $\beta_T = \frac{1}{T}\sum_{t=1}^{T-1} g_t$.
+
 
 \end{document}
