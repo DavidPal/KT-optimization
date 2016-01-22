@@ -331,15 +331,17 @@ $$
 
 \subsection{KT estimator for $\beta_t$}
 
-The algorithms chooses fraction
+The algorithms chooses ``fraction''
 $$
 \beta_t = \frac{1}{t} \sum_{i=1}^{t-1} g_i \; .
 $$
 
+
 \subsection{Wealth Lower Bound}
 
-\begin{lemma}
-Let $h:[0,\infty) \to \R$ be a twice-differentiable function that satisfies $\frac{h'(x)}{h''(x)} \ge x$ for all $x \ge 0$.
+\begin{lemma}[Extremes]
+\label{lemma:extremes}
+Let $h:[0,\infty) \to \R$ be a twice-differentiable function that satisfies $x \cdot h''(x) \le h'(x)$ for all $x \ge 0$.
 Then,
 $$
 \forall u,v \in \H \qquad
@@ -353,7 +355,7 @@ Let $c$ be the cosine of the angle of between $u$ and $v$. More formally,
 $$
 c = \frac{\langle u, v \rangle}{\|u\| \cdot \|v\|} \; .
 $$
-With this notation, the left hand is
+With this notation, the left-hand side is
 $$
 \langle u, v \rangle + h(\|u + v\|) = c \|u\| \cdot \|v\|  + h(\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}) \; .
 $$
@@ -371,8 +373,26 @@ The second derivative of $f$ is
 $$
 f''(c) = \|u\|^2 \cdot \|v\|^2 \cdot \frac{h''(\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|})  - \frac{1}{\sqrt{\|u\|^2 + \|v\|^2 + 2c \|u\| \cdot \|v\|}} \cdot h'(\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|})  }{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|} \; .
 $$
-If we consider $x=\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}$, the assumption $\frac{h'(x)}{h''(x)} \ge x$
-implies that $f'(c)$ is non-positive. This finishes the proof.
+If we consider $x=\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}$, the assumption $x \cdot h''(x) \le h'(x)$
+implies that $f''(c)$ is non-positive. This finishes the proof.
+\end{proof}
+
+\begin{lemma}
+Let $\psi^{(m)}(z) = \frac{d^{m+1}}{dz^{m+1}} \ln(\Gamma(z))$ be the polygamma functions, $m \ge 0$.
+Then, for any $0 \le z < a$,
+$$
+z \left( \psi^{(0)}\left(a + z \right) - \psi^{(0)}\left( a - z \right) \right)^2
++ z \left( \psi^{(1)}\left(a + z \right) + \psi^{(1)}\left(a - z \right) \right)
+\ge \psi^{(0)}\left(a + z \right) - \psi^{(0)}\left(a - z \right) \; .
+$$
+\end{lemma}
+
+\begin{proof}
+We use the integral representations
+\begin{align*}
+\psi^{(m)}(z) & = (-1)^{m+1} \int_0^\infty \frac{t^{m} e^{-zt}}{1-e^{-t}} dt
+\end{align*}
+TODO
 \end{proof}
 
 We prove a lower bound
@@ -390,33 +410,39 @@ For $T \ge 1$, we use induction hypothesis and some algebraic manipulation:
 & \Wealth_T \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
 & = (1 + \langle g_T, \beta_T \rangle) \Wealth_{T-1} \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
 \end{align*}
-Let's view the last expression as function of $g_t$. That is, let for any $u \in \H$,
+We now apply the Lemma~\ref{lemma:extremes} with
 $$
-\Phi(u) = (1 + \langle u, \beta_T \rangle) \Wealth_{T-1} \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|u + \sum_{t=1}^{T-t} g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|u + \sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot T!} \; .
+h(x) = - C \cdot \Gamma \left(\frac{T+1}{2} + \frac{x}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{x}{2} \right)
 $$
-We claim that $\Phi(u)$ is concave. This key insight is that $\Gamma(\cdot)$ is logaritmically convex. In more detail,
-\begin{itemize}
-\item $\log(\Gamma(\cdot))$ is convex and increasing on $(0, \infty)$; see Bohr-Mollerup theorem.
-\item $u \mapsto \frac{T+1}{2} + \frac{1}{2}\left\|u + \sum_{t=1}^{T-t} g_t \right\|$ and $u \mapsto \frac{T+1}{2} - \frac{1}{2} \left\|u + \sum_{t=1}^{T-1} g_t \right\|$ are convex on $\H$.
-\item $u \mapsto \log \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|u + \sum_{t=1}^{T-t} g_t \right\| \right) + \log \Gamma\left( \frac{T+1}{2} - \frac{1}{2} \left\|u + \sum_{t=1}^{T-1} g_t \right\|\right)$
-is convex by composition and summation.
-\item $\exp(\cdot)$ is convex and increasing on $(-\infty, \infty)$
-\item $u \mapsto \exp\left\{\log \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|u + \sum_{t=1}^{T-t} g_t \right\| \right) + \log \Gamma\left( \frac{T+1}{2} - \frac{1}{2} \left\|u + \sum_{t=1}^{T-1} g_t \right\|\right) \right\}$
-is convex by composition
-\item $u \mapsto \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|u + \sum_{t=1}^{T-t} g_t \right\| \right) \cdot \Gamma\left( \frac{T+1}{2} - \frac{1}{2} \left\|u + \sum_{t=1}^{T-1} g_t \right\|\right)$
-is convex
-\end{itemize}
-Thus, we see that $\Phi(u)$ is concave.
-
-We now claim that
+where $C = \frac{2^T}{\Wealth_{T-1} \cdot \pi \cdot T!} > 0$.
+We calculate the derivatives of $h(x)$. We will use the polygamma functions $\psi^{(m)}(z) = \frac{d^{m+1}}{dz^{m+1}} \ln(\Gamma(z))$ to express them.
+\begin{align*}
+h'(x) & = - C \cdot \Gamma \left(\frac{T+1}{2} + \frac{x}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{x}{2} \right)
+\left( \frac{1}{2} \psi^{(0)}\left(\frac{T+1}{2} + \frac{x}{2} \right) - \frac{1}{2} \psi^{(0)}\left(\frac{T+1}{2} - \frac{x}{2} \right) \right) \; ,
+\\
+h''(x) & = - C \cdot \Gamma \left(\frac{T+1}{2} + \frac{x}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{x}{2} \right) \cdot \\
+& \left[
+\left( \frac{1}{2} \psi^{(0)}\left(\frac{T+1}{2} + \frac{x}{2} \right) - \frac{1}{2} \psi^{(0)}\left(\frac{T+1}{2} - \frac{x}{2} \right) \right)^2
++
+\left( \frac{1}{4} \psi^{(1)}\left(\frac{T+1}{2} + \frac{x}{2} \right) + \frac{1}{4} \psi^{(1)}\left(\frac{T+1}{2} - \frac{x}{2} \right) \right)
+\right]
+\; .
+\end{align*}
+To apply Lemma~\ref{lemma:extremes}, we need to verify that $c \cdot h''(x) \le h'(x)$, which is equivalent to
+\begin{multline*}
+x \left( \frac{1}{2} \psi^{(0)}\left(\frac{T+1}{2} + \frac{x}{2} \right) - \frac{1}{2} \psi^{(0)}\left(\frac{T+1}{2} - \frac{x}{2} \right) \right)^2
++
+x \left( \frac{1}{4} \psi^{(1)}\left(\frac{T+1}{2} + \frac{x}{2} \right) + \frac{1}{4} \psi^{(1)}\left(\frac{T+1}{2} - \frac{x}{2} \right) \right)
+\\ \ge
+\frac{1}{2} \psi^{(0)}\left(\frac{T+1}{2} + \frac{x}{2} \right) - \frac{1}{2} \psi^{(0)}\left(\frac{T+1}{2} - \frac{x}{2} \right) \; .
+\end{multline*}
+Making substitution $x = 2z$ and $a = (T+1)/2$, we need to prove that if $0 \le z < a$, then
 $$
-\forall u \in \H \qquad \qquad \Phi(u) \ge \min_{s \in \{+1,-1\}} \Phi\left( r \|u\| \cdot \|\beta_T\| \right) \; .
+z \left( \psi^{(0)}\left(a + z \right) - \psi^{(0)}\left( a - z \right) \right)^2
++
+z \left( \psi^{(1)}\left(a + z \right) + \psi^{(1)}\left(a - z \right) \right)
+\ge
+\psi^{(0)}\left(a + z \right) - \psi^{(0)}\left(a - z \right) \; .
 $$
-To see that note that we can write $\Phi(u)$ as
-$$
-\Phi(u) = a \langle u, \beta_T \rangle + h(\|u + b \beta_T\|) + c
-$$
-where $a,b,c$ are positive constants; this representation follows from that $\beta_T = \frac{1}{T}\sum_{t=1}^{T-1} g_t$.
-
 
 \end{document}
