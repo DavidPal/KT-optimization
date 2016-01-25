@@ -341,10 +341,9 @@ $$
 
 \begin{lemma}[Extremes]
 \label{lemma:extremes}
-Let $h:[0,\infty) \to \R$ be a twice-differentiable function that satisfies $x \cdot h''(x) \le h'(x)$ for all $x \ge 0$.
-Then,
+Let $h:[0,A] \to \R$ be a twice-differentiable function that satisfies $x \cdot h''(x) \le h'(x)$ for all $x \in [0,A]$.
+Then, if vectors $u,v \in \H$ satisfy $\|u\| + \|v\| \le A$, then
 $$
-\forall u,v \in \H \qquad
 \langle u, v \rangle + h(\|u + v\|) \ge \min \left\{ \|u\| \cdot \|v\| + h(\|v\| + \|u\|), - \|u\| \cdot \|v\| + h(|\|u\| - \|v\||) \right\} \; .
 $$
 \end{lemma}
