@@ -449,13 +449,13 @@ For $T \ge 1$, we have
 \begin{align*}
 & \Wealth_T \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
 & = (1 + \langle g_T, \beta_T \rangle) \Wealth_{T-1} \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
-& = \Wealth_{T-1} \ + \ T \cdot \Wealth_{T-1} \left(\langle g_T, \beta_T \rangle - \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{T \cdot \Wealth_{T-1} \cdot \pi \cdot T!} \right) \\
-& = \Wealth_{T-1} \ + \ T \cdot \Wealth_{T-1} \left( \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle + h\left( \left\|g_T + \sum_{t=1}^{T-1} g_t \right\| \right) \right) \; .
+& = \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \left(\langle g_T, T \beta_T \rangle - \frac{2^T T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\Wealth_{T-1} \cdot \pi \cdot T!} \right) \\
+& = \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \left( \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle + h\left( \left\|g_T + \sum_{t=1}^{T-1} g_t \right\| \right) \right) \; .
 \end{align*}
 where we define
 \begin{align*}
 h(x) & = - C \cdot \Gamma \left(\frac{T+1}{2} + \frac{x}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{x}{2} \right) \; ,  \\
-C & = \frac{2^T}{T \cdot \Wealth_{T-1} \cdot \pi \cdot T!} \; .
+C & = \frac{2^T \cdot T}{\Wealth_{T-1} \cdot \pi \cdot T!} \; .
 \end{align*}
 We apply Lemma~\ref{lemma:extremes} to $h(x)$. First note that $C > 0$.
 To see that $h(x)$ satisfies the condition $x \cdot h''(x) \le h'(x)$, we apply
@@ -466,15 +466,16 @@ h''(x) \le h'(x)$ for $x \in [0,T+1)$.
 
 Therefore,
 \begin{align*}
-& \Wealth_{T-1} \ + \ T \cdot \Wealth_{T-1} \left( \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle + h\left( \left\|g_T + \sum_{t=1}^{T-1} g_t \right\| \right) \right) \\
-& \ge \Wealth_{T-1} \ + \ T \cdot \Wealth_{T-1} \cdot \min \left\{ \| g_T\| \cdot \left\| \sum_{t=1}^{T-1} g_t \right\| + h\left( \|g_T\| + \left\|\sum_{t=1}^{T-1} g_t \right\| \right), \right. \\
-& \qquad \qquad \qquad \left. \ - \| g_T\| \cdot \left\| \sum_{t=1}^{T-1} g_t \right\| + h\left(\left| \|g_T\| - \left\|\sum_{t=1}^{T-1} g_t \right\| \right| \right) \right\} \\
-& = \Wealth_{T-1} \ + \ \Wealth_{T-1} \cdot \min \left\{ \| \beta_T \| + T \cdot h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right), - \|\beta_T\| + T \cdot h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \right\} \\
+& \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \left( \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle + h\left( \left\|g_T + \sum_{t=1}^{T-1} g_t \right\| \right) \right) \\
+& \ge \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \min \left\{ \| g_T\| \cdot \left\| \sum_{t=1}^{T-1} g_t \right\| + h\left( \|g_T\| + \left\|\sum_{t=1}^{T-1} g_t \right\| \right), \right. \\
+& \phantom{\ge \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \min \left\{ \right. }
+\left. \ - \| g_T\| \cdot \left\| \sum_{t=1}^{T-1} g_t \right\| + h\left(\left| \|g_T\| - \left\|\sum_{t=1}^{T-1} g_t \right\| \right| \right) \right\} \\
+& = \Wealth_{T-1} \ + \ \Wealth_{T-1} \cdot \min \left\{ \| \beta_T \| + \frac{1}{T} \cdot h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right), - \|\beta_T\| + \frac{1}{T} \cdot h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \right\} \\
 \end{align*}
 It remains to prove that the last expression is non-negative. We consider two cases,
 one for each term inside the minimum. In the first case, the last expression is
 \begin{align*}
-& \Wealth_{T-1} \ + \ \Wealth_{T-1} \cdot \left\{ \| \beta_T \| + T \cdot h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right) \right\} \\
+& \Wealth_{T-1} \ + \ \Wealth_{T-1} \cdot \left\{ \| \beta_T \| + \frac{1}{T} \cdot h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right) \right\} \\
 & =  \Wealth_{T-1} (1 + \|\beta_T\|) - \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| + \frac{1}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| - \frac{1}{2} \right)}{\pi \cdot T!} \\
 & =  \Wealth_{T-1} (1 + \|\beta_T\|) - \frac{2^T \left( \frac{T}{2} + \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right) \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot T!} \\
 & =  \Wealth_{T-1} (1 + \|\beta_T\|) - \frac{2^{T-1} \left( 1 + \|\beta_T\| \right) \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \\
@@ -482,7 +483,7 @@ one for each term inside the minimum. In the first case, the last expression is
 \end{align*}
 In the second case is, the expression is
 \begin{align*}
-& \Wealth_{T-1} \ + \ \Wealth_{T-1} \cdot \min \left\{ - \|\beta_T\| + T \cdot h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \right\} \\
+& \Wealth_{T-1} \ + \ \Wealth_{T-1} \cdot \min \left\{ - \|\beta_T\| + \frac{1}{T} \cdot h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \right\} \\
 & = \Wealth_{T-1} (1 - \|\beta_T\|) - \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| - \frac{1}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| + \frac{1}{2} \right)}{\pi \cdot T!} \\
 & = \Wealth_{T-1} (1 - \|\beta_T\|) - \frac{2^T \left( \frac{T}{2} - \frac{1}{2}\|\sum_{t=1}^{T-1} g_t\| \right) \cdot \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot T!} \\
 & = \Wealth_{T-1} (1 - \|\beta_T\|) - \frac{2^{T-1} \left( 1 - \|\beta_T\| \right) \cdot \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \\
