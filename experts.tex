@@ -2,56 +2,58 @@
 
 In this setting we want to minimize the regret defined as
 \[
-Regret(u):=\sum_{t=1}^T \langle p_t, l_t \rangle - \sum_{t=1}^T \langle u, l_t \rangle,
+\Regret(u) = \sum_{t=1}^T \langle p_t, \ell_t \rangle - \sum_{t=1}^T \langle u, \ell_t \rangle,
 \]
-where $l_t \in [0,1]$, $u, p_t \in \R^d_+$, and $\|u\|_1=\|p_t\|_1=1$.
+where $\ell_t \in [0,1]$, $u, p_t \in \R^d_+$, and $\|u\|_1 = \|p_t\|_1 = 1$.
 
-Suppose we have a one-dimensional coin betting algorithm, that produces predictions $w_t$ that guarantees
+Suppose we have a one-dimensional coin betting algorithm, that produces
+predictions $w_t$ that guarantees
 \[
-\epsilon + \sum_{t=1}^T w_t g_t \geq \epsilon f(\sum_{t=1}^T g_t),
+\epsilon + \sum_{t=1}^T w_t g_t \ge \epsilon f(\sum_{t=1}^T g_t) \; ,
 \]
 then we can use the following prediction strategy for the expert setting.
 
-Define $q_i$ a prior distribution over the $d$ experts.
-Instantiate the coin betting algorithm $d$ times, setting $\epsilon =1$ and feed each of them with
+Define $q_i$ a prior distribution over the $d$ experts. Instantiate the coin
+betting algorithm $d$ times, setting $\epsilon =1$ and feed the $i$-th copy with
 \begin{align}
 g_{t,i} = \begin{cases}
-\langle p_t, l_t\rangle - l_{t,i} & \text{if } w_{t,i} \geq 0 \\
-|\langle p_t, l_t\rangle - l_{t,i}|_+ & \text{if } w_{t,i} < 0,
+\langle p_t, \ell_t\rangle - \ell_{t,i} & \text{if } w_{t,i} \ge 0 \\
+|\langle p_t, \ell_t\rangle - \ell_{t,i}|_+ & \text{if } w_{t,i} < 0,
 \end{cases}
 \end{align}
 where $p_{t,i} = \frac{\hat{p}_{t,i}}{\|p_{t}\|_1}$, $\hat{p}_{t,i}=q_i |w_{t,i}|_+$, and $|x|_+=\max\{x,0\}$.
 
-The above definitions guarantee that $\sum_{t=1}^d q_i g_{t,i} w_{t,i} \leq 0$. In fact, we have
+The above definitions guarantee that $\sum_{i=1}^d q_i g_{t,i} w_{t,i} \le 0$. In fact, we have
 \begin{align*}
-\sum_{t=1}^d q_i g_{t,i} w_{t,i}
-&= \sum_{i:w_{t,i}\geq0} q_i w_{t,i} g_{t,i} + \sum_{i:w_{t,i}<0} q_i w_{t,i} g_{t,i} \\
-&= \sum_{i=1}^d q_i g_{t,i} |w_{t,i}|_+ + \sum_{i:w_{t,i}<0} q_i w_{t,i} g_{t,i} \\
-&= 0 + \sum_{i:w_{t,i}<0} q_i w_{t,i} |\langle p_t, l_t\rangle - l_{t,i}|_+ \leq 0
+\sum_{i=1}^d q_i g_{t,i} w_{t,i}
+& = \sum_{i:w_{t,i}\ge 0} q_i w_{t,i} g_{t,i} + \sum_{i:w_{t,i} < 0} q_i w_{t,i} g_{t,i} \\
+& = \sum_{i=1}^d q_i g_{t,i} |w_{t,i}|_+ + \sum_{i:w_{t,i} < 0} q_i w_{t,i} g_{t,i} \\
+& = 0 + \sum_{i:w_{t,i} < 0} q_i w_{t,i} |\langle p_t, \ell_t\rangle - \ell_{t,i}|_+ \le 0
 \end{align*}
 Hence, for each $i$ we have
 \[
-1+\sum_{t=1}^T w_{t,i} g_{t,i} \geq f(\sum_{t=1}^T g_{t,i})~.
+1 + \sum_{t=1}^T w_{t,i} g_{t,i} \ge f \left( \sum_{t=1}^T g_{t,i} \right) \; .
 \]
 Multiplying each side by $q_i$ and summing over $i$, we have
 \begin{equation}
 \label{eq:bounded_potential}
-\sum_{i=1}^d q_i f(\sum_{t=1}^T g_{t,i}) \leq 1 + \sum_{i=1}^d q_i \sum_{t=1}^T w_{t,i} g_{t,i} \leq 1~.
+\sum_{i=1}^d q_i f\left(\sum_{t=1}^T g_{t,i} \right) \le 1 + \sum_{i=1}^d q_i \sum_{t=1}^T w_{t,i} g_{t,i} \le 1~.
 \end{equation}
 
 We now use the specific form of $f$ given by Algorithm~\ref{}.
-Define $f(x):= \frac{x^2}{A} - B$ and $G_{T,i}=\sum_{t=1}^T g_{t,i}$.
+Define $f(x)= \exp(\frac{x^2}{A} - B)$ and $G_{T,i}=\sum_{t=1}^T g_{t,i}$.
 We have
 \begin{align*}
-Regret(u) &\leq \langle u, G_T \rangle \\
-&\leq \sum_{i=1}^d u_i |G_{T,i}|_+ \\
-&= \sum_{i=1}^d \sqrt{A \left[\ln \exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)+B \right]} \\
-&\leq  \sqrt{A \sum_{i=1}^d u_i \left[\ln \exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)+B \right]} \\
-&=  \sqrt{A \left\{B+\sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right) + \ln \frac{u_i}{q_i}\right]\right\}} \\
-&=  \sqrt{A \left\{B+D(u,q)+\sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)\right]\right\}} \\
-&\leq  \sqrt{A \left\{B+D(u,q)+ \ln \sum_{i=1}^d u_i \left[ \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)\right]\right\}} \\
-&=  \sqrt{A \left\{B+D(u,q)+ \ln \sum_{i=1}^d q_i\exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)\right\}} \\
-&\leq  \sqrt{A \left\{B+D(u,q)+ \ln \sum_{i=1}^d q_i\exp\left(\frac{G_{T,i}^2}{A}-B\right)\right\}} \\
-&\leq  \sqrt{A \left(B+D(u,q)\right)},
+\Regret(u) & \le \langle u, G_T \rangle \\
+& \le \sum_{i=1}^d u_i |G_{T,i}|_+ \\
+& = \sum_{i=1}^d u_i \sqrt{A \left[\ln \exp\left(\frac{|G_{T,i}|_+^2}{A} - B\right)+B \right]} \\
+& \le \sqrt{A \sum_{i=1}^d u_i \left[\ln \exp\left(\frac{|G_{T,i}|_+^2}{A} - B\right)+B \right]} \\
+& = \sqrt{A \left\{B + \sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A} - B \right) + \ln \frac{u_i}{q_i}\right]\right\}} \\
+& = \sqrt{A \left\{B + D(u,q) + \sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A} - B\right)\right]\right\}} \\
+& \le \sqrt{A \left\{B + D(u,q) + \ln \sum_{i=1}^d u_i \left[ \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A} - B\right)\right]\right\}} \\
+& = \sqrt{A \left\{B + D(u,q) + \ln \sum_{i=1}^d q_i\exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)\right\}} \\
+& \le \sqrt{A \left\{B + D(u,q) + \ln \sum_{i=1}^d q_i\exp\left(\frac{G_{T,i}^2}{A}-B\right)\right\}} \\
+& \le \sqrt{A \left(B + D(u,q)\right)} \; ,
 \end{align*}
-where in the third and fourth inequality we used Jensen's, and in the last one we used \eqref{eq:bounded_potential}.
+where in the third and fourth inequality we used Jensen's, and in the last one
+we used \eqref{eq:bounded_potential}.
