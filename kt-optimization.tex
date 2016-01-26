@@ -19,7 +19,7 @@
 
 \begin{document}
 
-\title{Data Compression and Linear Prediction}
+\title{Data Compression and Online Linear Optimization}
 \author{Francesco Orabona \and D\'avid P\'al}
 
 \maketitle
@@ -71,14 +71,14 @@ In information theoretic terms, $\ell(p_t, q_t)$ measures the number of bits
 needed to encode $q_t$ if we use encoding that uses $\ln(\frac{1}{p_t})$ bits
 to encode $+1$ and $\ln(\frac{1}{1 - p_t})$ bits to encode $0$.
 
-After $T$ rounds, the algorithm incurs loss $\sum_{t=1}^T \ell(p_t, q_t)$.
-We compare this loss with an offline baseline that in round $1,2,\dots,T$
-predicts the same prediction
+After $T$ rounds, the algorithm incurs loss $\sum_{t=1}^T \ell(p_t, q_t)$. We
+compare this loss with an offline baseline that in round $1,2,\dots,T$ predicts
+the same prediction
 $$
 p^* = \argmin_{p \in [0,1]} \sum_{t=1}^T \ell(p, q_t) \; .
 $$
-Note that $p^*$ can be calculated only with the knowledge of all the outcomes $q_1,
-q_2, \dots, q_T$; hence the name \emph{offline}.
+Note that $p^*$ can be calculated only with the knowledge of all the outcomes
+$q_1, q_2, \dots, q_T$; hence the name \emph{offline}.
 
 Let
 $$
@@ -101,8 +101,8 @@ p^* = \frac{a_T}{a_T + b_T} = \frac{a_T}{T} = \frac{\sum_{t=1}^T q_t}{T} \; .
 $$
 Note that $p^*$ differs from the KT estimate $p_T$.
 
-The type of result that we are interested is an upper bound on
-difference between the loss of the algorithm and the loss of the baseline
+The type of result that we are interested is an upper bound on difference
+between the loss of the algorithm and the loss of the baseline
 $$
 \sum_{t=1}^T \ell(p_t, q_t) - \sum_{t=1}^T \ell(p^*, q_t) \; ,
 $$
@@ -111,18 +111,21 @@ ahead of time.
 
 \subsection{KT estimator}
 
-We consider an algorithm that in round $t$ chooses its prediction $p_t$ according to KT estimator
+We consider an algorithm that in round $t$ chooses its prediction $p_t$
+according to KT estimator
 $$
 p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t} = \frac{\frac{1}{2} + a_{t-1}}{t} \; .
 $$
 We show the following equality of loss of the algorithm:
 
 \begin{lemma}[KT Estimator]
-For any sequence $q_1, q_2, \dots, q_T \in \{0,1\}$, the log-loss of KT predictions is
+For any sequence $q_1, q_2, \dots, q_T \in \{0,1\}$, the log-loss of KT
+predictions is
 $$
 \sum_{t=1}^T \ell(p_t, q_t) =  - \ln \left( \frac{\Gamma(a_T + 1/2) \cdot \Gamma(b_T + 1/2)}{\pi \cdot T!} \right)
 $$
-where $a_T = \sum_{t=1}^T q_t$ and $b_T = T - a_T$ and $\Gamma(x) = \int_0^\infty x^{u-1} e^{-x} du$ is the Euler's Gamma function.
+where $a_T = \sum_{t=1}^T q_t$ and $b_T = T - a_T$ and $\Gamma(x) =
+\int_0^\infty x^{u-1} e^{-x} du$ is the Euler's Gamma function.
 \end{lemma}
 
 \begin{proof}
@@ -164,7 +167,8 @@ where we have used that $\Gamma(x+1) = x \Gamma(x)$ for any real $x > 0$ and tha
 \end{proof}
 
 \begin{lemma}
-For any non-negative integers $a, b,T$ such that $a + b = T$ we have
+If $T$ is a non-negative integer and $a,b$ are non-negative reals such that $a +
+b = T$ then
 $$
 \frac{\Gamma(a + 1/2) \cdot \Gamma(b + 1/2)}{\pi \cdot T!} \ge \frac{1}{2\sqrt{T}} \left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b \; .
 $$
@@ -181,9 +185,10 @@ Combining the two lemmas we get
 \section{Online Log Loss Game}
 \label{section:log-loss}
 
-We consider a generalization of the data compression game where $q_t$ is not restricted
-the set $\{0,1\}$ but it is allowed to be any real number in the interval $[0,1]$.
-If in round $t$ we predict $p_t \in [0,1]$ and then receive $q_t \in [0,1]$ the loss is
+We consider a generalization of the data compression game where $q_t$ is not
+restricted the set $\{0,1\}$ but it is allowed to be any real number in the
+interval $[0,1]$. If in round $t$ we predict $p_t \in [0,1]$ and then receive
+$q_t \in [0,1]$ the loss is
 $$
 \ell(p_t, q_t) = q_t \ln\left( \frac{1}{p_t}\right) + (1-q_t) \ln  \left( \frac{1}{1 - p_t} \right) \; .
 $$
@@ -255,7 +260,10 @@ $$
 where $\Wealth_t = 1 + \sum_{i=1}^t g_t w_t$. After making its prediction,
 the algorithm's wealth is
 $$
-\Wealth_t = g_t w_t + \Wealth_{t-1} = g_t \beta_t \Wealth_{t-1} + \Wealth_t = (1 + g_t\beta_t) \Wealth_{t-1} \; .
+\Wealth_t
+= g_t w_t + \Wealth_{t-1}
+= g_t \beta_t \Wealth_{t-1} + \Wealth_t
+= (1 + g_t\beta_t) \Wealth_{t-1} \; .
 $$
 Hence
 $$
@@ -269,7 +277,9 @@ We use KT estimator to define fractions $\beta_t$. Let
 q_t & = \frac{1 + g_t}{2} \\
 a_T & = \sum_{t=1}^T q_t \; , \\
 b_T & = \sum_{t=1}^T (1 - q_t) = T - a_T \; , \\
-p^* & =  \argmin_{p \in [0,1]} \sum_{t=1}^T \ell(p, q_t) = \frac{a_T}{a_T + b_T} = \frac{a_T}{T} = \frac{\sum_{t=1}^T q_t}{T} \; .
+p^* & =  \argmin_{p \in [0,1]} \sum_{t=1}^T \ell(p, q_t)
+      = \frac{a_T}{a_T + b_T}
+      = \frac{a_T}{T} = \frac{\sum_{t=1}^T q_t}{T} \; .
 \end{align*}
 We use the corresponding KT estimator
 $$
@@ -308,10 +318,11 @@ between Bernoulli random variables with parameters $u,v$.
 \section{Online Linear Optimization over Hilbert Space}
 \label{section:online-linear-optimization-hilbert-space}
 
-Consider an online game where each round we predict $w_t$ in a Hilbert space $\H$
-and the adversary chooses $g_t \in \H$ such that $\|g_t\| \le 1$.
-The algorithm tries to maximize its cumulative gain $\sum_{t=1}^T \langle g_t, w_t \rangle$.
-The goal of algorithm is to have small regret after $T$ rounds w.r.t. competitor $u \in \H$:
+Consider an online game where each round we predict $w_t$ in a Hilbert space
+$\H$ and the adversary chooses $g_t \in \H$ such that $\|g_t\| \le 1$. The
+algorithm tries to maximize its cumulative gain $\sum_{t=1}^T \langle g_t, w_t
+\rangle$. The goal of algorithm is to have small regret after $T$ rounds w.r.t.
+competitor $u \in \H$:
 $$
 \Regret_T(u) = \sum_{t=1}^t \langle g_t, u \rangle - \sum_{t=1}^T \langle g_t, w_t \rangle \; .
 $$
@@ -345,16 +356,24 @@ $$
 
 \begin{lemma}[Extremes]
 \label{lemma:extremes}
-Let $h:[0,a] \to \R$ be a twice-differentiable function that satisfies $x \cdot h''(x) \le h'(x)$ for all $x \in [0,a)$.
-Then, if vectors $u,v \in \H$ satisfy $\|u\| + \|v\| \le a$, then
-$$
-\langle u, v \rangle + h(\|u + v\|) \ge \min \left\{ \|u\| \cdot \|v\| + h(\|v\| + \|u\|), - \|u\| \cdot \|v\| + h(|\|u\| - \|v\||) \right\} \; .
-$$
+Let $h:(-a,a) \to \R$ be an even concave twice-differentiable function that
+satisfies $x \cdot h''(x) \le h'(x)$ for all $x \in [0,a)$. Then, if vectors
+$u,v \in \H$ satisfy $\|u\| + \|v\| < a$, then
+\begin{equation}
+\label{equation:lemma-extremes-1}
+\langle u, v \rangle + h(\|u + v\|) \ge \min \left\{ \|u\| \cdot \|v\| + h(\|v\| + \|u\|), \ - \|u\| \cdot \|v\| + h(\|u\| - \|v\|) \right\} \; .
+\end{equation}
+Futhermore, for any $b \in [0,a]$ and any $u, v \in \H$ such that $\|v\| < a - b$ and $\|u\| \le b$,
+\begin{equation}
+\label{equation:lemma-extremes-2}
+\langle u, v \rangle + h(\|u + v\|) \ge \min \left\{ b \cdot \|v\| + h(\|v\| + b), \ - b \cdot \|v\| + h(\|u\| - b) \right\} \; .
+\end{equation}
 \end{lemma}
 
 \begin{proof}
-If $u$ or $v$ is zero, the inequality clearly holds. From now on we assume that $u,v$ are non-zero.
-Let $c$ be the cosine of the angle of between $u$ and $v$. More formally,
+If $u$ or $v$ is zero, the inequality \eqref{equation:lemma-extremes-1} clearly holds. From now on we assume that
+$u,v$ are non-zero. Let $c$ be the cosine of the angle of between $u$ and $v$.
+More formally,
 $$
 c = \frac{\langle u, v \rangle}{\|u\| \cdot \|v\|} \; .
 $$
@@ -362,13 +381,14 @@ With this notation, the left-hand side is
 $$
 \langle u, v \rangle + h(\|u + v\|) = c \|u\| \cdot \|v\|  + h(\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}) \; .
 $$
-We consider the last expression as a function of $c$ and we call it $f(c)$. The statement of the lemma
-is equivalent with
+We consider the last expression as a function of $c$ and we call it $f(c)$. The
+inequality \eqref{equation:lemma-extremes-1} is equivalent to
 $$
 \forall c \in [-1,1] \qquad \qquad f(c) \ge \min \left\{f(+1), f(-1)\right\} \; .
 $$
-The last inequality is clearly true if $f:[-1,1] \to \R$ is concave. We now check that $f$ is indeed concave,
-which we prove by showing that the second derivative is non-positive. The first derivate of $f$ is
+The last inequality is clearly true if $f:[-1,1] \to \R$ is concave. We now
+check that $f$ is indeed concave, which we prove by showing that the second
+derivative is non-positive. The first derivate of $f$ is
 $$
 f'(c) = \|u\| \cdot \|v\| + \frac{h'(\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}) \cdot \|u\| \cdot \|v\|}{\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}} \; .
 $$
@@ -376,23 +396,38 @@ The second derivative of $f$ is
 $$
 f''(c) = \|u\|^2 \cdot \|v\|^2 \cdot \frac{h''(\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|})  - \frac{1}{\sqrt{\|u\|^2 + \|v\|^2 + 2c \|u\| \cdot \|v\|}} \cdot h'(\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|})  }{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|} \; .
 $$
-If we consider $x=\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}$, the assumption $x \cdot h''(x) \le h'(x)$
-implies that $f''(c)$ is non-positive. This finishes the proof.
+If we consider $x=\sqrt{\|u\|^2 + \|v\|^2 + 2 c \|u\| \cdot \|v\|}$, the
+assumption $x \cdot h''(x) \le h'(x)$ implies that $f''(c)$ is non-positive.
+This finishes the proof of the inequality \eqref{equation:lemma-extremes-1}.
+
+Inequality \eqref{equation:lemma-extremes-2}, can be derived from inequality
+\eqref{equation:lemma-extremes-1} as follows
+\begin{align*}
+\langle u, v \rangle + h(\|u + v\|)
+& \ge \min_{u \in \H : \|u\| \le b} \min \left\{ \|u\| \cdot \|v\| + h(\|v\| + b), \ - \|u\| \cdot \|v\| + h(\|u\| - \|v\|) \right\} \\
+& = \min_{z \in [0,b]} \min \left\{ z \cdot \|v\| + h(\|v\| + z), \ - z \cdot \|v\| + h(\|u\| - z) \right\} \\
+& = \min_{z \in [-b,b]} z \cdot \|v\| + h(\|v\| + z) \\
+& = \min \left\{ b \cdot \|v\| + h(\|v\| + b), \ - b \cdot \|v\| + h(\|u\| - b) \right\} \; .
+\end{align*}
+The inequality in the chain is the inequality \eqref{equation:lemma-extremes-1}.
+The last equality follows since $g(z) = z \cdot \|v\| + h(\|v\| + z)$
+is concave.
 \end{proof}
 
 \begin{lemma}[Gamma Function]
 \label{lemma:gamma-function}
-For any real $a > 0$, the function $f(z) = \Gamma(a+x) \Gamma(a-x)$ satisfies
+For any real $a > 0$, the function $f(x) = \Gamma(a+x) \Gamma(a-x)$ satisfies
 $$
-\forall x \in [0, a) \qquad x \cdot f''(z) \ge f'(x) \; .
+\forall x \in [0, a) \qquad x \cdot f''(x) \ge f'(x) \; .
 $$
 \end{lemma}
 
 \begin{proof}
-First note that $f(x)$ is even, i.e., $f(x) = f(-x)$. Hence, odd terms of its Maclaurin series are zero.
-The property $x \cdot f''(x) \ge f'(x)$ easily follows if we show that
-the coefficients of the Taylor expansion of $f(x)$ around $0$ are non-negative,
-except possibly for the zero-order term $a_0$. Indeed, if
+First note that $f(x)$ is even, i.e., $f(x) = f(-x)$. Hence, odd terms of its
+Maclaurin series are zero. The property $x \cdot f''(x) \ge f'(x)$ easily
+follows if we show that the coefficients of the Maclaurin expansion of $f(x)$
+around $0$ are non-negative, except possibly for the zero-order term $a_0$.
+Indeed, if
 $$
 f(x) = \sum_{n=0}^\infty a_{2n} x^{2n} \qquad \text{and} \qquad a_2, a_4, a_6, \dots \ge 0
 $$
@@ -400,10 +435,11 @@ then the condition $x \cdot f''(x) \ge f'(x)$ is equivalent to
 $$
 x \sum_{n=0}^\infty (2n)(2n-1) \cdot a_{2n} x^{2n-2} \ge \sum_{n=0}^\infty (2n) \cdot a_{2n} x^{2n-1} \; ,
 $$
-which holds for any $x \ge 0$ since each term on the right-hand side, $(2n)(2n-1) a_{2n} x^{2n-1}$, is bigger
-or equal to the corresponding term on the left-hand side, $(2n) a_{2n} x^{2n-1}$.
+which holds for any $x \ge 0$ since each term on the right-hand side,
+$(2n)(2n-1) a_{2n} x^{2n-1}$, is bigger or equal to the corresponding term on
+the left-hand side, $(2n) a_{2n} x^{2n-1}$.
 
-Since $\Gamma(z)$ is positive for any real $z > 0$, the function $f(x)$ is
+Since $\Gamma(x)$ is positive for any real $x > 0$, the function $f(x)$ is
 positive on $(-a,a)$ and hence we can take its logarithm $g(x) = \ln(f(x))$.
 Note that if $g(x)$ has non-negative (even) coefficients of its Maclaurin
 expansion, except for possibly for the zero-order term, then the same holds for
@@ -424,8 +460,9 @@ g(x)
 = \ln \left( \Gamma(a+x) \Gamma(a-x) \right)
 = 2 \ln(\Gamma(a)) + \sum_{\substack{n \ge 2 \\ \text{$n$ even}}} \frac{\psi^{(n-1)}(a) \cdot x^n}{n!} \; .
 $$
-To see that the coefficients $\psi^{(n-1)}(a)/n!$ are non-negative for even $n$,
-we use the integral representation of polygamma functions,
+The fact that the coefficients $\psi^{(n-1)}(a)/n!$ are non-negative for even $n
+\ge 2$ can be easily seen from the integral representation of polygamma
+functions,
 $$
 \psi^{(n)}(z) = (-1)^{n+1} \int_0^\infty \frac{t^n e^{-zt}}{1-e^{-t}} dt \; ,
 $$
@@ -433,64 +470,72 @@ valid for any $n \ge 1$ and any complex $z$ such that $\Re(z) > 0$.
 \end{proof}
 
 \begin{theorem}
-If $\|g_1\| = \|g_2\|= \dots = \|g_T\| = 1$, then
+For any sequence of $g_1, g_2, \dots, g_T \in \H$ such that $\|g_1\|, \|g_2\|,
+\dots, \|g_T\| \le 1$, the algorithm predicting ``fraction'' $\beta_T =
+\frac{1}{T} \sum_{t=1}^{T-1} g_t$ satisfies
 $$
 \Wealth_T
 \ge
 \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!}
+\; .
 $$
 \end{theorem}
 
 \begin{proof}
 We prove the inequality by induction on $T$. In the base case $T=0$, the
-left-hand side is $\Wealth_0 = 1$, and the right-hand side equals $1$
-as well since $\sum_{t=1}^T g_t = 0$ and $\Gamma(\frac{1}{2}) = \sqrt{\pi}$.
-For $T \ge 1$, we have
+left-hand side is $\Wealth_0 = 1$, and the right-hand side equals $1$ as well
+since $\sum_{t=1}^T g_t = 0$ and $\Gamma(\frac{1}{2}) = \sqrt{\pi}$. For $T \ge
+1$, we will show that the difference of left and right side of the inequality is
+non-negative. We have
 \begin{align*}
 & \Wealth_T \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
 & = (1 + \langle g_T, \beta_T \rangle) \Wealth_{T-1} \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
-& = \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \left(\langle g_T, T \beta_T \rangle - \frac{2^T T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\Wealth_{T-1} \cdot \pi \cdot T!} \right) \\
-& = \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \left( \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle + h\left( \left\|g_T + \sum_{t=1}^{T-1} g_t \right\| \right) \right) \; .
+& = \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \left(\langle g_T, T \beta_T \rangle - \frac{2^T T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\Wealth_{T-1} \cdot \pi \cdot T!} \right) \\
+& = \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \left( \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle + h\left( \left\|g_T + \sum_{t=1}^{T-1} g_t \right\| \right) \right) \; .
 \end{align*}
 where we define
 \begin{align*}
 h(x) & = - C \cdot \Gamma \left(\frac{T+1}{2} + \frac{x}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{x}{2} \right) \; ,  \\
 C & = \frac{2^T \cdot T}{\Wealth_{T-1} \cdot \pi \cdot T!} \; .
 \end{align*}
-We apply Lemma~\ref{lemma:extremes} to $h(x)$. First note that $C > 0$.
-To see that $h(x)$ satisfies the condition $x \cdot h''(x) \le h'(x)$, we apply
-Lemma~\ref{lemma:gamma-function}. Let $a = \frac{T+1}{2}$ and $f(x) =
-\Gamma(a+x) \Gamma(a-x)$. By Lemma~\ref{lemma:gamma-function}, we have $x \cdot f''(x)
-\ge f(x)$ for all $x \in [0,a)$. Since $h(x) = - C f(x/2)$, we have $x \cdot
-h''(x) \le h'(x)$ for $x \in [0,T+1)$.
+We apply Lemma~\ref{lemma:extremes} to $h(x)$. First note that $C > 0$. Second,
+$\Gamma(x)$ is logarithmically convex on $[0,\infty)$, and hence $h(x)$ is
+logarithmically concave and hence concave. Third, $h(x)$ is clearly even and its
+defined on an interval $(-\frac{T+1}{2}, \frac{T+1}{2})$. To see that $h(x)$
+satisfies the condition $x \cdot h''(x) \le h'(x)$, we apply
+Lemma~\ref{lemma:gamma-function}. Let $f(x) = \Gamma(\frac{T+1}{2}+x)
+\Gamma(\frac{T+1}{2}-x)$. By Lemma~\ref{lemma:gamma-function}, we have $x \cdot
+f''(x) \ge f(x)$ for all $x \in [0,a)$. Since $h(x) = - C f(x/2)$, we have $x
+\cdot h''(x) \le h'(x)$ for $x \in [0,T+1)$.
 
-Therefore,
+Therefore, since $\|g_t\| \le 1$ and $\|\sum_{t=1}^{T-1} g_t\| < T$,
 \begin{align*}
-& \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \left( \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle + h\left( \left\|g_T + \sum_{t=1}^{T-1} g_t \right\| \right) \right) \\
-& \ge \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \min \left\{ \| g_T\| \cdot \left\| \sum_{t=1}^{T-1} g_t \right\| + h\left( \|g_T\| + \left\|\sum_{t=1}^{T-1} g_t \right\| \right), \right. \\
-& \phantom{\ge \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \min \left\{ \right. }
-\left. \ - \| g_T\| \cdot \left\| \sum_{t=1}^{T-1} g_t \right\| + h\left(\left| \|g_T\| - \left\|\sum_{t=1}^{T-1} g_t \right\| \right| \right) \right\} \\
+& \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \left( \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle + h\left( \left\|g_T + \sum_{t=1}^{T-1} g_t \right\| \right) \right) \\
+& \ge \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \min \left\{ \left\| \sum_{t=1}^{T-1} g_t \right\| + h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right), - \left\| \sum_{t=1}^{T-1} g_t \right\| + h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \right\} \\
 & = \Wealth_{T-1} \ + \ \Wealth_{T-1} \cdot \min \left\{ \| \beta_T \| + \frac{1}{T} \cdot h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right), - \|\beta_T\| + \frac{1}{T} \cdot h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \right\} \\
+& = \min \left\{ \Wealth_{T-1} (1 + \| \beta_T \|) + \frac{\Wealth_{T-1}}{T} h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right), \Wealth_{T-1} (1 - \| \beta_T \|) + \frac{\Wealth_{T-1}}{T} h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \right\}
 \end{align*}
-It remains to prove that the last expression is non-negative. We consider two cases,
-one for each term inside the minimum. In the first case, the last expression is
+It remains to prove that the last expression is non-negative, which we do by
+proving that each of the two sub-expressions of the minima are non-negative. The
+first sub-expression is
 \begin{align*}
-& \Wealth_{T-1} \ + \ \Wealth_{T-1} \cdot \left\{ \| \beta_T \| + \frac{1}{T} \cdot h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right) \right\} \\
+& \Wealth_{T-1} (1 + \| \beta_T \|) + \frac{\Wealth_{T-1}}{T} h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right) \\
 & =  \Wealth_{T-1} (1 + \|\beta_T\|) - \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| + \frac{1}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| - \frac{1}{2} \right)}{\pi \cdot T!} \\
 & =  \Wealth_{T-1} (1 + \|\beta_T\|) - \frac{2^T \left( \frac{T}{2} + \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right) \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot T!} \\
 & =  \Wealth_{T-1} (1 + \|\beta_T\|) - \frac{2^{T-1} \left( 1 + \|\beta_T\| \right) \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \\
 & =  (1 + \|\beta_T\|) \left( \Wealth_{T-1} - \frac{2^{T-1} \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \right) \; .
 \end{align*}
-In the second case is, the expression is
+The second sub-expression is
 \begin{align*}
-& \Wealth_{T-1} \ + \ \Wealth_{T-1} \cdot \min \left\{ - \|\beta_T\| + \frac{1}{T} \cdot h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \right\} \\
+& \Wealth_{T-1} (1 - \| \beta_T \|) + \frac{\Wealth_{T-1}}{T} h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \\
 & = \Wealth_{T-1} (1 - \|\beta_T\|) - \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| - \frac{1}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| + \frac{1}{2} \right)}{\pi \cdot T!} \\
 & = \Wealth_{T-1} (1 - \|\beta_T\|) - \frac{2^T \left( \frac{T}{2} - \frac{1}{2}\|\sum_{t=1}^{T-1} g_t\| \right) \cdot \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot T!} \\
 & = \Wealth_{T-1} (1 - \|\beta_T\|) - \frac{2^{T-1} \left( 1 - \|\beta_T\| \right) \cdot \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \\
 & = (1 - \|\beta_T\|) \left( \Wealth_{T-1}  - \frac{2^{T-1} \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \right) \; .
 \end{align*}
-In both cases we have used $\Gamma(x+1) = x \cdot \Gamma(x)$ which holds for any real $x > 0$.
-In both cases we see that by induction hypothesis and the fact that $\|\beta_T\| \in (-1,1)$, the expression is non-negative.
+In both cases we have used $\Gamma(x+1) = x \cdot \Gamma(x)$ which holds for any
+real $x > 0$. Induction hypothesis and $\|\beta_T\| \in (-1,1)$ imply
+that both sub-expressions are non-negative.
 \end{proof}
 
 \end{document}
