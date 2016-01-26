@@ -1,0 +1,75 @@
+\section{Online Optimization in One Dimension}
+\label{section:online-linear-optimization-1D}
+
+Consider an online game where each round we predict $w_t \in \R$
+and the adversary chooses $g_t \in [-1,1]$. The algorithm tries to maximize
+its cumulative gain $\sum_{t=1}^T g_t w_t$. The goal of algorithm
+is to have small regret after $T$ rounds w.r.t. competitor $u \in \R$:
+$$
+\Regret_T(u) = \sum_{t=1}^t g_t u - \sum_{t=1}^T g_t w_t \; .
+$$
+
+We consider algorithms of certain form, which we call betting algorithms.  A
+betting algorithm starts with $\Wealth_0 = 1$ dollars.
+In every round, it chooses a ``fraction'' $\beta_t \in [-1,1]$ of its current
+wealth to bet. The algorithm predicts
+$$
+w_t = \beta_t \cdot \Wealth_{t-1}
+$$
+where $\Wealth_t = 1 + \sum_{i=1}^t g_t w_t$. After making its prediction,
+the algorithm's wealth is
+$$
+\Wealth_t
+= g_t w_t + \Wealth_{t-1}
+= g_t \beta_t \Wealth_{t-1} + \Wealth_t
+= (1 + g_t\beta_t) \Wealth_{t-1} \; .
+$$
+Hence
+$$
+\Wealth_T = \prod_{t=1}^T (1 + g_t\beta_t) \; .
+$$
+
+\subsection{KT estimator for $\beta_t$}
+
+We use KT estimator to define fractions $\beta_t$. Let
+\begin{align*}
+q_t & = \frac{1 + g_t}{2} \\
+a_T & = \sum_{t=1}^T q_t \; , \\
+b_T & = \sum_{t=1}^T (1 - q_t) = T - a_T \; , \\
+p^* & =  \argmin_{p \in [0,1]} \sum_{t=1}^T \ell(p, q_t)
+      = \frac{a_T}{a_T + b_T}
+      = \frac{a_T}{T} = \frac{\sum_{t=1}^T q_t}{T} \; .
+\end{align*}
+We use the corresponding KT estimator
+$$
+p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t} = \frac{\frac{1}{2} + a_{t-1}}{t} = \frac{1}{2} + \frac{1}{2t} \sum_{i=1}^{t-1} g_i
+$$
+to define $\beta_t$ as
+$$
+\beta_t = 2p_t - 1 = \frac{1}{t} \sum_{i=1}^{t-1} g_i \; .
+$$
+
+\subsection{Wealth Lower Bound}
+
+The following inequality will be useful
+$$
+\ln\left(1 + \beta g \right) \ge \left( \frac{1+g}{2} \right) \ln \left(1 + \beta\right) + \left( \frac{1-g}{2} \right) \ln \left(1 - \beta \right)
+\qquad \text{for $g \in [-1,1]$ and $\beta \in (-1,1)$}.
+$$
+
+We lower bound logarithm of the wealth as follows
+\allowdisplaybreaks
+\begin{align*}
+\ln \Wealth_T
+& = \ln \prod_{t=1}^T (1 + g_t\beta_t) \\
+& =  \sum_{t=1}^T \ln (1 + g_t\beta_t) \\
+& \ge  \sum_{t=1}^T \left( \frac{1+g_t}{2} \right) \ln \left(1 + \beta_t\right) + \left( \frac{1-g_t}{2} \right) \ln \left(1 - \beta_t \right) \\
+& =  \sum_{t=1}^T \left( \frac{1+g_t}{2} \right) \ln \left(2p_t \right) + \left( \frac{1-g_t}{2} \right) \ln \left(2 (1 - p_t) \right) \\
+& =  T \ln(2) + \sum_{t=1}^T \left( \frac{1+g_t}{2} \right) \ln (p_t) + \left( \frac{1-g_t}{2} \right) \ln (1 - p_t) \\
+& =  T \ln(2) - \sum_{t=1}^T \ell(p_t, q_t) \\
+& \ge  T \ln(2) - \ln(2) - \frac{1}{2} \ln(T) - T \cdot H(p^*) \\
+& =  - \ln(2) - \frac{1}{2} \ln(T) - T \cdot (H(p^*) + \ln(1/2)) \\
+& =  - \ln(2) - \frac{1}{2} \ln(T) + T \cdot D\left(p^*, 1/2 \right)
+\end{align*}
+where $D(u,v) = u \ln(u/v) + (1-v) \ln((1-u)/(1-v))$ is the Kullback-Leibler divergence
+between Bernoulli random variables with parameters $u,v$.

@@ -1,0 +1,114 @@
+\section{KT bettor}
+
+\ac{KT} estimator is a classical estimator of bias of coin.
+Given $T$ outcomes of a coin flip $q_1, q_2, \dots, q_T \in \{0,1\}$ where $1$
+denotes heads and $0$ tails, KT estimator of coin's probability of heads is
+$$
+\frac{\frac{1}{2} + \sum_{t=1}^T q_t}{T + 1} \; .
+$$
+This estimator has many interesting properties. For us, the most crucial one is
+that it can be used in online data compression and satisfies a bound on the
+number of bits used.
+
+%First, in section~\ref{section:online-data-compression}, we recap the online
+%data compression problem and show a bound on number of bits used by the KT
+%estimator.  Second, in section~\ref{section:log-loss}, we generalize the online
+%data compression problem to an online prediction with log loss and we show that
+%a obvious generalization of the KT estimator yields and algorithm with the same
+%bound. In section~\ref{section:online-linear-optimization-1D}, we explain the
+%connection with one-dimensional online linear optimization problem.
+%Finally, in section~\ref{section:online-linear-optimization-hilbert-space},
+%we generalize it to online linear optimization over a Hilbert space.
+
+\subsection{Online Data Compression}
+\label{section:online-data-compression}
+
+Consider an online data compression problem where we predict a stream of bits;
+in each round we predict the next bit based on the previous bits.  More
+formally, in each round $t=1,2,\dots$, we predict probability $p_t \in [0,1]$
+that the next bit equals one, and then the next bit $q_t \in \{0, 1\}$ is
+observed.  Our prediction $p_t$ is scored according to log-loss:
+$$
+\ell(p_t, q_t) = q_t \ln\left( \frac{1}{p_t}\right) + (1-q_t) \ln  \left( \frac{1}{1 - p_t} \right) \; .
+$$
+In information theoretic terms, $\ell(p_t, q_t)$ measures the number of bits
+needed to encode $q_t$ if we use encoding that uses $\ln(\frac{1}{p_t})$ bits
+to encode $+1$ and $\ln(\frac{1}{1 - p_t})$ bits to encode $0$.
+
+After $T$ rounds, the algorithm incurs the loss $\sum_{t=1}^T \ell(p_t, q_t)$. We
+compare this loss with an offline baseline that in round $1,2,\dots,T$ predicts
+the same prediction
+$$
+p^* = \argmin_{p \in [0,1]} \sum_{t=1}^T \ell(p, q_t) \; .
+$$
+Note that $p^*$ can be calculated only with the knowledge of all the outcomes
+$q_1, q_2, \dots, q_T$; hence the name \emph{offline}.
+
+Let
+$$
+a_T = \sum_{t=1}^T q_t \qquad \text{and} \qquad b_T = \sum_{t=1}^T (1 - q_t) = T - a_T \; .
+$$
+We have
+\begin{align*}
+p^*
+= \argmin_{p \in [0,1]} \ a_T \cdot  \ln \left( \frac{1}{p} \right) + b_T \cdot \ln \left( \frac{1}{1-p} \right)
+= \argmin_{p \in [0,1]} \ - a_T \cdot  \ln p \ - \  b_T \cdot \ln (1-p)
+\end{align*}
+Defining $f(p) = - a_T \cdot  \ln p \ - \  b_T \cdot \ln(1-p)$, we can find maximum of
+finding point the derivative of $f(p)$ is zero. The derivative of $f(p)$ is
+$$
+f'(p) = - \frac{a_T}{p} + \frac{b_T}{1-p} \; .
+$$
+The equation $f'(p) = 0$ has only one solution
+$$
+p^* = \frac{a_T}{a_T + b_T} = \frac{a_T}{T} = \frac{\sum_{t=1}^T q_t}{T} \; .
+$$
+Note that $p^*$ differs from the KT estimate $p_T$.
+
+The type of result that we are interested is an upper bound on difference
+between the loss of the algorithm and the loss of the baseline
+$$
+\sum_{t=1}^T \ell(p_t, q_t) - \sum_{t=1}^T \ell(p^*, q_t) \; ,
+$$
+which can be viewed as the cost for not knowing the fraction of bits set to $1$
+ahead of time.
+
+%\subsection{KT estimator}
+
+We consider an algorithm that in round $t$ chooses its prediction $p_t$
+according to KT estimator
+$$
+p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t} = \frac{\frac{1}{2} + a_{t-1}}{t} \; .
+$$
+
+A little known result by \citep{KrichevskyT81} (see also ~\cite{Cesa-BianchiL06}), proves the following surprising \emph{equality}.
+For completeness, its proofs and all the other proofs of this paper, are in the Appendix.
+\begin{lemma}[Log loss of the KT Estimator]
+\label{lemma:kt}
+For any sequence $q_1, q_2, \dots, q_T \in \{0,1\}$, the log-loss of KT
+predictions is
+$$
+\sum_{t=1}^T \ell(p_t, q_t) =  - \ln \left( \frac{\Gamma(a_T + 1/2) \cdot \Gamma(b_T + 1/2)}{\pi \cdot T!} \right)
+$$
+where $a_T = \sum_{t=1}^T q_t$ and $b_T = T - a_T$ and $\Gamma(x) =
+\int_0^\infty x^{u-1} e^{-x} du$ is the Euler's Gamma function.
+\end{lemma}
+
+Also, it is easy to show the following inequality.
+\begin{lemma}
+If $T$ is a non-negative integer and $a,b$ are non-negative reals such that $a +
+b = T$ then
+$$
+\frac{\Gamma(a + 1/2) \cdot \Gamma(b + 1/2)}{\pi \cdot T!} \ge \frac{1}{2\sqrt{T}} \left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b \; .
+$$
+\end{lemma}
+
+Combining these two lemmas we get
+\begin{align*}
+\sum_{t=1}^T \ell(p_t, q_t)
+& \le - \ln \left( \frac{1}{2\sqrt{T}} \left( \frac{a_T}{T} \right)^{a_T} \left( \frac{b_T}{T} \right)^{b_T} \right) \\
+& = \ln(2) + \frac{1}{2} \ln(T) - a_T \ln (p^*) - b_T \ln (1-p^*) \\
+& = \ln(2) + \frac{1}{2} \ln(T) + \sum_{t=1}^T \ell(p^*, q_t) \; .
+\end{align*}
+
+In the next section, we will show generalize this result to the case that the terms $q_t$ are in $[0,1]$ rather than $\{0,1\}$.
