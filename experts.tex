@@ -2,9 +2,9 @@
 
 In this setting we want to minimize the regret defined as
 \[
-\sum_{t=1}^T \langle w_t, l_t \rangle - \sum_{t=1}^T \langle u, l_t \rangle,
+Regret(u):=\sum_{t=1}^T \langle p_t, l_t \rangle - \sum_{t=1}^T \langle u, l_t \rangle,
 \]
-where $l_t \in [0,1]$, $u, w_t \in \R^d_+$, and $\|u\|_1=\|w_t\|_1=1$.
+where $l_t \in [0,1]$, $u, p_t \in \R^d_+$, and $\|u\|_1=\|w_t\|_1=1$.
 
 Suppose we have a one-dimensional coin betting algorithm, that produces predictions $w_t$ that guarantees
 \[
@@ -43,14 +43,15 @@ We now use the specific form of $f$ given by Algorithm~\ref{}.
 Define $f(x):= \frac{x^2}{A} - B$ and $G_{T,i}=\sum_{t=1}^T g_{t,i}$.
 We have
 \begin{align*}
-\langle u, G_T \rangle 
+Regret(u) &\leq \langle u, G_T \rangle \\
 &\leq \sum_{i=1}^d u_i |G_{T,i}|_+ \\
-&= \sum_{i=1}^d \sqrt{A \left[\ln \exp\left(\frac{G_{T,i}^2}{A}-B\right)+B \right]} \\
-&\leq  \sqrt{A \sum_{i=1}^d u_i \left[\ln \exp\left(\frac{G_{T,i}^2}{A}-B\right)+B \right]} \\
-&=  \sqrt{A \left\{B+\sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(\frac{G_{T,i}^2}{A}-B\right) + \ln \frac{u_i}{q_i}\right]\right\}} \\
-&=  \sqrt{A \left\{B+D(u,q)+\sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(\frac{G_{T,i}^2}{A}-B\right)\right]\right\}} \\
-&\leq  \sqrt{A \left\{B+D(u,q)+ \ln \sum_{i=1}^d u_i \left[ \frac{q_i}{u_i}\exp\left(\frac{G_{T,i}^2}{A}-B\right)\right]\right\}} \\
-&=  \sqrt{A \left\{B+D(u,q)+ \ln \sum_{i=1}^d q_i\exp\left(\frac{G_{T,i}^2}{A}-B\right)\right\}} \\
+&= \sum_{i=1}^d \sqrt{A \left[\ln \exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)+B \right]} \\
+&\leq  \sqrt{A \sum_{i=1}^d u_i \left[\ln \exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)+B \right]} \\
+&=  \sqrt{A \left\{B+\sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right) + \ln \frac{u_i}{q_i}\right]\right\}} \\
+&=  \sqrt{A \left\{B+D(u,q)+\sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)\right]\right\}} \\
+&\leq  \sqrt{A \left\{B+D(u,q)+ \ln \sum_{i=1}^d u_i \left[ \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)\right]\right\}} \\
+&=  \sqrt{A \left\{B+D(u,q)+ \ln \sum_{i=1}^d q_i\exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)\right\}} \\
+&\leq  \sqrt{A \left\{B+D(u,q)+ \ln \sum_{i=1}^d q_i\exp\left(\frac{G_{T,i}^2}{A}-B\right)\right\}} \\
 &\leq  \sqrt{A \left(B+D(u,q)\right)},
 \end{align*}
-where in the second and third inequality we used Jensen's, and in the last one we used \eqref{eq:bounded_potential}.
+where in the third and fourth inequality we used Jensen's, and in the last one we used \eqref{eq:bounded_potential}.
