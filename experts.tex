@@ -22,7 +22,7 @@ g_{t,i} = \begin{cases}
 \end{align}
 where $p_{t,i} = \frac{\hat{p}_{t,i}}{\|p_{t}\|_1}$, $\hat{p}_{t,i}=q_i |w_{t,i}|_+$, and $|x|_+=\max\{x,0\}$.
 
-The above definitions guarantee that $\sum_{t=1}^d q_i g_{t,i} w_{t,i}\rangle \leq 0$. In fact, we have
+The above definitions guarantee that $\sum_{t=1}^d q_i g_{t,i} w_{t,i} \leq 0$. In fact, we have
 \begin{align*}
 \sum_{t=1}^d q_i g_{t,i} w_{t,i}
 &= \sum_{i:w_{t,i}\geq0} q_i w_{t,i} g_{t,i} + \sum_{i:w_{t,i}<0} q_i w_{t,i} g_{t,i} \\
@@ -31,7 +31,7 @@ The above definitions guarantee that $\sum_{t=1}^d q_i g_{t,i} w_{t,i}\rangle \l
 \end{align*}
 Hence, for each $i$ we have
 \[
-1 \geq 1+\sum_{t=1}^T w_{t,i} g_{t,i} \geq f(\sum_{t=1}^T g_{t,i})~.
+1+\sum_{t=1}^T w_{t,i} g_{t,i} \geq f(\sum_{t=1}^T g_{t,i})~.
 \]
 Multiplying each side by $q_i$ and summing over $i$, we have
 \begin{equation}
