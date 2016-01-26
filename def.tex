@@ -3,20 +3,12 @@
 
 %Random variables will be indicated by capital italic letters, e.g. $X \sim N(0,\sigma^2)$.
 %A vector $x$ is a subgradient of a convex function $\ell$ at $v$ iff $\ell(u) - \ell(v) \ge \langle u - v, x \rangle$ for any $u$ in the domain of $\ell$. The differential set of $\ell$ at $v$, denoted by $\partial \ell(v)$, is the set of all the subgradients of $\ell$ at $v$.
-We denote the $KL$ divergence between two distributions $p$ and $q$ as $D_KL(p||q)$.
+We denote the $KL$ divergence between two distributions $p$ and $q$ as $\DKL(p||q)$.
 We also define the KL divergence between two Bernoulli distributions with parameters $p$ and $q$ as
 \[
-D(p||q) := p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}~.
+\DB(p||q) := p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}~.
 \]
 We will denote by $\fH$ an Hilbert space with inner product $\langle \cdot, \cdot\rangle$.
-
-\vspace{0.2cm}\noindent\textbf{Binary and Continuous Coin Betting.}
-The bettor starts with the amount of money $\epsilon$. 
-At the end of each bet in the time step $t$ we denote the amount of money he has by $\wealth_t$ and by $\gain_t$ the amount of money gained through the $t$ bets. Hence, $\wealth_t=\gain_t+\epsilon$.
-At each time step $t$, it has to bet a quantity of money $w_t$ equal to a fraction of his current money, $w_t:=b_t \, \wealth_{t-1}$ where $b_t \in (-1,1)$. Note that here we consider only betting strategies that will never result in a negative quantity of money owned. Hence, $|b_t|$ must be strictly less than 1, otherwise the algorithm could lose all the money in one round.
-After the bet, the outcome of the coin $g_t \in \{-1,1\}$ is revealed and the bettor wins (or loses) the quantity $w_t g_t$.
-Note that we will speak about a ``binary coin'' when the outcome of the coin is in $\{-1,1\}$, and ``continuous coin'' when $g_t \in [-1,1]$. The latter case model the situation in there are different possible prizes with unknown probabilities to be won. In both cases, we have $\wealth_t:=\gain_{t-1} + w_t g_t + \epsilon= \epsilon + \sum_{i=1}^t w_i g_i$, so that $\gain_0=0$ and $\wealth_0=\epsilon$.
-We will extend to above definitions also to the the case that $w_t$ and $g_t$ belongs to a Hilbert space $\fH$ and $\norm{g_t}\leq 1$. Hence, with a slight abuse of notation we will also define $\gain_n=\sum_{t=1}^n \langle w_t, g_t \rangle$, $\wealth_t=\gain_t + \epsilon$ and $w_t = \beta_t \, \wealth_{t-1}$, with $\norm{\beta_t} < 1$.
 
 \vspace{0.2cm}\noindent\textbf{\ac{OLO}, Learning with Expert Advice and \ac{OCO}.}
 Let $\fH$ be a Hilbert space. In the \ac{OLO} framework, at each round $t$ the algorithm receives a vector $g_t \in \fX$, picks a $w_t \in \fS \subseteq \fH$, and gains $\langle w_t,g_t \rangle$ (or equivalently loses -$\langle w_t,g_t \rangle$).
@@ -34,6 +26,14 @@ Again, the aim is to minimize the regret, that in this case is defined as
 \[
 Regret^{OCO}_n(u) := \sum_{t=1}^n \left(\ell_t(w_t) -\ell_t(u)\right)~.
 \]
+
+\vspace{0.2cm}\noindent\textbf{Binary and Continuous Coin Betting.}
+The bettor starts with the amount of money $\epsilon$. 
+At the end of each bet in the time step $t$ we denote the amount of money he has by $\wealth_t$ and by $\gain_t$ the amount of money gained through the $t$ bets. Hence, $\wealth_t=\gain_t+\epsilon$.
+At each time step $t$, it has to bet a quantity of money $w_t$ equal to a fraction of his current money, $w_t:=b_t \, \wealth_{t-1}$ where $b_t \in (-1,1)$. Note that here we consider only betting strategies that will never result in a negative quantity of money owned. Hence, $|b_t|$ must be strictly less than 1, otherwise the algorithm could lose all the money in one round.
+After the bet, the outcome of the coin $g_t \in \{-1,1\}$ is revealed and the bettor wins (or loses) the quantity $w_t g_t$.
+Note that we will speak about a ``binary coin'' when the outcome of the coin is in $\{-1,1\}$, and ``continuous coin'' when $g_t \in [-1,1]$. The latter case model the situation in there are different possible prizes with unknown probabilities to be won. In both cases, we have $\wealth_t:=\gain_{t-1} + w_t g_t + \epsilon= \epsilon + \sum_{i=1}^t w_i g_i$, so that $\gain_0=0$ and $\wealth_0=\epsilon$.
+We will extend to above definitions also to the the case that $w_t$ and $g_t$ belongs to a Hilbert space $\fH$ and $\norm{g_t}\leq 1$. Hence, with a slight abuse of notation we will also define $\gain_n=\sum_{t=1}^n \langle w_t, g_t \rangle$, $\wealth_t=\gain_t + \epsilon$ and $w_t = \beta_t \, \wealth_{t-1}$, with $\norm{\beta_t} < 1$.
 
 % \vspace{0.2cm}\noindent\textbf{Regularized ERM.}
 % Let $P$ a fixed but unknown distribution on $\fZ$, where $\fZ$ is an arbitrary set.

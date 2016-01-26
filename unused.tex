@@ -1,0 +1,57 @@
+\section{Unused}
+\begin{proof}[Proof of Theorem \ref{theo:wealth}]
+We prove the inequality by induction on $T$. In the base case $T=0$, the
+left-hand side is $\Wealth_0 = 1$, and the right-hand side equals $1$ as well
+since $\sum_{t=1}^T g_t = 0$ and $\Gamma(\frac{1}{2}) = \sqrt{\pi}$. For $T \ge
+1$, we will show that the difference of left and right side of the inequality is
+non-negative. We have
+\begin{align*}
+& \Wealth_T \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
+& = (1 + \langle g_T, \beta_T \rangle) \Wealth_{T-1} \ - \ \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
+& = \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \left(\langle g_T, T \beta_T \rangle - \frac{2^T T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\Wealth_{T-1} \cdot \pi \cdot T!} \right) \\
+& = \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \left( \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle + h\left( \left\|g_T + \sum_{t=1}^{T-1} g_t \right\| \right) \right) \; .
+\end{align*}
+where we define
+\begin{align*}
+h(x) & = - C \cdot \Gamma \left(\frac{T+1}{2} + \frac{x}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{x}{2} \right) \; ,  \\
+C & = \frac{2^T \cdot T}{\Wealth_{T-1} \cdot \pi \cdot T!} \; .
+\end{align*}
+We apply Lemma~\ref{lemma:extremes} to $h(x)$. First note that $C > 0$. Second,
+$\Gamma(x)$ is logarithmically convex on $[0,\infty)$, and hence $h(x)$ is
+logarithmically concave and hence concave. Third, $h(x)$ is clearly even and its
+defined on an interval $(-\frac{T+1}{2}, \frac{T+1}{2})$. To see that $h(x)$
+satisfies the condition $x \cdot h''(x) \le h'(x)$, we apply
+Lemma~\ref{lemma:gamma-function}. Let $f(x) = \Gamma(\frac{T+1}{2}+x)
+\Gamma(\frac{T+1}{2}-x)$. By Lemma~\ref{lemma:gamma-function}, we have $x \cdot
+f''(x) \ge f(x)$ for all $x \in [0,a)$. Since $h(x) = - C f(x/2)$, we have $x
+\cdot h''(x) \le h'(x)$ for $x \in [0,T+1)$.
+
+Therefore, since $\|g_t\| \le 1$ and $\|\sum_{t=1}^{T-1} g_t\| < T$,
+\begin{align*}
+& \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \left( \left\langle g_T, \sum_{t=1}^{T-1} g_t \right\rangle + h\left( \left\|g_T + \sum_{t=1}^{T-1} g_t \right\| \right) \right) \\
+& \ge \Wealth_{T-1} \ + \ \frac{1}{T} \cdot \Wealth_{T-1} \cdot \min \left\{ \left\| \sum_{t=1}^{T-1} g_t \right\| + h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right), - \left\| \sum_{t=1}^{T-1} g_t \right\| + h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \right\} \\
+& = \Wealth_{T-1} \ + \ \Wealth_{T-1} \cdot \min \left\{ \| \beta_T \| + \frac{1}{T} \cdot h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right), - \|\beta_T\| + \frac{1}{T} \cdot h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \right\} \\
+& = \min \left\{ \Wealth_{T-1} (1 + \| \beta_T \|) + \frac{\Wealth_{T-1}}{T} h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right), \Wealth_{T-1} (1 - \| \beta_T \|) + \frac{\Wealth_{T-1}}{T} h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \right\}
+\end{align*}
+It remains to prove that the last expression is non-negative, which we do by
+proving that each of the two sub-expressions of the minima are non-negative. The
+first sub-expression is
+\begin{align*}
+& \Wealth_{T-1} (1 + \| \beta_T \|) + \frac{\Wealth_{T-1}}{T} h\left( \left\|\sum_{t=1}^{T-1} g_t \right\| + 1 \right) \\
+& =  \Wealth_{T-1} (1 + \|\beta_T\|) - \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| + \frac{1}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| - \frac{1}{2} \right)}{\pi \cdot T!} \\
+& =  \Wealth_{T-1} (1 + \|\beta_T\|) - \frac{2^T \left( \frac{T}{2} + \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right) \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot T!} \\
+& =  \Wealth_{T-1} (1 + \|\beta_T\|) - \frac{2^{T-1} \left( 1 + \|\beta_T\| \right) \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \\
+& =  (1 + \|\beta_T\|) \left( \Wealth_{T-1} - \frac{2^{T-1} \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \right) \; .
+\end{align*}
+The second sub-expression is
+\begin{align*}
+& \Wealth_{T-1} (1 - \| \beta_T \|) + \frac{\Wealth_{T-1}}{T} h\left(\left\|\sum_{t=1}^{T-1} g_t \right\| - 1 \right) \\
+& = \Wealth_{T-1} (1 - \|\beta_T\|) - \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| - \frac{1}{2} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| + \frac{1}{2} \right)}{\pi \cdot T!} \\
+& = \Wealth_{T-1} (1 - \|\beta_T\|) - \frac{2^T \left( \frac{T}{2} - \frac{1}{2}\|\sum_{t=1}^{T-1} g_t\| \right) \cdot \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot T!} \\
+& = \Wealth_{T-1} (1 - \|\beta_T\|) - \frac{2^{T-1} \left( 1 - \|\beta_T\| \right) \cdot \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \\
+& = (1 - \|\beta_T\|) \left( \Wealth_{T-1}  - \frac{2^{T-1} \Gamma \left(\frac{T}{2} + \frac{1}{2}\left\|\sum_{t=1}^{T-1} g_t \right\| \right) \cdot \Gamma \left(\frac{T}{2} - \frac{1}{2} \left\|\sum_{t=1}^{T-1} g_t \right\| \right)}{\pi \cdot (T-1)!} \right) \; .
+\end{align*}
+In both cases we have used $\Gamma(x+1) = x \cdot \Gamma(x)$ which holds for any
+real $x > 0$. Induction hypothesis and $\|\beta_T\| \in (-1,1)$ imply
+that both sub-expressions are non-negative.
+\end{proof}

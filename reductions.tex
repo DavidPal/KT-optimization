@@ -1,4 +1,54 @@
-\section{Learning with Expert Advice}
+\section{From Betting...}
+
+In this section we will show the connection between betting on a continuous coin, adaptive \ac{OLO}/\ac{OCO}, and automatic model selection. We will prove that, given an ``optimal'' betting algorithm, the same algorithm can be used to solve all the problems listed above.
+
+We will assume that a 1-dimensional algorithm exists that satisfies the following assumption.
+\begin{assumption}
+\label{assumption:1-d_algo}
+Assume that there exists a function $f:\R \times 2^\R \rightarrow \R$ convex and twice differentiable in the first argument and an algorithm, that we will denote by \ac{MBA}, that generates $b_t \in [-1 , 1]$, using in input $x_{t-1} \in \R$, $z_1, \ldots, z_{t-1} \in [-1,1]$, such that
+\begin{itemize}
+\item $f$ is even in the first argument
+\item $f''(x, S) \geq \frac{f'(x,S)}{x}$, where the derivatives are w.r.t. the first argument.
+\item $f(0,\{\})=\epsilon>0$;
+\item  \begin{equation}
+\label{eq:1_d_hp}
+(1+b_t z_t) f\left( x_{t-1}, \{|z_1|, \ldots, |z_{t-1}|\} \right) \geq f\left( x_{t-1}+z_t, \{|z_1|, \ldots, |z_t|\}\right), \ \ \forall z_{t} \in [-1,1]~.
+\end{equation}
+\end{itemize}
+\end{assumption}
+
+We call it \ac{MBA} because it is easy to show by induction that such algorithm can indeed be used as a betting algorithm.
+\begin{theorem}
+\label{theo:1-d_reward}
+Assume that Assumption \ref{assumption:1-d_algo} holds and use the \ac{MBA} with $x_{t-1}=|\sum_{i=1}^{t-1} g_i|$ and $z_t=g_t$.
+Then, for any sequence of outcomes $g_t \in [-1,1]$, the following holds
+\[
+\wealth_T = \epsilon+\sum_{t=1}^T g_t b_t \geq f\left( \sum_{i=1}^{n} g_i , \left\{|g_1|, \ldots, |g_T|\right\}\right)~.
+\]
+\end{theorem}
+
+In the following we will show how such an algorithm can be used to solve \ac{OLO} and learning with expert advice.
+
+\subsection{...to Online Linear Learning}
+
+Even more importantly, the \ac{MBA} can also be used to prove regret bound on \ac{OLO} in Hilbert Spaces.
+
+\begin{theorem}
+\label{theo:hilbert_reward}
+  Assume that \ref{assumption:1-d_algo} holds.
+  Let $g_t \in \fH$ an arbitrary sequence of vector, such that $\norm{g_t} \leq 1$ and define the vector $\theta_t=\sum_{i=1}^{t} g_i$.
+  Use the Algorithm in \ref{assumption:1-d_algo} with the sequence $x_{t-1}= \norm{\theta_{t-1}}$.
+  Define a vectorial algorithm that at each step outputs $w_t = b_t \frac{\theta_{t-1}}{\norm{\theta_{t-1}}} \wealth_{t-1}$. Then the following holds
+  \[
+    Regret_T(u) \leq f^*\left( \norm{u}, \left\{\norm{g_1}, \ldots, \norm{g_T}\right\}\right)+\epsilon \quad \quad \quad \textnormal{ for all } u \in \fH \textnormal{ and } g_t \in \fH,
+  \]
+  where the conjugation is taken w.r.t. the first argument of $f$.
+  %\[
+  %\wealth_{n} = \epsilon + \sum_{t=1}^n \langle g_t, w_t \rangle \geq f\left( \norm{\sum_{t=1}^n g_t}, \left\{\norm{g_1}, \ldots, \norm{g_n}\right\}\right)~.
+  %\]
+\end{theorem}
+
+\subsection{...to Learning with Expert Advice}
 
 In this setting we want to minimize the regret defined as
 \[

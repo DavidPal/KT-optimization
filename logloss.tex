@@ -9,16 +9,9 @@ $$
 \ell(p_t, q_t) = q_t \ln\left( \frac{1}{p_t}\right) + (1-q_t) \ln  \left( \frac{1}{1 - p_t} \right) \; .
 $$
 
-The formulas for $a_T, b_T$ and $p^*$ remain exactly the same as before
-\begin{align*}
-a_T & = \sum_{t=1}^T q_t \; , \\
-b_T & = \sum_{t=1}^T (1 - q_t) = T - a_T \; , \\
-p^* & =  \argmin_{p \in [0,1]} \sum_{t=1}^T \ell(p, q_t) = \frac{a_T}{a_T + b_T} = \frac{a_T}{T} = \frac{\sum_{t=1}^T q_t}{T} \; .
-\end{align*}
-
 The KT estimator is generalized in the obvious way
 $$
-p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t} = \frac{\frac{1}{2} + a_{t-1}}{t} \; .
+p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t}\; .
 $$
 
 %\subsection{Bound on loss of the KT Estimator}
@@ -29,7 +22,8 @@ In this setting we can prove the following Theorem.
 For any sequence $q_1, q_2, \dots, q_T \in [0,1]$, the log-loss of KT
 predictions is
 $$
-\sum_{t=1}^T \ell(p_t, q_t) \leq \ln(2) + \frac{1}{2} \ln(T) + T \cdot H(p^*)
+%\sum_{t=1}^T \ell(p_t, q_t) \leq \ln(2) + \frac{1}{2} \ln(T) + T \cdot H(p^*)
+\sum_{t=1}^T \ell(p_t, q_t) \leq \ln(2) + \frac{1}{2} \ln(T) + T \ln (2) -T \, \DKL\left(p^*\middle\|\frac{1}{2}\right)
 $$
 where $H(x) = - x \ln(x) - (1-x) \ln (1-x)$ is the binary entropy function.
 \end{theorem}

@@ -12,6 +12,24 @@ $$
 \Regret_T(u) = \sum_{t=1}^t \langle g_t, u \rangle - \sum_{t=1}^T \langle g_t, w_t \rangle \; .
 $$
 
+We will use the following Theorem from~\citet{McMahanO14}, that allows to recast the problem of proving an upper bound to the regret to the one of proving a lower bound to the \emph{wealth} of the algorithm.
+The reward and regret view on online learning are equivalent: an algorithm guarantees low regret iff it guarantees high reward. The following Theorem makes this claim rigorous. Notice that the algorithm is exactly the same in the two setting.
+\begin{theorem}[\citet{McMahanO14}]
+  \label{thm:rrdual}
+  Let $\Psi:\mathcal{H} \rightarrow (-\infty, +\infty]$ be a lower semicontinuos and convex function, with $dom \Psi \neq \emptyset$. An
+  algorithm for the player guarantees
+  \[
+  \gain_n \geq \Psi\left(\sum_{t=1}^n g_t\right) - \epsilon \quad \quad \quad \textnormal{ for any } g_1, \dots, g_n
+  \]
+  for a constant $\epsilon \in \R$ if and only if it
+  guarantees
+  \begin{equation}\label{eq:regb}
+  \qquad Regret_n(u) \leq \Psi^*(u) + \epsilon \quad \quad \quad \textnormal{ for all } u \in \fH \textnormal{ and } g_t \in \fH, \forall 1\leq t\leq n~.
+  \end{equation}
+\end{theorem}
+So, a betting algorithm can be used for online learning and vice-versa. However, as it was already stressed in \citet{McMahanO14}, the reward view has the big advantage of having one variable less, the competitor $u$.
+Moreover, as we will show in the following, designing and analyzing algorithms in one of the two views could be much easier than in the other one.
+
 We consider algorithms of certain form, which we call betting algorithms.  A
 betting algorithm starts with $\Wealth_0 = 1$ dollars.
 In every round, it chooses a ``fraction'' $\beta_t \in \H$, $\|\beta\| \le 1$
@@ -31,30 +49,9 @@ $$
 
 
 
-\begin{lemma}[Extremes]
-\label{lemma:extremes}
-Let $h:(-a,a) \to \R$ be an even concave twice-differentiable function that
-satisfies $x \cdot h''(x) \le h'(x)$ for all $x \in [0,a)$. Then, if vectors
-$u,v \in \H$ satisfy $\|u\| + \|v\| < a$, then
-\begin{equation}
-\label{equation:lemma-extremes-1}
-\langle u, v \rangle + h(\|u + v\|) \ge \min \left\{ \|u\| \cdot \|v\| + h(\|v\| + \|u\|), \ - \|u\| \cdot \|v\| + h(\|u\| - \|v\|) \right\} \; .
-\end{equation}
-Futhermore, for any $b \in [0,a]$ and any $u, v \in \H$ such that $\|v\| < a - b$ and $\|u\| \le b$,
-\begin{equation}
-\label{equation:lemma-extremes-2}
-\langle u, v \rangle + h(\|u + v\|) \ge \min \left\{ b \cdot \|v\| + h(\|v\| + b), \ - b \cdot \|v\| + h(\|u\| - b) \right\} \; .
-\end{equation}
-\end{lemma}
 
 
-\begin{lemma}[Gamma Function]
-\label{lemma:gamma-function}
-For any real $a > 0$, the function $f(x) = \Gamma(a+x) \Gamma(a-x)$ satisfies
-$$
-\forall x \in [0, a) \qquad x \cdot f''(x) \ge f'(x) \; .
-$$
-\end{lemma}
+
 
 
 
@@ -63,10 +60,10 @@ $$
 For any sequence of $g_1, g_2, \dots, g_T \in \H$ such that $\|g_1\|, \|g_2\|,
 \dots, \|g_T\| \le 1$, the algorithm predicting ``fraction'' $\beta_t =
 \frac{1}{t} \sum_{i=1}^{t-1} g_i$ satisfies
-$$
+\begin{align*}
 \Wealth_T
-\ge
-\frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!}
+&\geq \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
+&\geq \exp\left(T \, \DB\left(\frac{1}{2} +\frac{\left\|\sum_{t=1}^T g_t \right\|}{2T}\middle\| \frac{1}{2}\right)\right)
 \; .
-$$
+\end{align*}
 \end{theorem}

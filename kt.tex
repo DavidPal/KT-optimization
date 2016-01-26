@@ -7,8 +7,7 @@ $$
 \frac{\frac{1}{2} + \sum_{t=1}^T q_t}{T + 1} \; .
 $$
 This estimator has many interesting properties. For us, the most crucial one is
-that it can be used in online data compression and satisfies a bound on the
-number of bits used.
+that it can be used for online maximization of the wealth.
 
 %First, in section~\ref{section:online-data-compression}, we recap the online
 %data compression problem and show a bound on number of bits used by the KT
@@ -20,7 +19,7 @@ number of bits used.
 %Finally, in section~\ref{section:online-linear-optimization-hilbert-space},
 %we generalize it to online linear optimization over a Hilbert space.
 
-\subsection{Online Data Compression}
+\subsection{Online Log Wealth Maximization}
 \label{section:online-data-compression}
 
 Consider an online data compression problem where we predict a stream of bits;
@@ -94,12 +93,40 @@ where $a_T = \sum_{t=1}^T q_t$ and $b_T = T - a_T$ and $\Gamma(x) =
 \int_0^\infty x^{u-1} e^{-x} du$ is the Euler's Gamma function.
 \end{lemma}
 
+We also consider a generalization of the previous game where $q_t$ are not
+restricted the set $\{0,1\}$ but they are allowed to be any real number in the
+interval $[0,1]$.
+
+The KT estimator is generalized in the obvious way
+$$
+p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t}\; .
+$$
+
+In this setting we can prove the following Theorem.
+\begin{theorem}
+\label{theo:logloss}
+For any sequence $q_1, q_2, \dots, q_T \in [0,1]$, the log-loss of KT
+predictions is
+$$
+%\sum_{t=1}^T \ell(p_t, q_t) \leq \ln(2) + \frac{1}{2} \ln(T) + T \cdot H(p^*)
+\sum_{t=1}^T \ell(p_t, q_t) \leq - \ln \left( \frac{\Gamma(a_T + 1/2) \cdot \Gamma(b_T + 1/2)}{\pi \cdot T!} \right) \; .
+$$
+\end{theorem}
+Notice that this theorem is exactly the same as before, the only difference ???
+
+
+
+
+
 Also, it is easy to show the following inequality.
 \begin{lemma}
+\label{lemma:approx_gamma}
 If $T$ is a non-negative integer and $a,b$ are non-negative reals such that $a +
 b = T$ then
 $$
-\frac{\Gamma(a + 1/2) \cdot \Gamma(b + 1/2)}{\pi \cdot T!} \ge \frac{1}{2\sqrt{T}} \left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b \; .
+\ln \frac{\Gamma(a + 1/2) \cdot \Gamma(b + 1/2)}{\pi \cdot T!} 
+\geq -\ln(2) -\frac{1}{2} \ln(T) +\ln \left(\left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b\right) 
+= -\ln(2) -\frac{1}{2} \ln(T) -T \ln (2) + T \, \DKL\left(\frac{b}{T}\middle\|\frac{1}{2}\right)\; .
 $$
 \end{lemma}
 
@@ -108,7 +135,62 @@ Combining these two lemmas we get
 \sum_{t=1}^T \ell(p_t, q_t)
 & \le - \ln \left( \frac{1}{2\sqrt{T}} \left( \frac{a_T}{T} \right)^{a_T} \left( \frac{b_T}{T} \right)^{b_T} \right) \\
 & = \ln(2) + \frac{1}{2} \ln(T) - a_T \ln (p^*) - b_T \ln (1-p^*) \\
-& = \ln(2) + \frac{1}{2} \ln(T) + \sum_{t=1}^T \ell(p^*, q_t) \; .
+%& = \ln(2) + \frac{1}{2} \ln(T) + \sum_{t=1}^T \ell(p^*, q_t) \; .
+& = \ln(2) + \frac{1}{2} \ln(T) + T \ln (2) -T \, \DKL\left(p^*\middle\|\frac{1}{2}\right) \; .
 \end{align*}
 
-In the next section, we will show generalize this result to the case that the terms $q_t$ are in $[0,1]$ rather than $\{0,1\}$.
+
+We can also show that the \ac{KT} bettor satisfies the conditions in the Assumption~1.
+\begin{lemma}[Gamma Function]
+\label{lemma:gamma-function}
+For any real $a > 0$, the function $f(x) = \Gamma(a+x) \Gamma(a-x)$ satisfies
+$$
+\forall x \in [0, a) \qquad x \cdot f''(x) \ge f'(x) \; .
+$$
+\end{lemma}
+
+
+\subsection{From KT to Online Learning}
+
+Given the results in the previous two Sections, we can state the following Corollaries
+
+\begin{cor}
+  Let $g_t \in \fH$ an arbitrary sequence of vector, such that $\norm{g_t} \leq 1$ and define the vector $\theta_t=\sum_{i=1}^{t} g_i$.
+  Define a vectorial algorithm that at each step outputs 
+  \[
+  w_t = \frac{\sum_{i=1}^{t-1} \|g_i\|}{t} \frac{\theta_{t-1}}{\norm{\theta_{t-1}}} \left(\sum_{i=1}^{t-1} \langle w_i, g_i \rangle + \epsilon\right).
+  \]
+  Then the following holds
+  \[
+    Regret_T(u) \leq \|u\| \sqrt{T \ln \left(\frac{T \|u\|^2}{\epsilon^2}+1\right)}+\epsilon \quad \quad \quad \textnormal{ for all } u \in \fH \textnormal{ and } g_t \in \fH \; .
+  \]
+\end{cor}
+
+\begin{algorithm}[h]
+  \begin{algorithmic}
+  {
+    %\STATE{\bfseries Parameters:} $\eta>0$
+    \STATE{\bfseries Initialize:} $w_{1,i}=0$
+    \FOR{$t=1,2,\dots$}
+    \STATE{For each $i \in [d], \hat{p}_{t,i} = q_i |w_{t,i}|_+$}
+    \STATE{Predict with $p_{t,i} = \frac{\hat{p}_{t,i}}{\norm{\hat{p}}_1}$}
+    \STATE{Receive input vector $l_t \in [0,1]^d$ and suffer loss $\langle p_t, l_t\rangle$}
+    \STATE{For each $i \in [d]$, set $g_{t,i} = \begin{cases}
+      \langle p_t, \ell_t\rangle - \ell_{t,i} & \text{if } w_{t,i} \ge 0 \\
+      |\langle p_t, \ell_t\rangle - \ell_{t,i}|_+ & \text{if } w_{t,i} < 0
+      \end{cases} $}    
+    \STATE{For each $i \in [d]$, set $w_{t+1,i} = \tfrac{\left(1+\sum_{j=1}^{t} w_{j,i} g_{j,i} \right)}{t+1}\sum_{j=1}^{t} g_{j,i} $}
+    \ENDFOR
+  }
+  \end{algorithmic}
+  \caption{Online Learning with Expert Advice based on \ac{KT}-betting.}
+  \label{alg:kt_expert}
+\end{algorithm}
+
+\begin{cor}
+Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation of Algorithm~\ref{}, the following holds
+\[
+\sum_{t=1}^T \langle p_t, l_t\rangle -\sum_{t=1}^T \langle u , l_t\rangle 
+\leq \sqrt{2 T \left( \frac{1}{2} \ln(T) + \ln(2) + \DKL(u,q)\right)} \; .
+\]
+\end{cor}
