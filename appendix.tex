@@ -188,7 +188,8 @@ First, consider the case that $z_t=1$. We have
 &= \frac{2^t \cdot \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \Gamma \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \cdot \Gamma \left(\frac{t}{2} - \frac{x_{t-1}}{2} \right)}{\pi \cdot t!} \\
 &= \left(1 + \frac{x_{t-1}}{t} \right) \frac{2^{t-1} \Gamma \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \cdot \Gamma \left(\frac{t}{2} - \frac{x_{t-1}}{2} \right)}{\pi \cdot (t-1)!} \; .
 \end{align*}
-In the same way, when $z=-1$ we have
+where in the second equality we used $\Gamma(x+1) = x \cdot \Gamma(x)$ which holds for any
+real $x > 0$. In the same way, when $z=-1$ we have
 \begin{align*}
 \frac{2^t \cdot \Gamma \left(\frac{t+1}{2} + \frac{x_{t-1}+z_t}{2} \right) \cdot \Gamma \left(\frac{t+1}{2} - \frac{x_{t-1}+z_t}{2} \right)}{\pi \cdot t!}
 &= \frac{2^t \cdot \Gamma \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \cdot \Gamma \left(1+\frac{t}{2} - \frac{x_{t-1}}{2} \right)}{\pi \cdot t!} \\
@@ -198,9 +199,106 @@ In the same way, when $z=-1$ we have
 \end{proof}
 
 
+\subsection{Proof of Corollary~\ref{cor:kt_hilbert}}
 
-\subsection{KL properties}
-We first state a couple of useful indentities.
+First we state some technical lemmas that will be used in the following proofs.
+
+Define the Lambert function $W(x):\R\rightarrow\R$ as the one that satisfies the equality\footnote{For $x<0$ the Lambert function is multivalued. Hence, to avoid complication and because we only need positive arguments, we will define it only for positive values of $x$.}
+\begin{equation}
+\label{eq:lambert}
+x=W(x) \exp \left(W(x)\right), \ \forall x\geq0.
+\end{equation}
+It satisfies the following properties.
+%
+\begin{lemma}
+\label{lemma:lambert}
+The Lambert function satisfies $0.6321 \log(x+1) \leq W(x) \leq \log(x+1), \forall x\geq0$.
+\end{lemma}
+%
+\begin{proof}
+We first prove the lower bound. From \eqref{eq:lambert} we have
+\begin{align}
+W(x) &= \log\left(\frac{x}{W(x)}\right) \label{eq:lm_lambert_1} \\
+&= \log\left(\frac{x}{\log(x/W(x))}\right). \label{eq:lm_lambert_1b}
+\end{align}
+From the first equality, for any $a>0$, we get
+\[
+W(x) \leq \frac{1}{a\, e}\left(\frac{x}{W(x)}\right)^a
+\]
+that is
+\begin{equation}
+\label{eq:lm_lambert_2}
+W(x) \leq \left(\frac{1}{a\, e}\right)^\frac{1}{1+a} x^\frac{a}{1+a}.
+\end{equation}
+Using \eqref{eq:lm_lambert_2} in \eqref{eq:lm_lambert_1}, we have
+\begin{align*}
+W(x) 
+\geq \log\left(\frac{x}{\left(\frac{1}{a\, e}\right)^\frac{1}{1+a} x^\frac{a}{1+a}}\right) 
+= \frac{1}{1+a}\log\left(a \, e\, x\right)~.
+\end{align*}
+Consider now the function $g(x)=\frac{x}{x+1} - \frac{b}{\log(1+b) (b+1)} \log(x+1), x\geq b$. This function has a maximum in $x^*=(1+\frac{1}{b}) \log(1+b)-1$, the derivative is positive in $[0,x^*]$ and negative in $[x^*,b]$. Hence the minimum is in $x=0$ and in $x=b$, where it is equal to $0$.
+Using the property just proved on $g$, we have that for $x\leq b$, setting $a=\frac{1}{x}$, we have
+\begin{align*}
+W(x) 
+\geq \frac{x}{x+1} \geq \frac{b}{\log(1+b) (b+1)} \log(x+1)~.
+\end{align*}
+For $x>b$, setting $a=\frac{x+1}{e x}$, we have
+\begin{align}
+W(x) 
+&\geq \frac{e\,x}{(e+1) x + 1} \log(x+1) \geq \frac{e\,b}{(e+1) b + 1} \log(x+1)
+\end{align}
+Hence, we set $b$ such that 
+\[
+\frac{e\, b}{(e+1)b + 1} = \frac{b}{\log(1+b) (b+1)}
+\]
+Numberically, $b=1.71825...$, so
+\[
+W(x) \geq 0.6321 \log(x+1)~. \qedhere
+\]
+
+For the upper bound, we use Theorem~2.3 in \cite{hoorfar2008inequalities}, that says that
+\[
+W(x) \leq \log\frac{x+C}{1+\log(C)}, \quad \forall x> -\frac{1}{e}, \ C>\frac{1}{e}.
+\]
+Setting $C=1$, we obtain the stated bound.
+\end{proof}
+
+\begin{lemma}
+Define $f(\theta)= \beta \exp\frac{x^2}{2 \alpha}$, for $\alpha,\beta>0$, $x\geq0$. Then
+\[
+f^*(y)=y \sqrt{\alpha W\left(\frac{\alpha y^2}{\beta^2}\right)} - \beta \exp\left(\frac{W\left(\frac{\alpha y^2}{\beta^2}\right)}{2}\right).
+\]
+Moreover
+\[
+f^*(y) \leq y \sqrt{\alpha \log \left(\frac{\alpha y^2}{\beta^2} +1 \right)} - \beta.
+\]
+\end{lemma}
+\begin{proof}
+From the definition of Fenchel dual, we have
+\begin{align*}
+f^*(y)= \max_{x} \  x\, y - f(x) = \max_{x} \  x\, y - \beta \exp\frac{x^2}{2 \alpha} \leq x^*\,y -\beta
+\end{align*}
+where $x^*= \argmax_{x} x\, y - f(x)$. We now use the fact that $x^*$ satisfies $y = f'(x^*)$, to have
+\begin{align*}
+x^*=\sqrt{\alpha W\left(\frac{\alpha y^2}{\beta^2}\right)},
+\end{align*}
+where the $W(\cdot)$ is the Lambert function.
+Using Lemma~\ref{lemma:lambert}, we obtain the stated bound.
+\end{proof}
+
+\begin{lemma}[ {\citep[Example 13.7]{BauschkeC2011}} ]
+Let $\phi:\R \rightarrow (-\infty, +\infty]$ be even. Then $(\phi \ast \norm{\cdot})^*=\phi^* \ast \norm{\cdot}$.
+\end{lemma}
+
+\begin{cor}
+\label{cor:dual_exp_square}
+Define $f(\theta)= \beta \exp\frac{\norm{\theta}^2}{2 \alpha}$, for $\alpha,\beta>0$. Then
+\[
+f^*(w) \leq  \norm{w} \sqrt{\alpha \log \left(\frac{\alpha \norm{w}^2}{\beta^2} +1 \right)} - \beta.
+\]
+\end{cor}
+
+We also state a some useful identities and inequalities.
 For any $ 0\leq p < 1$
 \[
 D\left(\frac{1}{2}+\frac{p}{2}\middle\|\frac{1}{2}\right) = D\left(\frac{1}{2}-\frac{p}{2}\middle\|\frac{1}{2}\right)= \frac{1+p}{2} \log(1+p) + \frac{1-p}{2} \log(1-p).
@@ -220,3 +318,23 @@ Also, for any $-\frac{1}{2} \leq x\leq \frac{1}{2}$ we have
 \[
 \frac{x^2}{2} +\frac{x^4}{12}\leq D\left(\frac{1}{2}+\frac{x}{2}\middle\|\frac{1}{2}\right) \leq \frac{x^2}{2} + \frac{x^4}{5}.
 \]
+
+We can now prove Corollary~\ref{cor:kt_hilbert}.
+\begin{proof}[Proof of Corollary~\ref{cor:kt_hilbert}]
+Using Theorem~\ref{theo:hilbert_reward}, we should compute the Fenchel conjugate function of \eqref{eq:kt_potential}.
+However, given the complexity of the function, we prefer first lower bound the wealth at time $T$ and then compute the Fenchel conjugate.
+Using Lemma~\ref{lemma:approx_gamma}, we have
+\begin{align*}
+\ln \frac{\Gamma(a + 1/2) \cdot \Gamma(b + 1/2)}{\pi \cdot T!} 
+&\geq -\ln(2) -\frac{1}{2} \ln(T) +\ln \left(\left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b\right) \\
+&= -\ln(2) -\frac{1}{2} \ln(T) -T \ln (2) + T \, \DKL\left(\frac{b}{T}\middle\|\frac{1}{2}\right) \; .
+\end{align*}
+Hence, we have
+\begin{align*}
+\epsilon  \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2} x_{T} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} x_{T} \right)}{\pi \cdot T!} 
+&\geq \epsilon \exp\left(-\ln(2) -\frac{1}{2} \ln(T) + T \, \DKL\left(\frac{1}{2}+\frac{x_T}{2T}\middle\|\frac{1}{2}\right)\right) \\
+&= \frac{\epsilon}{2 \sqrt{T}} \exp\left(T \, \DKL\left(\frac{1}{2}+\frac{x_T}{2T}\middle\|\frac{1}{2}\right)\right) \\
+&\geq \frac{\epsilon}{2 \sqrt{T}} \exp\left(\frac{x_T^2}{2T}\right)
+\end{align*}
+Using Corollary~\ref{cor:dual_exp_square}, we have that the Fenchel conjugate of $f(\theta)=\frac{\epsilon}{2 \sqrt{T}} \exp\left(\frac{\norm{\theta}^2}{2T}\right)$ is upper bounded by $f^*(w) \leq \norm{w} \sqrt{T \log \left(\frac{4 T^2 \norm{w}^2}{\epsilon^2} +1 \right)} +\epsilon(1-\frac{1}{2\sqrt{T}})$.
+\end{proof}

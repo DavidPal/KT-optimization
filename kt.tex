@@ -136,24 +136,11 @@ Combining these two lemmas we get
 & = \ln(2) + \frac{1}{2} \ln(T) + T \ln (2) -T \, \DKL\left(p^*\middle\|\frac{1}{2}\right) \; .
 \end{align*}
 
-The following inequality will be useful
-$$
-\ln\left(1 + \beta g \right) \ge \left( \frac{1+g}{2} \right) \ln \left(1 + \beta\right) + \left( \frac{1-g}{2} \right) \ln \left(1 - \beta \right)
-\qquad \text{for $g \in [-1,1]$ and $\beta \in (-1,1)$}.
-$$
-
-Moreover, \ac{KT}-estimator is a \ac{MBA}.
-\begin{theorem}
-\label{theo:kt_is_mba}
-Define 
-\[
-f\left( x_{t}, \{|z_1|, \ldots, |z_{t}|\}\right) 
-= \epsilon  \frac{2^t \cdot \Gamma \left(\frac{t+1}{2} + \frac{1}{2} x_{t} \right) \cdot \Gamma \left(\frac{t+1}{2} - \frac{1}{2} x_{t} \right)}{\pi \cdot t!},
-\]
-and $b_t= \frac{x_{t-1}}{t}$.
-The couple $f,b_t$ satisfies the conditions in Assumption~1.
-\end{theorem}
-
+% The following inequality will be useful
+% $$
+% \ln\left(1 + \beta g \right) \ge \left( \frac{1+g}{2} \right) \ln \left(1 + \beta\right) + \left( \frac{1-g}{2} \right) \ln \left(1 - \beta \right)
+% \qquad \text{for $g \in [-1,1]$ and $\beta \in (-1,1)$}.
+% $$
 
 
 \subsection{From KT to Online Learning}
@@ -171,30 +158,44 @@ The couple $f,b_t$ satisfies the conditions in Assumption~1.
       \langle p_t, \ell_t\rangle - \ell_{t,i} & \text{if } w_{t,i} \ge 0 \\
       |\langle p_t, \ell_t\rangle - \ell_{t,i}|_+ & \text{if } w_{t,i} < 0
       \end{cases} $}    
-    \STATE{For each $i \in [d]$, set $w_{t+1,i} = \tfrac{\left(1+\sum_{j=1}^{t} w_{j,i} g_{j,i} \right)}{t+1}\sum_{j=1}^{t} g_{j,i} $}
+    \STATE{For each $i \in [d]$, set $w_{t+1,i} = \tfrac{\sum_{j=1}^{t} g_{j,i}}{t+1} \left(1+\sum_{j=1}^{t} w_{j,i} g_{j,i} \right)$}
     \ENDFOR
   }
   \end{algorithmic}
   \caption{Online Learning with Expert Advice based on \ac{KT}-betting.}
-  \label{alg:kt_expert}
+  \label{algo:kt_expert}
 \end{algorithm}
 
-Given the results in the previous two Sections, we can state the following Corollaries
+The most interesting property for us is that the \ac{KT}-estimator can be used as a \ac{MBA}.
+\begin{theorem}
+\label{theo:kt_is_mba}
+Define 
+\begin{equation}
+\label{eq:kt_potential}
+f\left( x_{t}, \{|z_1|, \ldots, |z_{t}|\}\right) 
+= \epsilon  \frac{2^t \cdot \Gamma \left(\frac{t+1}{2} + \frac{1}{2} x_{t} \right) \cdot \Gamma \left(\frac{t+1}{2} - \frac{1}{2} x_{t} \right)}{\pi \cdot t!}, 
+\end{equation}
+and $b_t= \frac{x_{t-1}}{t}$.
+The couple $f,b_t$ satisfies the conditions in Assumption~1.
+\end{theorem}
 
+Hence, given the results in the previous two Sections, we can state the following Corollaries
 \begin{cor}
+  \label{cor:kt_hilbert}
   Let $g_t \in \fH$ an arbitrary sequence of vector, such that $\norm{g_t} \leq 1$ and define the vector $\theta_t=\sum_{i=1}^{t} g_i$.
   Define a vectorial algorithm that at each step outputs 
   \[
-  w_t = \frac{\sum_{i=1}^{t-1} g_i}{t} \left(\sum_{i=1}^{t-1} \langle w_i, g_i \rangle + \epsilon\right).
+  w_t = \frac{\sum_{i=1}^{t-1} g_i}{t} \left(\epsilon+ \sum_{i=1}^{t-1} \langle w_i, g_i \rangle \right).
   \]
   Then the following holds
   \[
-    Regret_T(u) \leq \|u\| \sqrt{T \ln \left(\frac{T \|u\|^2}{\epsilon^2}+1\right)}+\epsilon \quad \quad \quad \textnormal{ for all } u \in \fH \textnormal{ and } g_t \in \fH \; .
+    Regret_T(u) \leq \norm{u} \sqrt{T \log \left(\frac{4 T^2 \norm{u}^2}{\epsilon^2} +1 \right)} +\epsilon\left(1-\frac{1}{2\sqrt{T}}\right) \quad \quad \quad \textnormal{ for all } u \in \fH \textnormal{ and } g_t \in \fH \; .
   \]
 \end{cor}
 
 \begin{cor}
-Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation of Algorithm~\ref{}, the following holds
+\label{cor:kt_expert}
+Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation of Algorithm~\ref{algo:kt_expert}, the following holds
 \[
 \sum_{t=1}^T \langle p_t, l_t\rangle -\sum_{t=1}^T \langle u , l_t\rangle 
 \leq \sqrt{2 T \left( \frac{1}{2} \ln(T) + \ln(2) + \DKL(u,q)\right)} \; .
