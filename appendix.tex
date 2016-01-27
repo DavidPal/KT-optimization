@@ -100,8 +100,8 @@ Moreover, as we will show in the following, designing and analyzing algorithms i
   &\geq \left(1+\frac{b_n}{\norm{\theta_{n-1}}}\langle \theta_{n-1},g_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} g_t}\right) - f_n\left( \norm{\sum_{t=1}^{n} g_t}\right)\\
   &= \left(1+\frac{b_n}{\norm{\theta_{n-1}}}\langle \theta_{n-1},g_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} g_t}\right) - f_n\left( \norm{g_n + \sum_{t=1}^{n-1} g_t}\right)\\
   %&= \left(1+\frac{b_n}{\norm{\theta_{n-1}}}\langle \theta_{n-1},g_n \rangle \right) f_{n-1}\left( \norm{\theta_{n-1}}\right) - f_n\left( \sqrt{\norm{\theta_{n-1}}^2 + \norm{g_n}^2 + 2 \langle \theta_{n-1}, g_n \rangle} \right)\\
-  &\geq \min_{r\in \{-1,1\}} \left(1+ r\, b_n \right) f_{n-1}\left( \norm{\theta_{n-1}}\right) - f_n\left(\left| \norm{\theta_{n-1}} + r\right|\right)\\
-  &= \min_{r\in \{-1,1\}} \left(1+ r\, b_n \right) f_{n-1}\left( \norm{\theta_{n-1}}\right) - f_n\left( \norm{\theta_{n-1}} + r \right)\\
+  &\geq \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{g_t}\right) f_{n-1}\left( \norm{\theta_{n-1}}\right) - f_n\left(\left| \norm{\theta_{n-1}} + r\norm{g_t}\right|\right)\\
+  &= \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{g_t}\right) f_{n-1}\left( \norm{\theta_{n-1}}\right) - f_n\left( \norm{\theta_{n-1}} + r \norm{g_t}\right)\\
   &\geq 0,
   \end{align*}
   where the first inequality comes from the induction hypothesis, the second one using Lemma~\ref{lemma:extremes} and the last one by the hypothesis on the \ac{MBA}.
@@ -175,22 +175,22 @@ which holds true since $\Gamma(1/2) = \sqrt{\pi}$.
 
 The second assumption is verified by Lemma~\ref{lemma:gamma-function}.
 
-For the third assumption we have to verify that
+For the third assumption we have to verify that, for $z_t \in [-1,1]$, the following holds
 \[
-(1+\frac{x_{t-1}}{t} z) \frac{2^{t-1} \cdot \Gamma \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \cdot \Gamma \left(\frac{t}{2} - \frac{x_{t-1}}{2} \right)}{\pi \cdot (t-1)!}
-\geq \frac{2^t \cdot \Gamma \left(\frac{t+1}{2} + \frac{x_{t-1}+z_t}{2} \right) \cdot \Gamma \left(\frac{t+1}{2} - \frac{x_{t-1}+z}{2} \right)}{\pi \cdot t!} \;.
+(1+\frac{x_{t-1}}{t} z_t) \frac{2^{t-1} \cdot \Gamma \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \cdot \Gamma \left(\frac{t}{2} - \frac{x_{t-1}}{2} \right)}{\pi \cdot (t-1)!}
+- \frac{2^t \cdot \Gamma \left(\frac{t+1}{2} + \frac{x_{t-1}+z_t}{2} \right) \cdot \Gamma \left(\frac{t+1}{2} - \frac{x_{t-1}+z_t}{2} \right)}{\pi \cdot t!} \geq 0\;.
 \]
-We will actually prove it with an equality.
-Consider the case that $z_t=1$. We have
+Given that the function $f$ does not depend on the past $z_t$, using Lemma~\ref{lemma:gamma-function}, it is enough to prove it for $z_t \in \{-1,1\}$.
+First, consider the case that $z_t=1$. We have
 \begin{align*}
-\frac{2^t \cdot \Gamma \left(\frac{t+1}{2} + \frac{x_{t-1}+z_t}{2} \right) \cdot \Gamma \left(\frac{t+1}{2} - \frac{x_{t-1}+z}{2} \right)}{\pi \cdot t!}
+\frac{2^t \cdot \Gamma \left(\frac{t+1}{2} + \frac{x_{t-1}+z_t}{2} \right) \cdot \Gamma \left(\frac{t+1}{2} - \frac{x_{t-1}+z_t}{2} \right)}{\pi \cdot t!}
 &= \frac{2^t \cdot \Gamma \left(1+\frac{t}{2} + \frac{x_{t-1}}{2} \right) \cdot \Gamma \left(\frac{t}{2} - \frac{x_{t-1}}{2} \right)}{\pi \cdot t!} \\
 &= \frac{2^t \cdot \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \Gamma \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \cdot \Gamma \left(\frac{t}{2} - \frac{x_{t-1}}{2} \right)}{\pi \cdot t!} \\
 &= \left(1 + \frac{x_{t-1}}{t} \right) \frac{2^{t-1} \Gamma \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \cdot \Gamma \left(\frac{t}{2} - \frac{x_{t-1}}{2} \right)}{\pi \cdot (t-1)!} \; .
 \end{align*}
 In the same way, when $z=-1$ we have
 \begin{align*}
-\frac{2^t \cdot \Gamma \left(\frac{t+1}{2} + \frac{x_{t-1}+z_t}{2} \right) \cdot \Gamma \left(\frac{t+1}{2} - \frac{x_{t-1}+z}{2} \right)}{\pi \cdot t!}
+\frac{2^t \cdot \Gamma \left(\frac{t+1}{2} + \frac{x_{t-1}+z_t}{2} \right) \cdot \Gamma \left(\frac{t+1}{2} - \frac{x_{t-1}+z_t}{2} \right)}{\pi \cdot t!}
 &= \frac{2^t \cdot \Gamma \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \cdot \Gamma \left(1+\frac{t}{2} - \frac{x_{t-1}}{2} \right)}{\pi \cdot t!} \\
 &= \frac{2^t \cdot \Gamma \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \cdot \left(\frac{t}{2} - \frac{x_{t-1}}{2} \right) \Gamma \left(\frac{t}{2} - \frac{x_{t-1}}{2} \right)}{\pi \cdot t!} \\
 &= \left(1 - \frac{x_{t-1}}{t} \right) \frac{2^{t-1} \Gamma \left(\frac{t}{2} + \frac{x_{t-1}}{2} \right) \cdot \Gamma \left(\frac{t}{2} - \frac{x_{t-1}}{2} \right)}{\pi \cdot (t-1)!} \; .
