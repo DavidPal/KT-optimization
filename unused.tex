@@ -1,5 +1,36 @@
 \section{Unused}
-\begin{proof}[Proof of Theorem \ref{theo:wealth}]
+We consider algorithms of certain form, which we call betting algorithms.  A
+betting algorithm starts with $\Wealth_0 = 1$ dollars.
+In every round, it chooses a ``fraction'' $\beta_t \in \H$, $\|\beta\| \le 1$
+of its current wealth to bet. The algorithm predicts
+$$
+w_t = \beta_t \cdot \Wealth_{t-1}
+$$
+where $\Wealth_t = 1 + \sum_{i=1}^t \langle g_t, w_t \rangle$. After making its prediction,
+the algorithm's wealth is
+$$
+\Wealth_t = \langle g_t, w_t \rangle + \Wealth_{t-1} = \langle g_t, \beta_t \rangle \Wealth_{t-1} + \Wealth_t = (1 + \langle g_t, \beta_t \rangle) \Wealth_{t-1} \; .
+$$
+Hence
+$$
+\Wealth_T = \prod_{t=1}^T (1 + \langle g_t, \beta_t \rangle) \; .
+$$
+
+
+\begin{theorem}
+\label{theo:wealth}
+For any sequence of $g_1, g_2, \dots, g_T \in \H$ such that $\|g_1\|, \|g_2\|,
+\dots, \|g_T\| \le 1$, the algorithm predicting ``fraction'' $\beta_t =
+\frac{1}{t} \sum_{i=1}^{t-1} g_i$ satisfies
+\begin{align*}
+\Wealth_T
+&\geq \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
+&\geq \exp\left(T \, \DB\left(\frac{1}{2} +\frac{\left\|\sum_{t=1}^T g_t \right\|}{2T}\middle\| \frac{1}{2}\right)\right)
+\; .
+\end{align*}
+\end{theorem}
+%
+\begin{proof}
 We prove the inequality by induction on $T$. In the base case $T=0$, the
 left-hand side is $\Wealth_0 = 1$, and the right-hand side equals $1$ as well
 since $\sum_{t=1}^T g_t = 0$ and $\Gamma(\frac{1}{2}) = \sqrt{\pi}$. For $T \ge
@@ -54,4 +85,127 @@ The second sub-expression is
 In both cases we have used $\Gamma(x+1) = x \cdot \Gamma(x)$ which holds for any
 real $x > 0$. Induction hypothesis and $\|\beta_T\| \in (-1,1)$ imply
 that both sub-expressions are non-negative.
+\end{proof}
+
+
+\section{Proof of of Lemma~\ref{lemma:kt} and Lemma Theorem~\ref{theo:logloss}}
+
+\begin{proof}[Proof of Lemma~\ref{lemma:kt}]
+We prove the equality by induction $T$. For $T=0$ the equality is
+$$
+0 = - \ln \left( \frac{\Gamma(1/2) \cdot \Gamma(1/2)}{\pi \cdot 0!} \right)
+$$
+which holds true since $\Gamma(1/2) = \sqrt{\pi}$.
+For $T \ge 1$, we use the induction hypothesis for $T-1$ and some algebraic manipulation
+\begin{align*}
+\sum_{t=1}^T \ell(p_t, q_t)
+& = \ell(p_T, q_T) + \sum_{t=1}^{T-1} \ell(p_t, q_t) \\
+& = \ell(p_T, q_T) - \ln \left( \frac{\Gamma(a_{T-1} + 1/2) \cdot \Gamma(b_{T-1} + 1/2)}{\pi \cdot (T-1)!} \right) \\
+& = q_T \ln\left( \frac{1}{p_T}\right) + (1-q_T) \ln  \left( \frac{1}{1 - p_T} \right) - \ln \left( \frac{\Gamma(a_{T-1} + 1/2) \cdot \Gamma(b_{T-1} + 1/2)}{\pi \cdot (T-1)!} \right) \\
+& = - q_T \ln\left( \frac{\frac{1}{2} + a_{T-1}}{T} \right) - (1-q_T) \ln\left( \frac{\frac{1}{2} + b_{T-1}}{T} \right) - \ln \left( \frac{\Gamma(a_{T-1} + 1/2) \cdot \Gamma(b_{T-1} + 1/2)}{\pi \cdot (T-1)!} \right) \\
+& = - \ln\left( \left( \frac{\frac{1}{2} + a_{T-1}}{T} \right)^{q_T} \left( \frac{\frac{1}{2} + b_{T-1}}{T} \right)^{1-q_T} \frac{\Gamma(a_{T-1} + 1/2) \cdot \Gamma(b_{T-1} + 1/2)}{\pi \cdot (T-1)!} \right) \\
+& = - \ln\left( \left( \frac{1}{2} + a_{T-1} \right)^{q_T} \left( \frac{1}{2} + b_{T-1} \right)^{1-q_T} \frac{\Gamma(a_{T-1} + 1/2) \cdot \Gamma(b_{T-1} + 1/2)}{\pi \cdot T!}  \right) \; .
+\end{align*}
+It remains to prove that expression inside logarithm equals
+$$
+\frac{\Gamma(a_{T} + 1/2) \cdot \Gamma(b_T + 1/2)}{\pi \cdot T!}
+$$
+We consider two cases. If $q_T = 1$ then
+\begin{align*}
+& \left( \frac{1}{2} + a_{T-1} \right)^{q_T} \left( \frac{1}{2} + b_{T-1} \right)^{1-q_T} \frac{\Gamma(a_{T-1} + 1/2) \cdot \Gamma(b_{T-1} + 1/2)}{\pi \cdot T!} \\
+& = \left( \frac{1}{2} + a_{T-1} \right) \frac{\Gamma(a_{T-1} + 1/2) \cdot \Gamma(b_{T-1} + 1/2)}{\pi \cdot T!} \\
+& = \frac{\Gamma(a_{T-1} + 3/2) \cdot \Gamma(b_{T-1} + 1/2)}{\pi \cdot T!} \\
+& = \frac{\Gamma(a_{T} + 1/2) \cdot \Gamma(b_T + 1/2)}{\pi \cdot T!} \; ,
+\end{align*}
+where we have used that $\Gamma(x+1) = x \Gamma(x)$ for any real $x > 0$ and that $a_T = a_{T-1} + q_T = a_{T-1} + 1$ and $b_T = b_{T-1} + (1-q_T) = b_{T-1}$.
+Similarly, if $q_T = 0$ then
+\begin{align*}
+& \left( \frac{1}{2} + a_{T-1} \right)^{q_T} \left( \frac{1}{2} + b_{T-1} \right)^{1-q_T} \frac{\Gamma(a_{T-1} + 1/2) \cdot \Gamma(b_{T-1} + 1/2)}{\pi \cdot T!} \\
+& = \left( \frac{1}{2} + b_{T-1} \right) \frac{\Gamma(a_{T-1} + 1/2) \cdot \Gamma(b_{T-1} + 1/2)}{\pi \cdot T!} \\
+& = \frac{\Gamma(a_{T-1} + 1/2) \cdot \Gamma(b_{T-1} + 3/2)}{\pi \cdot T!} \\
+& = \frac{\Gamma(a_T + 1/2) \cdot \Gamma(b_T + 3/2)}{\pi \cdot T!} \; ,
+\end{align*}
+where we have used that $\Gamma(x+1) = x \Gamma(x)$ for any real $x > 0$ and that $a_T = a_{T-1} + q_T = a_{T-1}$ and $b_T = b_{T-1} + (1-q_T) = b_{T-1} + 1$.
+\end{proof}
+
+
+\subsection{KT estimator for $\beta_t$}
+
+We use KT estimator to define fractions $\beta_t$. Let
+\begin{align*}
+q_t & = \frac{1 + g_t}{2} \\
+a_T & = \sum_{t=1}^T q_t \; , \\
+b_T & = \sum_{t=1}^T (1 - q_t) = T - a_T \; , \\
+p^* & =  \argmin_{p \in [0,1]} \sum_{t=1}^T \ell(p, q_t)
+      = \frac{a_T}{a_T + b_T}
+      = \frac{a_T}{T} = \frac{\sum_{t=1}^T q_t}{T} \; .
+\end{align*}
+We use the corresponding KT estimator
+$$
+p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t} = \frac{\frac{1}{2} + a_{t-1}}{t} = \frac{1}{2} + \frac{1}{2t} \sum_{i=1}^{t-1} g_i
+$$
+to define $\beta_t$ as
+$$
+\beta_t = 2p_t - 1 = \frac{1}{t} \sum_{i=1}^{t-1} g_i \; .
+$$
+
+We lower bound logarithm of the wealth as follows
+\allowdisplaybreaks
+\begin{align*}
+\ln \Wealth_T
+& = \ln \prod_{t=1}^T (1 + g_t\beta_t) \\
+& =  \sum_{t=1}^T \ln (1 + g_t\beta_t) \\
+& \ge  \sum_{t=1}^T \left( \frac{1+g_t}{2} \right) \ln \left(1 + \beta_t\right) + \left( \frac{1-g_t}{2} \right) \ln \left(1 - \beta_t \right) \\
+& =  \sum_{t=1}^T \left( \frac{1+g_t}{2} \right) \ln \left(2p_t \right) + \left( \frac{1-g_t}{2} \right) \ln \left(2 (1 - p_t) \right) \\
+& =  T \ln(2) + \sum_{t=1}^T \left( \frac{1+g_t}{2} \right) \ln (p_t) + \left( \frac{1-g_t}{2} \right) \ln (1 - p_t) \\
+& =  T \ln(2) - \sum_{t=1}^T \ell(p_t, q_t) \\
+& \ge  T \ln(2) - \ln(2) - \frac{1}{2} \ln(T) - T \cdot H(p^*) \\
+& =  - \ln(2) - \frac{1}{2} \ln(T) - T \cdot (H(p^*) + \ln(1/2)) \\
+& =  - \ln(2) - \frac{1}{2} \ln(T) + T \cdot D\left(p^*, 1/2 \right)
+\end{align*}
+where $D(u,v) = u \ln(u/v) + (1-v) \ln((1-u)/(1-v))$ is the Kullback-Leibler divergence
+between Bernoulli random variables with parameters $u,v$.
+
+
+
+
+\begin{proof}[Proof of Theorem~\ref{theo:logloss}]
+The formulas for $a_T, b_T$ and $p^*$ remain exactly the same as in Section~\ref{section:online-data-compression}:
+\begin{align*}
+a_T & = \sum_{t=1}^T q_t \; , \\
+b_T & = \sum_{t=1}^T (1 - q_t) = T - a_T \; , \\
+p^* & =  \argmin_{p \in [0,1]} \sum_{t=1}^T \ell(p, q_t) = \frac{a_T}{a_T + b_T} = \frac{a_T}{T} = \frac{\sum_{t=1}^T q_t}{T} \; .
+\end{align*}
+Hence, we have $p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t} = \frac{\frac{1}{2} + a_{t-1}}{t}$.
+
+Let $\widetilde q_1, \widetilde q_2, \dots, \widetilde q_T$ independent
+Bernoulli variables with parameters $q_1, q_2, \dots, q_T$ respectively.
+Let
+\begin{align*}
+\widetilde a_t & = \sum_{i=1}^t \widetilde q_i  \; , \\
+\widetilde b_t & = t - \widetilde a_t \; , \\
+\widetilde p_t & = \frac{\frac{1}{2} + \sum_{i=1}^{t-1} \widetilde q_i}{t} = \frac{\frac{1}{2} + \widetilde a_{t-1}}{t} \; , \\
+\widehat p & = \frac{\widetilde a_T}{T} = \frac{\widetilde a_T}{\widetilde a_T + \widetilde b_T} \; . \\
+\end{align*}
+Clearly,
+\begin{align*}
+q_i & = \Exp[\widetilde q_i] \; , \\
+a_t & = \Exp[\widetilde a_t] \; , \\
+b_t & = \Exp[\widetilde b_t] \; , \\
+p_t & = \Exp[\widetilde p_t] \; , \\
+p^* & = \Exp[\widehat p] \; .
+\end{align*}
+
+Since $\ell(p,q)$ is linear in $q$ and convex in $p$, we have
+\begin{align*}
+\sum_{t=1}^T \ell(p_t, q_t)
+& = \sum_{t=1}^T \ell( \Exp[ \widetilde p_t], \Exp[\widetilde q_t]) \\
+& = \Exp\left[ \sum_{t=1}^T \ell( \Exp[ \widetilde p_t], \widetilde q_t) \right] \\
+& \le \Exp\left[ \sum_{t=1}^T \ell( \widetilde p_t, \widetilde q_t) \right] \\
+& \le - \Exp\left[ \ln \left\{ \frac{1}{2\sqrt{T}} \left( \frac{\widetilde a_T}{T} \right)^{\widetilde a_T} \left( \frac{\widetilde b_T}{T} \right)^{\widetilde b_T} \right\} \right] \\
+& = \ln(2) + \frac{1}{2} \ln(T) + \Exp \left[ - \widetilde a_T \ln \left( \frac{\widetilde a_T}{T} \right) - \widetilde b_T \ln \left( \frac{\widetilde b_T}{T} \right) \right] \\
+& = \ln(2) + \frac{1}{2} \ln(T) + T \cdot \Exp \left[ H(\widehat p) \right] \\
+& \le \ln(2) + \frac{1}{2} \ln(T) + T \cdot H(\Exp[\widehat p]) \\
+& = \ln(2) + \frac{1}{2} \ln(T) + T \cdot H(p^*)~.
+\end{align*}
 \end{proof}

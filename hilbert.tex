@@ -30,22 +30,6 @@ The reward and regret view on online learning are equivalent: an algorithm guara
 So, a betting algorithm can be used for online learning and vice-versa. However, as it was already stressed in \citet{McMahanO14}, the reward view has the big advantage of having one variable less, the competitor $u$.
 Moreover, as we will show in the following, designing and analyzing algorithms in one of the two views could be much easier than in the other one.
 
-We consider algorithms of certain form, which we call betting algorithms.  A
-betting algorithm starts with $\Wealth_0 = 1$ dollars.
-In every round, it chooses a ``fraction'' $\beta_t \in \H$, $\|\beta\| \le 1$
-of its current wealth to bet. The algorithm predicts
-$$
-w_t = \beta_t \cdot \Wealth_{t-1}
-$$
-where $\Wealth_t = 1 + \sum_{i=1}^t \langle g_t, w_t \rangle$. After making its prediction,
-the algorithm's wealth is
-$$
-\Wealth_t = \langle g_t, w_t \rangle + \Wealth_{t-1} = \langle g_t, \beta_t \rangle \Wealth_{t-1} + \Wealth_t = (1 + \langle g_t, \beta_t \rangle) \Wealth_{t-1} \; .
-$$
-Hence
-$$
-\Wealth_T = \prod_{t=1}^T (1 + \langle g_t, \beta_t \rangle) \; .
-$$
 
 
 
@@ -55,15 +39,3 @@ $$
 
 
 
-\begin{theorem}
-\label{theo:wealth}
-For any sequence of $g_1, g_2, \dots, g_T \in \H$ such that $\|g_1\|, \|g_2\|,
-\dots, \|g_T\| \le 1$, the algorithm predicting ``fraction'' $\beta_t =
-\frac{1}{t} \sum_{i=1}^{t-1} g_i$ satisfies
-\begin{align*}
-\Wealth_T
-&\geq \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2}\left\|\sum_{t=1}^T g_t \right\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \left\|\sum_{t=1}^T g_t \right\| \right)}{\pi \cdot T!} \\
-&\geq \exp\left(T \, \DB\left(\frac{1}{2} +\frac{\left\|\sum_{t=1}^T g_t \right\|}{2T}\middle\| \frac{1}{2}\right)\right)
-\; .
-\end{align*}
-\end{theorem}

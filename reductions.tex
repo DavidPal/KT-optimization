@@ -12,7 +12,7 @@ Assume that there exists a function $f:\R \times 2^\R \rightarrow \R$ convex and
 \item $f(0,\{\})=\epsilon>0$;
 \item  \begin{equation}
 \label{eq:1_d_hp}
-(1+b_t z_t) f\left( x_{t-1}, \{|z_1|, \ldots, |z_{t-1}|\} \right) \geq f\left( x_{t-1}+z_t, \{|z_1|, \ldots, |z_t|\}\right), \ \ \forall z_{t} \in [-1,1]~.
+(1+b_t z_t) f\left( x_{t-1}, \{|z_1|, \ldots, |z_{t-1}|\} \right) \geq f\left( x_{t-1}+z_t, \{|z_1|, \ldots, |z_t|\}\right), \ \ \forall z_{t} \in \{-1,1\}~.
 \end{equation}
 \end{itemize}
 \end{assumption}
@@ -20,10 +20,10 @@ Assume that there exists a function $f:\R \times 2^\R \rightarrow \R$ convex and
 We call it \ac{MBA} because it is easy to show by induction that such algorithm can indeed be used as a betting algorithm.
 \begin{theorem}
 \label{theo:1-d_reward}
-Assume that Assumption \ref{assumption:1-d_algo} holds and use the \ac{MBA} with $x_{t-1}=|\sum_{i=1}^{t-1} g_i|$ and $z_t=g_t$.
+Assume that Assumption \ref{assumption:1-d_algo} holds and use the \ac{MBA} with $x_{t-1}=\sum_{i=1}^{t-1} g_i$ and $z_t=g_t$.
 Then, for any sequence of outcomes $g_t \in [-1,1]$, the following holds
 \[
-\wealth_T = \epsilon+\sum_{t=1}^T g_t b_t \geq f\left( \sum_{i=1}^{n} g_i , \left\{|g_1|, \ldots, |g_T|\right\}\right)~.
+\wealth_T = \epsilon+\sum_{t=1}^T g_t b_t \geq f\left( \sum_{i=1}^{T} g_i , \left\{|g_1|, \ldots, |g_T|\right\}\right)~.
 \]
 \end{theorem}
 
