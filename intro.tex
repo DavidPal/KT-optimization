@@ -5,14 +5,15 @@ Typically, one tries to prove that the regret grows at most sub-linearly in time
 Typically, \ac{OCO} is solved with a reduction of a \ac{OLO} problem~\citep{Cesa-BianchiL06,Shalev-Shwartz12}, where the losses $\ell_t(w)$ are the linear functions $\langle w, g_t\rangle$.
 Indeed, many learning problems can be directly phrased as \ac{OLO}, e.g., learning with expert advice~\citep{LittlestoneW94,Vovk98,Cesa-BianchiFHHSW97}, online combinatorial optimization~\cite{KoolenWK10}. A part from \ac{OCO}, other problems can be also reduced to \ac{OLO}, e.g. online classification and regression~\citep[Chapters~11~and~12]{Cesa-BianchiL06}, multi-armed problems~\citep[Chapter~6]{Cesa-BianchiL06}, and batch and stochastic optimization of convex functions~\cite{NemirovskyY83}.  Hence, a result in \ac{OLO} immediately implies other results in all these domains.
 
-However, as essential as it is, being able to solve an optimization problem is only half of the problem in machine learning. In fact, we are often interested in the generalization performance of a predictor trained from data. This depends not only on the ability to optimize a loss but also on constraining the complexity of the predictor. This is usually achieved through the use an regularized objective function, that biases the solution towards a small region of the space. However, choosing the size of this region is usually a problem by itself, that is solved by practitioners with a variety of more or less theoretical principled tools.
+However, as essential as it is to achieve sublinear regret, this is only half of the problem in online learning. In fact, we are often interested in the adaptation to the (often unknown) characteristics of the data. Often, online learning algorithms fail on this side, requiring to set parameters to oracle choices in order to achieve the best possible bounds.
+Recentely, a new family of algorithms that adapts to the data has been proposed, both in the \ac{OLO} and \ac{OCO} domains~\citep{StreeterM12,Orabona13,McMahanA13,McMahanO14,Orabona14} and in the expert setting~\citep{ChaudhuriYH09,ChernovV10,LuoE14,LuoS15,KoolenE15}. Even if the two families of algorithms are very similar, no attempt has been made to unify them.
 
 In this paper, we claim that a more fundamental notion subsumes both \ac{OLO} and \ac{OCO}. This notion is linked to the ability of an algorithm to optimally bet on an arbitrary sequence of outcomes from a coin.
+We show black box reduction from the coin betting scenario to \ac{OLO} in Hilbert spaces and to online learning with expert advice, where the guarantee on the wealth accumulated by any coin betting algorithm translates in regret bounds for the two domains.
 %We will define the notion of \ac{MBA} that not only will allow us to solve \ac{OLO} and \ac{OCO}, but to design algorithm that do not require any explicit form of regularization nor any hyper-parameter to tune, yet are able to achieve optimal worst case guarantees. 
 %In particular, we will show that an algorithm that guarantees a reward close to the optimal sequence of bets also guarantees optimal regret in \ac{OLO}/\ac{OCO} and automatic model selection in regularized \ac{ERM}.
-We show that \ac{KT}-estimator can be used to derive an algorithm for online linear
-optimization over a Hilbert space and data compression bound can be used derive
-a regret bound for the online linear optimization problem. Also, we show that the \ac{KT}-estimator can also be used to obtain a parameter-free online learning with expert advice algorithm.
-
+Also, we prove that coin betting strategies that assure an exponential growth of the wealth in the case that the coin is biased, allow to recover the parameter-free regret bounds.
+In particular, we focus on the optimal algorithm for sequential betting, the \ac{KT} bettor.
+We show that the \ac{KT}-estimator can also be used to effortlessy obtain a parameter-free online learning algorithms.
 
 We will also show connections between the optimal the betting strategy known in economics as Kelly betting \citep{Kelly56} and online learning, and hence indirectly with stochastic optimization and statistical learning.
