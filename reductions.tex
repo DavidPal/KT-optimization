@@ -57,13 +57,14 @@ where $\ell_t \in [0,1]$, $u, p_t \in \R^d_+$, and $\|u\|_1 = \|p_t\|_1 = 1$.
 
 Suppose we have a one-dimensional online algorithm, that produces
 predictions $w_t$ that guarantees
-\[
-\epsilon + \sum_{t=1}^T w_t g_t \ge \epsilon f\left(\sum_{t=1}^T g_t\right),
-\]
-for a given $f(\cdot)$. Then we can use the following prediction strategy for the expert setting.
+\begin{align}
+\label{eq:def_f}
+1 + \sum_{t=1}^T w_t g_t \ge \exp\left(f_T\left(\sum_{t=1}^T g_t\right)\right),
+\end{align}
+for a given $f_T(\cdot)$. Then we can use the following prediction strategy for the expert setting.
 
-Define $q_i$ a prior distribution over the $d$ experts. Instantiate the coin
-betting algorithm $d$ times, setting $\epsilon =1$ and feed the $i$-th copy with
+Define $q_i$ a prior distribution over the $d$ experts. Instantiate the online algorithm
+$d$ times, feeding each $i$-th copy with
 \begin{align}
 g_{t,i} = \begin{cases}
 \langle p_t, \ell_t\rangle - \ell_{t,i} & \text{if } w_{t,i} \ge 0 \\
@@ -81,28 +82,20 @@ The above definitions guarantee that $\sum_{i=1}^d q_i g_{t,i} w_{t,i} \le 0$. I
 \end{align*}
 Hence, for each $i$ we have
 \[
-1 + \sum_{t=1}^T w_{t,i} g_{t,i} \ge f \left( \sum_{t=1}^T g_{t,i} \right) \; .
+1 + \sum_{t=1}^T w_{t,i} g_{t,i} \geq \exp\left(f_T \left( \sum_{t=1}^T g_{t,i} \right)\right) \; .
 \]
 Multiplying each side by $q_i$ and summing over $i$, we have
 \begin{equation}
 \label{eq:bounded_potential}
-\sum_{i=1}^d q_i f\left(\sum_{t=1}^T g_{t,i} \right) \le 1 + \sum_{i=1}^d q_i \sum_{t=1}^T w_{t,i} g_{t,i} \le 1~.
+\sum_{i=1}^d q_i \exp\left(f_T\left(\sum_{t=1}^T g_{t,i} \right)\right) \leq 1 + \sum_{i=1}^d q_i \sum_{t=1}^T w_{t,i} g_{t,i} \le 1~.
 \end{equation}
 
-We now use the specific form of $f$ given by Algorithm~\ref{}.
-Define $f(x)= \exp(\frac{x^2}{A} - B)$ and $G_{T,i}=\sum_{t=1}^T g_{t,i}$.
-We have
-\begin{align*}
-\Regret(u) & \le \langle u, G_T \rangle \\
-& \le \sum_{i=1}^d u_i |G_{T,i}|_+ \\
-& = \sum_{i=1}^d u_i \sqrt{A \left[\ln \exp\left(\frac{|G_{T,i}|_+^2}{A} - B\right)+B \right]} \\
-& \le \sqrt{A \sum_{i=1}^d u_i \left[\ln \exp\left(\frac{|G_{T,i}|_+^2}{A} - B\right)+B \right]} \\
-& = \sqrt{A \left\{B + \sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A} - B \right) + \ln \frac{u_i}{q_i}\right]\right\}} \\
-& = \sqrt{A \left\{B + \DKL(u||q) + \sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A} - B\right)\right]\right\}} \\
-& \le \sqrt{A \left\{B + \DKL(u||q) + \ln \sum_{i=1}^d u_i \left[ \frac{q_i}{u_i}\exp\left(\frac{|G_{T,i}|_+^2}{A} - B\right)\right]\right\}} \\
-& = \sqrt{A \left\{B + \DKL(u||q) + \ln \sum_{i=1}^d q_i\exp\left(\frac{|G_{T,i}|_+^2}{A}-B\right)\right\}} \\
-& \le \sqrt{A \left\{B + \DKL(u||q) + \ln \sum_{i=1}^d q_i\exp\left(\frac{G_{T,i}^2}{A}-B\right)\right\}} \\
-& \le \sqrt{A \left(B + \DKL(u||q)\right)} \; ,
-\end{align*}
-where in the third and fourth inequality we used Jensen's, and in the last one
-we used \eqref{eq:bounded_potential}.
+We can now state the following Theorem.
+\begin{theorem}
+\label{theo:expert_reduction}
+Assume that the inverse of the function $f_T$ in \eqref{eq:def_f}, $f_T^{-1}$, is a concave function, and that $f$ is an increasing bijective function in $[0,\infty]$.
+Then for the reduction gives a regret of 
+\[
+\Regret(u) = \sum_{t=1}^T \langle p_t, \ell_t \rangle - \sum_{t=1}^T \langle u, \ell_t \rangle \leq f_T^{-1}\left(\DKL(u||q)\right) \;.
+\]
+\end{theorem}

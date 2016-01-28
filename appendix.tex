@@ -109,6 +109,26 @@ Moreover, as we will show in the following, designing and analyzing algorithms i
   An application of Theorem~\ref{thm:rrdual} finishes the proof.
 \end{proof}
 
+\section{Proof of Theorem~\ref{theo:expert_reduction}}
+\begin{proof}
+The proof is based on a simple modification of the change of measure lemma used in the PAC-Bayes literature, see for example~\citet{McAllester13}.
+We have
+\begin{align*}
+\Regret(u) 
+& \leq \langle u, G_T \rangle \\
+& \leq \sum_{i=1}^d u_i |G_{T,i}|_+ \\
+& = \sum_{i=1}^d u_i f_T^{-1}\left[\ln \exp\left(f_T(|G_{T,i}|_+)\right)\right] \\
+& \leq f_T^{-1}\left(\sum_{i=1}^d u_i \left[\ln \exp\left(f_T(|G_{T,i}|_+)\right)\right]\right) \\
+& = f_T^{-1}\left(\sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(f_T(|G_{T,i}|_+)\right)+ \ln\frac{u_i}{q_i}\right]\right) \\
+& = f_T^{-1}\left(\sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(f_T(|G_{T,i}|_+)\right)\right] + \DKL(u||q)\right) \\
+& \leq f_T^{-1}\left(\ln \sum_{i=1}^d \left[q_i \exp\left(f_T(|G_{T,i}|_+)\right)\right] + \DKL(u||q)\right) \\
+& \leq f_T^{-1}\left(\ln \sum_{i=1}^d \left[q_i \exp\left(f_T(G_{T,i})\right)\right] + \DKL(u||q)\right) \\
+& \leq f_T^{-1}\left(\DKL(u||q)\right),
+\end{align*}
+where in the third and fourth inequality we used Jensen's, and in the last one
+we used \eqref{eq:bounded_potential}.
+\end{proof}
+
 \section{Proof of Theorem~\ref{theo:kt_is_mba}}
 
 The following Lemma proves the second point of Assumption~1.
@@ -319,13 +339,41 @@ Also, for any $-\frac{1}{2} \leq x\leq \frac{1}{2}$ we have
 \frac{x^2}{2} +\frac{x^4}{12}\leq D\left(\frac{1}{2}+\frac{x}{2}\middle\|\frac{1}{2}\right) \leq \frac{x^2}{2} + \frac{x^4}{5}.
 \]
 
+% \begin{lemma}
+% \label{lemma:approx_potential}
+% Let $T \in \N$ and $x \in \R, |x| \leq T$. Then
+% \[
+% \ln \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2} x \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} x \right)}{\pi \cdot T!}
+% \geq 
+% \frac{x^2}{8(T+1)} \; .
+% \]
+% \end{lemma}
+% \begin{proof}
+% For the case $T=1$, the statement is easily proved comparing the minimum of the lhs with the maximum of the rhs. Hence we can assume $T\geq2$.
+% We use the fact proved in Lemma~\ref{lemma:gamma-function}, that the function $\f(x)=\log \Gamma(a+x) \Gamma(a-x)$ has positive coefficients in its Maclaurin expansion to build a lower bound.
+% Hence we have
+% \begin{align*}
+% \ln \left(\Gamma \left(\frac{T+1}{2} + \frac{1}{2} x \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} x \right)\right)
+% &\geq 2 \ln \Gamma\left(\frac{T+1}{2}\right) + \frac{\Psi^{(1)}\left(\frac{T+1}{2}\right)}{16} x^2 \\
+% &\geq 2 \ln \Gamma\left(\frac{T+1}{2}\right) + \frac{1}{8(T+1)} x^2,
+% \end{align*}
+% where in the second inequality we used the fact that $\Psi^{(1)}(x)\geq \frac{1}{x}, \ \forall x>0$~\citep{GuoQ13}.
+% 
+% Moreover, using the assumptions on $T$, we have that
+% \[
+% T \log(2) + 2 \ln \Gamma\left(\frac{T+1}{2}\right) - \ln \pi - \ln T! \geq 0 \; .
+% \]
+% Putting all together, we have the state bound.
+% \end{proof}
+
 We can now prove Corollary~\ref{cor:kt_hilbert}.
 \begin{proof}[Proof of Corollary~\ref{cor:kt_hilbert}]
 Using Theorem~\ref{theo:hilbert_reward}, we should compute the Fenchel conjugate function of \eqref{eq:kt_potential}.
 However, given the complexity of the function, we prefer first lower bound the wealth at time $T$ and then compute the Fenchel conjugate.
 Using Lemma~\ref{lemma:approx_gamma}, we have
 \begin{align*}
-\ln \frac{\Gamma(a + 1/2) \cdot \Gamma(b + 1/2)}{\pi \cdot T!} 
+\epsilon  \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2} x_{T} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} x_{T} \right)}{\pi \cdot T!} 
+%\geq \epsilon\exp\left(\frac{x_T^2}{8(T+1)}\right) \; .
 &\geq -\ln(2) -\frac{1}{2} \ln(T) +\ln \left(\left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b\right) \\
 &= -\ln(2) -\frac{1}{2} \ln(T) -T \ln (2) + T \, \DKL\left(\frac{b}{T}\middle\|\frac{1}{2}\right) \; .
 \end{align*}
@@ -336,5 +384,5 @@ Hence, we have
 &= \frac{\epsilon}{2 \sqrt{T}} \exp\left(T \, \DKL\left(\frac{1}{2}+\frac{x_T}{2T}\middle\|\frac{1}{2}\right)\right) \\
 &\geq \frac{\epsilon}{2 \sqrt{T}} \exp\left(\frac{x_T^2}{2T}\right)
 \end{align*}
-Using Corollary~\ref{cor:dual_exp_square}, we have that the Fenchel conjugate of $f(\theta)=\frac{\epsilon}{2 \sqrt{T}} \exp\left(\frac{\norm{\theta}^2}{2T}\right)$ is upper bounded by $f^*(w) \leq \norm{w} \sqrt{T \log \left(\frac{4 T^2 \norm{w}^2}{\epsilon^2} +1 \right)} +\epsilon(1-\frac{1}{2\sqrt{T}})$.
+Using Corollary~\ref{cor:dual_exp_square}, we have that the Fenchel conjugate of $f(\theta)=\frac{\epsilon}{2\sqrt{T}} \exp\left(\frac{\norm{\theta}^2}{2 T}\right)$ is upper bounded by $f^*(w) \leq \norm{w} \sqrt{T \log \left(\frac{4 T^2 \norm{w}^2}{\epsilon^2} +1 \right)}+\epsilon\left(1-\frac{1}{2\sqrt{T}}\right)$.
 \end{proof}

@@ -123,7 +123,7 @@ b = T$ then
 $$
 \ln \frac{\Gamma(a + 1/2) \cdot \Gamma(b + 1/2)}{\pi \cdot T!} 
 \geq -\ln(2) -\frac{1}{2} \ln(T) +\ln \left(\left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b\right) 
-= -\ln(2) -\frac{1}{2} \ln(T) -T \ln (2) + T \, \DKL\left(\frac{b}{T}\middle\|\frac{1}{2}\right)\; .
+%= -\ln(2) -\frac{1}{2} \ln(T) -T \ln (2) + T \, \DKL\left(\frac{b}{T}\middle\|\frac{1}{2}\right)\; .
 $$
 \end{lemma}
 
@@ -132,9 +132,10 @@ Combining these two lemmas we get
 \sum_{t=1}^T \ell(p_t, q_t)
 & \le - \ln \left( \frac{1}{2\sqrt{T}} \left( \frac{a_T}{T} \right)^{a_T} \left( \frac{b_T}{T} \right)^{b_T} \right) \\
 & = \ln(2) + \frac{1}{2} \ln(T) - a_T \ln (p^*) - b_T \ln (1-p^*) \\
-%& = \ln(2) + \frac{1}{2} \ln(T) + \sum_{t=1}^T \ell(p^*, q_t) \; .
-& = \ln(2) + \frac{1}{2} \ln(T) + T \ln (2) -T \, \DKL\left(p^*\middle\|\frac{1}{2}\right) \; .
+& = \ln(2) + \frac{1}{2} \ln(T) + \sum_{t=1}^T \ell(p^*, q_t),
+%& = \ln(2) + \frac{1}{2} \ln(T) + T \ln (2) -T \, \DKL\left(p^*\middle\|\frac{1}{2}\right) \; .
 \end{align*}
+that is, the \ac{KT} strategy is at most $\ln(2\sqrt{T})$ far from the performance of the optimal predictor. Given the known upper bound, see for example \citet{Cesa-BianchiL06}, the performance of the \ac{KT} is worst-case optimal up to a constant term.
 
 % The following inequality will be useful
 % $$
@@ -176,10 +177,10 @@ f\left( x_{t}, \{|z_1|, \ldots, |z_{t}|\}\right)
 = \epsilon  \frac{2^t \cdot \Gamma \left(\frac{t+1}{2} + \frac{1}{2} x_{t} \right) \cdot \Gamma \left(\frac{t+1}{2} - \frac{1}{2} x_{t} \right)}{\pi \cdot t!}, 
 \end{equation}
 and $b_t= \frac{x_{t-1}}{t}$.
-The couple $f,b_t$ satisfies the conditions in Assumption~1.
+The couple $(f,b_t)$ satisfies the conditions in Assumption~1.
 \end{theorem}
 
-Hence, given the results in the previous two Sections, we can state the following Corollaries
+Hence, given the results in the previous two Sections and the last Theorem, we can state the following Corollaries
 \begin{cor}
   \label{cor:kt_hilbert}
   Let $g_t \in \fH$ an arbitrary sequence of vector, such that $\norm{g_t} \leq 1$ and define the vector $\theta_t=\sum_{i=1}^{t} g_i$.
@@ -198,6 +199,13 @@ Hence, given the results in the previous two Sections, we can state the followin
 Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation of Algorithm~\ref{algo:kt_expert}, the following holds
 \[
 \sum_{t=1}^T \langle p_t, l_t\rangle -\sum_{t=1}^T \langle u , l_t\rangle 
-\leq \sqrt{2 T \left( \frac{1}{2} \ln(T) + \ln(2) + \DKL(u,q)\right)} \; .
+\leq \sqrt{2 T \left(\DKL(u||q) +\ln 2\sqrt{T}\right)} \; .
 \]
 \end{cor}
+
+The above bound compared to the one in \citet{LuoS15} does not contain any spurios term in $\ln \ln d$ term, yet it has a worse term $\ln \sqrt{T}$ instead of $\ln \ln T$. It also have the right leading constant.
+
+Also, as noted in \citet{LuoS15}, the above bound implies $\epsilon$-quantile bounds when $q$ is chosen as the uniform distribution, that is
+\[
+\Regret_T(u_{S_\epsilon}) \leq \sqrt{2 T \left(\ln\left(\frac{1}{\epsilon}\right) +\ln 2\sqrt{T}\right)} \; .
+\]
