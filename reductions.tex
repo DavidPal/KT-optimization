@@ -17,6 +17,7 @@ $.
 \end{assumption}
 
 We call it \ac{MBA} because it is easy to show by induction that such algorithm can indeed be used as a betting algorithm.
+All the proofs are in the Appendix.
 \begin{theorem}
 \label{theo:1-d_reward}
 Assume that Assumption \ref{assumption:1-d_algo} holds and use the \ac{MBA} with $x_{t-1}=\sum_{i=1}^{t-1} g_i$ and $z_t=g_t$.
@@ -59,7 +60,7 @@ Suppose we have a one-dimensional online algorithm, that produces
 predictions $w_t$ that guarantees
 \begin{align}
 \label{eq:def_f}
-1 + \sum_{t=1}^T w_t g_t \ge \exp\left(f_T\left(\sum_{t=1}^T g_t\right)\right),
+\epsilon + \sum_{t=1}^T w_t g_t \ge \exp\left(f_T\left(\sum_{t=1}^T g_t\right)\right),
 \end{align}
 for a given $f_T(\cdot)$. Then we can use the following prediction strategy for the expert setting.
 
@@ -82,12 +83,12 @@ The above definitions guarantee that $\sum_{i=1}^d q_i g_{t,i} w_{t,i} \le 0$. I
 \end{align*}
 Hence, for each $i$ we have
 \[
-1 + \sum_{t=1}^T w_{t,i} g_{t,i} \geq \exp\left(f_T \left( \sum_{t=1}^T g_{t,i} \right)\right) \; .
+\epsilon + \sum_{t=1}^T w_{t,i} g_{t,i} \geq \exp\left(f_T \left( \sum_{t=1}^T g_{t,i} \right)\right) \; .
 \]
 Multiplying each side by $q_i$ and summing over $i$, we have
 \begin{equation}
 \label{eq:bounded_potential}
-\sum_{i=1}^d q_i \exp\left(f_T\left(\sum_{t=1}^T g_{t,i} \right)\right) \leq 1 + \sum_{i=1}^d q_i \sum_{t=1}^T w_{t,i} g_{t,i} \le 1~.
+\sum_{i=1}^d q_i \exp\left(f_T\left(\sum_{t=1}^T g_{t,i} \right)\right) \leq \epsilon + \sum_{i=1}^d q_i \sum_{t=1}^T w_{t,i} g_{t,i} \le \epsilon~.
 \end{equation}
 
 We can now state the following Theorem.
@@ -96,6 +97,6 @@ We can now state the following Theorem.
 Assume that the inverse of the function $f_T$ in \eqref{eq:def_f}, $f_T^{-1}$, is a concave function, and that $f$ is an increasing bijective function in $[0,\infty]$.
 Then for the reduction gives a regret of 
 \[
-\Regret(u) = \sum_{t=1}^T \langle p_t, \ell_t \rangle - \sum_{t=1}^T \langle u, \ell_t \rangle \leq f_T^{-1}\left(\DKL(u||q)\right) \;.
+\Regret(u) = \sum_{t=1}^T \langle p_t, \ell_t \rangle - \sum_{t=1}^T \langle u, \ell_t \rangle \leq f_T^{-1}\left(\ln \epsilon + \DKL(u||q)\right) \;.
 \]
 \end{theorem}

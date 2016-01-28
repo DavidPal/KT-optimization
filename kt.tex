@@ -64,24 +64,23 @@ p^* = \frac{a_T}{a_T + b_T} = \frac{a_T}{T} = \frac{\sum_{t=1}^T q_t}{T} \; .
 $$
 Note that $p^*$ differs from the KT estimate $p_T$.
 
-The type of result that we are interested is an upper bound on difference
-between the loss of the algorithm and the loss of the baseline
-$$
-\sum_{t=1}^T \ell(p_t, q_t) - \sum_{t=1}^T \ell(p^*, q_t) \; ,
-$$
-which can be viewed as the cost for not knowing the fraction of bits set to $1$
-ahead of time.
+% The type of result that we are interested is an upper bound on difference
+% between the loss of the algorithm and the loss of the baseline
+% $$
+% \sum_{t=1}^T \ell(p_t, q_t) - \sum_{t=1}^T \ell(p^*, q_t) \; ,
+% $$
+% which can be viewed as the cost for not knowing the fraction of bits set to $1$
+% ahead of time.
 
 %\subsection{KT estimator}
 
-We consider an algorithm that in round $t$ chooses its prediction $p_t$
-according to KT estimator
+The \ac{KT} estimator approximates in each round $t$ $p^*_T$ with
 $$
 p_t = \frac{\frac{1}{2} + \sum_{t=1}^{t-1} q_i}{t} = \frac{\frac{1}{2} + a_{t-1}}{t} \; .
 $$
 
-A little known result by \citep{KrichevskyT81} (see also ~\cite{Cesa-BianchiL06}), proves the following surprising \emph{equality}.
-For completeness, its proofs and all the other proofs of this paper, are in the Appendix.
+A well-known result by \citep{KrichevskyT81} (see also ~\cite{Cesa-BianchiL06}), proves the following surprising \emph{equality}.
+For completeness, its proofs is in the Appendix.
 \begin{lemma}[Log loss of the KT Estimator]
 \label{lemma:kt}
 For any sequence $q_1, q_2, \dots, q_T \in \{0,1\}$, the log-loss of KT
@@ -137,6 +136,7 @@ Combining these two lemmas we get
 \end{align*}
 that is, the \ac{KT} strategy is at most $\ln(2\sqrt{T})$ far from the performance of the optimal predictor. Given the known upper bound, see for example \citet{Cesa-BianchiL06}, the performance of the \ac{KT} is worst-case optimal up to a constant term.
 
+In the next Section we will show how the \ac{KT} bettor can be used for Online Learning in Hilbert spaces and with expert advice.
 % The following inequality will be useful
 % $$
 % \ln\left(1 + \beta g \right) \ge \left( \frac{1+g}{2} \right) \ln \left(1 + \beta\right) + \left( \frac{1-g}{2} \right) \ln \left(1 - \beta \right)
