@@ -5,27 +5,31 @@ In this section we will show the connection between betting on a continuous coin
 We will assume that a 1-dimensional algorithm exists that satisfies the following assumption.
 \begin{assumption}
 \label{assumption:1-d_algo}
-Assume that there exists a function $f:\R \times 2^\R \rightarrow \R$ convex and twice differentiable in the first argument and an algorithm, that we will denote by \ac{MBA}, that generates $b_t \in [-1 , 1]$, using in input $x_{t-1} \in \R$, $z_1, \ldots, z_{t-1} \in [-1,1]$, such that
+Assume that there exists a function $f:\R \times 2^\R \rightarrow \R$ convex and twice differentiable in the first argument, $\epsilon_0, \epsilon_1,\cdots, \epsilon_t>0$, and an algorithm, that we will denote by \ac{MBA}, that generates $b_t \in [-1 , 1]$, using in input $x_{t-1} \in \R$, $z_1, \ldots, z_{t-1} \in [-1,1]$, such that
 \begin{itemize}
 \item $f$ is even in the first argument;
 \item $f''(x, S) \geq \frac{f'(x,S)}{x}$, where the derivatives are w.r.t. the first argument;
-\item $f(0,\{\})=\epsilon>0$;
+\item $f(0,\{\})=\epsilon_0>0$;
 \item  $
-(1+b_t z_t) f\left( x_{t-1}, \{|z_1|, \ldots, |z_{t-1}|\} \right) \geq f\left( x_{t-1}+z_t, \{|z_1|, \ldots, |z_t|\}\right), \ \ \forall z_{t} \in [-1,1], |x_{t-1}| \leq \sum_{i=1}^{t-1} |z_i|
+(1+b_t z_t) f\left( x_{t-1}, \{|z_1|, \ldots, |z_{t-1}|\} \right) - f\left( x_{t-1}+z_t, \{|z_1|, \ldots, |z_t|\}\right) \geq -\epsilon_t, \ \ \forall z_{t} \in [-1,1], |x_{t-1}| \leq \sum_{i=1}^{t-1} |z_i|
 $.
 \end{itemize}
 \end{assumption}
 
 We call it \ac{MBA} because it is easy to show by induction that such algorithm can indeed be used as a betting algorithm.
-All the proofs are in the Appendix.
+The quantities $\epsilon_t, t=1,\cdots,T$ represents the loans that we ask to bet with leverage, while $\epsilon_0$ is our initial investement.
+On each time step we bet a fraction, $|b_t|$, of your current wealth plus the loans on the event $\sign{g_t}==\sign(b_t)$.
+The amount of money won or lost is equal to $|g_t|$ multiplied the amount of money bet.
+Defining $w_t=b_t (\Wealth_{t-1}+\sum_{i=1}^{t-1} \epsilon_i)$, the money gained (or lost) in round $t$ is $g_t w_t$.
 \begin{theorem}
 \label{theo:1-d_reward}
 Assume that Assumption \ref{assumption:1-d_algo} holds and use the \ac{MBA} with $x_{t-1}=\sum_{i=1}^{t-1} g_i$ and $z_t=g_t$.
 Then, for any sequence of outcomes $g_t \in [-1,1]$, the following holds
 \[
-\wealth_T = \epsilon+\sum_{t=1}^T g_t b_t \geq f\left( \sum_{i=1}^{T} g_i , \left\{|g_1|, \ldots, |g_T|\right\}\right)~.
+\wealth_T = \epsilon_0 + \sum_{t=1}^T g_t w_t \geq f\left( \sum_{i=1}^{T} g_i , \left\{|g_1|, \ldots, |g_T|\right\}\right)-\sum_{t=1}^T \epsilon_t~.
 \]
 \end{theorem}
+This proof of this theorem of all the other proofs are in the Appendix.
 
 In the following we will show how such an algorithm can be used to solve \ac{OLO} and learning with expert advice.
 
@@ -40,7 +44,7 @@ Even more importantly, the \ac{MBA} can also be used to prove regret bound on \a
   Use the Algorithm in \ref{assumption:1-d_algo} with the sequence $x_{t-1}= \norm{\theta_{t-1}}$.
   Define a vectorial algorithm that at each step outputs $w_t = b_t \frac{\theta_{t-1}}{\norm{\theta_{t-1}}} \wealth_{t-1}$. Then the following holds
   \[
-    Regret_T(u) \leq f^*\left( \norm{u}, \left\{\norm{g_1}, \ldots, \norm{g_T}\right\}\right)+\epsilon \quad \quad \quad \textnormal{ for all } u \in \fH \textnormal{ and } g_t \in \fH,
+    Regret_T(u) \leq f^*\left( \norm{u}, \left\{\norm{g_1}, \ldots, \norm{g_T}\right\}\right)+\sum_{t=0}^T \epsilon_t \quad \quad \quad \textnormal{ for all } u \in \fH \textnormal{ and } g_t \in \fH,
   \]
   where the conjugation is taken w.r.t. the first argument of $f$.
   %\[
@@ -60,7 +64,7 @@ Suppose we have a one-dimensional online algorithm, that produces
 predictions $w_t$ that guarantees
 \begin{align}
 \label{eq:def_f}
-\epsilon + \sum_{t=1}^T w_t g_t \ge \exp\left(f_T\left(\sum_{t=1}^T g_t\right)\right),
+\sum_{t=0}^T \epsilon_t + \sum_{t=1}^T w_t g_t \ge \exp\left(f_T\left(\sum_{t=1}^T g_t\right)\right),
 \end{align}
 for a given $f_T(\cdot)$. Then we can use the following prediction strategy for the expert setting.
 
@@ -83,12 +87,12 @@ The above definitions guarantee that $\sum_{i=1}^d q_i g_{t,i} w_{t,i} \le 0$. I
 \end{align*}
 Hence, for each $i$ we have
 \[
-\epsilon + \sum_{t=1}^T w_{t,i} g_{t,i} \geq \exp\left(f_T \left( \sum_{t=1}^T g_{t,i} \right)\right) \; .
+\sum_{t=0}^T \epsilon_t + \sum_{t=1}^T w_{t,i} g_{t,i} \geq \exp\left(f_T \left( \sum_{t=1}^T g_{t,i} \right)\right) \; .
 \]
 Multiplying each side by $q_i$ and summing over $i$, we have
 \begin{equation}
 \label{eq:bounded_potential}
-\sum_{i=1}^d q_i \exp\left(f_T\left(\sum_{t=1}^T g_{t,i} \right)\right) \leq \epsilon + \sum_{i=1}^d q_i \sum_{t=1}^T w_{t,i} g_{t,i} \le \epsilon~.
+\sum_{i=1}^d q_i \exp\left(f_T\left(\sum_{t=1}^T g_{t,i} \right)\right) \leq \sum_{t=0}^T \epsilon_t + \sum_{i=1}^d q_i \sum_{t=1}^T w_{t,i} g_{t,i} \le \sum_{t=0}^T \epsilon_t~.
 \end{equation}
 
 We can now state the following Theorem.
@@ -97,6 +101,6 @@ We can now state the following Theorem.
 Assume that the inverse of the function $f_T$ in \eqref{eq:def_f}, $f_T^{-1}$, is a concave function, and that $f$ is an increasing bijective function in $[0,\infty]$.
 Then for the reduction gives a regret of 
 \[
-\Regret(u) = \sum_{t=1}^T \langle p_t, \ell_t \rangle - \sum_{t=1}^T \langle u, \ell_t \rangle \leq f_T^{-1}\left(\ln \epsilon + \DKL(u||q)\right) \;.
+\Regret(u) = \sum_{t=1}^T \langle p_t, \ell_t \rangle - \sum_{t=1}^T \langle u, \ell_t \rangle \leq f_T^{-1}\left(\DKL(u||q) + \ln \sum_{t=0}^T \epsilon_t\right) \;.
 \]
 \end{theorem}

@@ -1,0 +1,45 @@
+\section{A Betting and Expert Algorithm for Known $T$}
+
+In this section we show how it is straightforward to obtain new parameter-free expert algorithms with quantile guarantees.
+As seen in the previous section, we need a 1-dimensional algorithm that has an exponential gain, up to negative logarithm terms. In alternative, given the duality between regret and wealth, we can look for 1-dimensional \ac{OLO} algorithms that have a $\scO(|u|\sqrt{T \log(\sqrt{T} |u|)})$ regret.
+
+The \ac{KT} bettor suffers from the problem of having a negative logarithmic term in the exponent of the wealth function, that becomes a $log(T)$ factor in the expert reduction.
+To fix it, it would be enough to add such a term in the potential function $f$. When the number of rounds is known beforehand, this can be easily done.
+
+Hence, we present a betting algorithm for the case that the number of rounds $T$ is known. We show that in this case it is possible to have a quantile bound without spurios $\ln T$ or $\ln \ln T$.
+We will use the following potential function
+\begin{equation}
+\label{eq:known_t}
+f_t(x)=\epsilon_0 \exp\left(\frac{x^2}{T+t}-\ln\left(1+\frac{t}{T}\right)\right),
+\end{equation}
+with associated betting function
+\[
+b_t=2 S\left(\frac{4 \sum_{i=1}^{t-1} g_i}{T+t}\right)-1,
+\]
+where $S(x)=\frac{1}{1+\exp(-x)}$ is the classic sigmoidal function. Note that the sigmoidal function is just squashing the extreme value of
+$\frac{\sum_{i=1}^{t-1} g_i}{T+t}$ to avoid to bet a large amount of money.
+
+This function satisfies the first two conditions of Assumption~1.
+We have to prove the third one.
+
+\begin{theorem}
+\label{theo:known_t}
+The function in \eqref{eq:known_t} satisfies the third condition in Assumption~1.
+\end{theorem}
+
+
+Hence, using the above betting strategy, we have the following guarantee
+\[
+\Wealth_T = \epsilon_0 + \sum_{t=1}^T w_t g_t \geq \epsilon_0 \exp\left( \frac{(\sum_{t=1}^T g_t)^2}{2 T} - \ln 2\right),
+\]
+where $T$ is parameter of the algorithm.
+
+Using this algorithm in Theorem~\ref{theo:expert_reduction}, we obtain a very clean quantile guarantee.
+\begin{cor}
+\label{cor:kt_expert}
+Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation the Normal Potential as a base learner, where $\epsilon_0=1$, the following holds
+\[
+\sum_{t=1}^T \langle p_t, l_t\rangle -\sum_{t=1}^T \langle u , l_t\rangle 
+\leq \sqrt{2 T \left(\DKL(u||q) +\ln 2 \right)} \; .
+\]
+\end{cor}

@@ -86,23 +86,23 @@ Moreover, as we will show in the following, designing and analyzing algorithms i
   For simplicity denote by $f_t(\cdot)=f\left(\cdot, \{\norm{g_1}, \ldots, \norm{g_t}\}\right)$.
   We will prove the thesis by induction. The base case is verified from the first point of Assumption~\ref{assumption:1-d_algo}. The, we assume that 
   \[
-  \epsilon + \sum_{t=1}^{n-1} \langle g_t, w_t \rangle \geq f_{n-1}\left( \norm{\sum_{t=1}^{n-1} g_t}\right),
+  \sum_{t=0}^{T-1} \epsilon_t + \sum_{t=1}^{T-1} \langle g_t, w_t \rangle \geq f_{T-1}\left( \norm{\sum_{t=1}^{T-1} g_t}\right),
   \]
   and we want to prove that 
   \[
-  \epsilon + \sum_{t=1}^{n} \langle g_t, w_t \rangle \geq f_{n}\left( \norm{\sum_{t=1}^{n} g_t}\right)~.
+  \sum_{t=0}^{T} \epsilon_t + \sum_{t=1}^{n} \langle g_t, w_t \rangle \geq f_{T}\left( \norm{\sum_{t=1}^{T} g_t}\right)~.
   \]
   We have that
   \begin{align*}
-  \epsilon + \sum_{t=1}^{n} &\langle g_t, w_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} g_t}\right) \\
-  &= \langle g_n, w_n \rangle + \epsilon + \sum_{t=1}^{n-1} \langle g_t, w_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} g_t}\right)\\
-  &= \left(1+\frac{b_n}{\norm{\theta_{n-1}}}\langle \theta_{n-1},g_n \rangle \right)\left(\sum_{t=1}^{n-1} \langle g_t, w_t \rangle +\epsilon \right) - f_n\left( \norm{\sum_{t=1}^{n} g_t}\right)\\
-  &\geq \left(1+\frac{b_n}{\norm{\theta_{n-1}}}\langle \theta_{n-1},g_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} g_t}\right) - f_n\left( \norm{\sum_{t=1}^{n} g_t}\right)\\
-  &= \left(1+\frac{b_n}{\norm{\theta_{n-1}}}\langle \theta_{n-1},g_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} g_t}\right) - f_n\left( \norm{g_n + \sum_{t=1}^{n-1} g_t}\right)\\
+  \sum_{t=1}^{T} &\langle g_t, w_t \rangle - f_T\left( \norm{\sum_{t=1}^{T} g_t}\right) \\
+  &= \langle g_T, w_T \rangle + \sum_{t=1}^{T-1} \langle g_t, w_t \rangle - f_T\left( \norm{\sum_{t=1}^{T} g_t}\right)\\
+  &= \left(1+\frac{b_T}{\norm{\theta_{T-1}}}\langle \theta_{T-1},g_T \rangle \right)\left(\sum_{t=1}^{T-1} \langle g_t, w_t \rangle + \sum_{t=0}^{T-1} \epsilon_t \right) - f_T\left( \norm{\sum_{t=1}^{T} g_t}\right) - \sum_{t=0}^{T-1} \epsilon_t\\
+  &\geq \left(1+\frac{b_T}{\norm{\theta_{n-1}}}\langle \theta_{T-1},g_T\rangle \right) f_{T-1}\left( \norm{\sum_{t=1}^{T-1} g_t}\right) - f_T\left( \norm{\sum_{t=1}^{T} g_t}\right) - \sum_{t=0}^{T-1} \epsilon_t\\
+  &= \left(1+\frac{b_T}{\norm{\theta_{T-1}}}\langle \theta_{T-1},g_T \rangle \right) f_{T-1}\left( \norm{\sum_{t=1}^{T-1} g_t}\right) - f_T\left( \norm{g_T + \sum_{t=1}^{T-1} g_t}\right)- \sum_{t=0}^{T-1} \epsilon_t\\
   %&= \left(1+\frac{b_n}{\norm{\theta_{n-1}}}\langle \theta_{n-1},g_n \rangle \right) f_{n-1}\left( \norm{\theta_{n-1}}\right) - f_n\left( \sqrt{\norm{\theta_{n-1}}^2 + \norm{g_n}^2 + 2 \langle \theta_{n-1}, g_n \rangle} \right)\\
-  &\geq \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{g_t}\right) f_{n-1}\left( \norm{\theta_{n-1}}\right) - f_n\left(\left| \norm{\theta_{n-1}} + r\norm{g_t}\right|\right)\\
-  &= \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{g_t}\right) f_{n-1}\left( \norm{\theta_{n-1}}\right) - f_n\left( \norm{\theta_{n-1}} + r \norm{g_t}\right)\\
-  &\geq 0,
+  &\geq \min_{r\in \{-1,1\}} \left(1+ r\, b_T \norm{g_t}\right) f_{T-1}\left( \norm{\theta_{T-1}}\right) - f_T\left(\left| \norm{\theta_{T-1}} + r\norm{g_t}\right|\right) - \sum_{t=0}^{T-1} \epsilon_t\\
+  &= \min_{r\in \{-1,1\}} \left(1+ r\, b_T \norm{g_t}\right) f_{T-1}\left( \norm{\theta_{T-1}}\right) - f_T\left( \norm{\theta_{T-1}} + r \norm{g_t}\right)- \sum_{t=0}^{T-1} \epsilon_t\\
+  &\geq -\sum_{t=0}^{T} \epsilon_t,
   \end{align*}
   where the first inequality comes from the induction hypothesis, the second one using Lemma~\ref{lemma:extremes} and the last one by the hypothesis on the \ac{MBA}.
   
@@ -385,4 +385,73 @@ Hence, we have
 &\geq \frac{\epsilon}{2 \sqrt{T}} \exp\left(\frac{x_T^2}{2T}\right)
 \end{align*}
 Using Corollary~\ref{cor:dual_exp_square}, we have that the Fenchel conjugate of $f(\theta)=\frac{\epsilon}{2\sqrt{T}} \exp\left(\frac{\norm{\theta}^2}{2 T}\right)$ is upper bounded by $f^*(w) \leq \norm{w} \sqrt{T \log \left(\frac{4 T^2 \norm{w}^2}{\epsilon^2} +1 \right)}+\epsilon\left(1-\frac{1}{2\sqrt{T}}\right)$.
+\end{proof}
+
+
+\subsection{Proof of Theorem~\ref{theo:known_t}}
+\begin{proof}
+We want to prove that, for any $t$
+\[
+(1+b_t z_t) \epsilon_0 \exp\left(\frac{x^2}{T+t-1} - \ln\left(1+\frac{t-1}{T}\right)\right)
+\geq \epsilon_0 \exp\left(\frac{(x+z_t)^2}{T+t} - \ln\left(1+\frac{t}{T}\right)\right)~.
+\]
+The above is equivalent to prove
+\[
+\ln(1+b_t z_t) + \frac{x^2}{T+t-1} - \ln\left(1+\frac{t-1}{T}\right)
+\geq \frac{(x+z_t)^2}{T+t} - \ln\left(1+\frac{t}{T}\right)~.
+\]
+
+Denote by $g(1)=\frac{(x+z_t)^2}{T+t}$ and by $g(-1)=\frac{(x-1)^2}{T+t}$ and consider the function 
+\[
+\phi(z)=-\log(1+b_t z) + \frac{(x+z)^2}{T+t}~.
+\]
+We have that $\phi(z)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. Hence, we have that
+\begin{align*}
+&\phi(z) \leq \phi(0)+z (\phi(1)-\phi(0)), \forall 0 \leq z\leq 1\\
+&\phi(z) \leq \phi(0)+z (\phi(0)-\phi(-1)), \forall -1 \leq z\leq 0~.
+\end{align*}
+Also, we set $b_t$ such that $\phi(1)=\phi(-1)$, that is
+\[
+b_t = \frac{A_{t-1}-1}{A_{t-1}+1} 
+%= 2 \, S\left(\frac{4 x}{a (\sg_{t-1} + 1)}\right)-1
+\]
+where $A_{t-1}=g(1)-g(-1)$ and $S(x) =\frac{1}{1+\exp(-x)}$.
+Hence we have
+\[
+\phi(z) \leq \phi(0)+ |z| (\phi(1)-\phi(0)), \forall -1 \leq z\leq 1,
+\]
+that is
+\begin{align*}
+\frac{x^2}{T+t-1}-\frac{(x+z)^2}{T+t} + \log(1+b_t z_t) 
+& = \phi(0) - \phi(z) \\
+& \geq |z| \left(\phi(0) - \phi(1)\right) \\
+&= |z| \left(\frac{x^2}{T+t-1} - \frac{(x+1)^2}{T+t} + \log(1+b_t)\right), \forall -1 \leq z\leq 1~.
+\end{align*}
+
+Also, using the elementary inequality $1-\frac{b}{a} \leq \ln(a) -\ln(b)$, we have
+\[
+\ln\left(1+\frac{t}{T}\right) - \ln\left(1+\frac{t-1}{T}\right) \geq \frac{1}{T+t} \;.
+\]
+Putting all togheter, we have
+\begin{align*}
+&-\frac{(x+z_t)^2}{T+t} + \frac{x^2}{T+t-1}+\log(1+b_t z_t) +\frac{1}{T+t} \\
+&\qquad \geq |z_t| \left(\frac{x^2}{T+t-1} - \frac{(x+1)^2}{T+t} + \log(1+b_t)\right) + \frac{1}{T+t}\\
+&\qquad = |z_t| \left(\frac{(T+t) x^2 - (x^2+2 x )(T+t-1) }{(T+t-1)(T+t)} + \log(1+b_t)\right)\\
+&\qquad = |z_t| \left(\frac{x^2}{(T+t-1)(T+t)}-\frac{2 x}{T+t} + \log(1+b_t)\right)~.
+\end{align*}
+We now use the Taylor expansion, to obtain
+\[
+\log\left(1+\frac{\exp(x)-1}{\exp(x)+1}\right) \geq \frac{x}{2} -\frac{x^2}{8} \qquad \forall x \in \R
+\]
+and, using the expression of $b_t$, have
+\[
+\log\left(1+b_t\right) 
+= \log\left(1+\frac{\exp\left(\frac{4 x}{T+t}\right)-1}{\exp\left(\frac{4 x}{T+t}\right)+1}\right) 
+\geq \frac{2 x}{T+t} -\frac{2 x^2}{(T+t)^2}.
+\]
+Hence the expression 
+\[
+\frac{x^2}{(T+t-1)(T+t)}-\frac{2 x}{T+t} + \log(1+b_t) \geq 0
+\]
+proving the assumption.
 \end{proof}
