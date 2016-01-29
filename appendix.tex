@@ -123,7 +123,7 @@ We have
 & = f_T^{-1}\left(\sum_{i=1}^d u_i \left[\ln \frac{q_i}{u_i}\exp\left(f_T(|G_{T,i}|_+)\right)\right] + \DKL(u||q)\right) \\
 & \leq f_T^{-1}\left(\ln \sum_{i=1}^d \left[q_i \exp\left(f_T(|G_{T,i}|_+)\right)\right] + \DKL(u||q)\right) \\
 & \leq f_T^{-1}\left(\ln \sum_{i=1}^d \left[q_i \exp\left(f_T(G_{T,i})\right)\right] + \DKL(u||q)\right) \\
-& \leq f_T^{-1}\left(\ln \epsilon + \DKL(u||q)\right),
+& \leq f_T^{-1}\left(\ln \sum_{t=0}^T \epsilon_t + \DKL(u||q)\right),
 \end{align*}
 where in the third and fourth inequality we used Jensen's, and in the last one
 we used \eqref{eq:bounded_potential}.
@@ -273,7 +273,8 @@ Hence, we set $b$ such that
 \]
 Numberically, $b=1.71825...$, so
 \[
-W(x) \geq 0.6321 \log(x+1)~. \qedhere
+W(x) \geq 0.6321 \log(x+1)~.
+%\qedhere
 \]
 
 For the upper bound, we use Theorem~2.3 in \cite{hoorfar2008inequalities}, that says that

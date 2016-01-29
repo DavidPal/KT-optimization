@@ -14,10 +14,10 @@ f_t(x)=\epsilon_0 \exp\left(\frac{x^2}{T+t}-\ln\left(1+\frac{t}{T}\right)\right)
 \end{equation}
 with associated betting function
 \[
-b_t=2 S\left(\frac{4 \sum_{i=1}^{t-1} g_i}{T+t}\right)-1,
+b_t=2 S\left(\frac{4 x_{t-1}}{T+t}\right)-1,
 \]
 where $S(x)=\frac{1}{1+\exp(-x)}$ is the classic sigmoidal function. Note that the sigmoidal function is just squashing the extreme value of
-$\frac{\sum_{i=1}^{t-1} g_i}{T+t}$ to avoid to bet a large amount of money.
+$\frac{x_{t-1}}{T+t}$ to avoid to bet a large amount of money.
 
 This function satisfies the first two conditions of Assumption~1.
 We have to prove the third one.
@@ -37,9 +37,22 @@ where $T$ is parameter of the algorithm.
 Using this algorithm in Theorem~\ref{theo:expert_reduction}, we obtain a very clean quantile guarantee.
 \begin{cor}
 \label{cor:kt_expert}
-Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation the Normal Potential as a base learner, where $\epsilon_0=1$, the following holds
+Fix $T>0$. Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation the Normal Potential as a base learner, where $\epsilon_0=1$, the following holds
 \[
 \sum_{t=1}^T \langle p_t, l_t\rangle -\sum_{t=1}^T \langle u , l_t\rangle 
 \leq \sqrt{2 T \left(\DKL(u||q) +\ln 2 \right)} \; .
 \]
 \end{cor}
+
+Using a standard doubling-trick argument, see for example~\citet{Shalev-Shwartz12}[Section 2.3.1], we can have an algorithm that works without requiring the prior knowledge of the number of rounds with a worst leading constant.
+
+\begin{cor}
+\label{cor:kt_expert_no_t}
+Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation the Normal Potential as a base learner, where $\epsilon_0=1$, the following holds for any $T>0$.
+\[
+\sum_{t=1}^T \langle p_t, l_t\rangle -\sum_{t=1}^T \langle u , l_t\rangle 
+\leq \frac{\sqrt{2}}{\sqrt{2}-1}\sqrt{2 T \left(\DKL(u||q) +\ln 2 \right)} \; .
+\]
+\end{cor}
+
+The above one is the first quantile bound for expert that holds uniformly over time and does not contain $\ln \ln T$ terms.

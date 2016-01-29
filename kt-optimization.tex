@@ -1,10 +1,11 @@
-\documentclass{article}
+\documentclass[anon,12pt]{colt2016} % Anonymized submission
 
-\usepackage{fullpage,amsthm,amsmath,amssymb}
+\usepackage{fullpage,amsmath,amssymb}
 \usepackage[nolist]{acronym}
 \usepackage{natbib}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+\usepackage{times}
 
 
 \input{acronym.tex}
@@ -25,10 +26,12 @@
 %\newtheorem{theorem}{Theorem}
 %\newtheorem{lemma}[theorem]{Lemma}
 
-\begin{document}
-
+\coltauthor{\Name{Francesco Orabona} \Email{francesco@orabona.com}\and
+\Name{D\'avid P\'al} \Email{xyz@sample.com}\\
+\addr Yahoo Labs} 
 \title{From Coin Betting to Parameter-Free Online Learning}
-\author{Francesco Orabona \and D\'avid P\'al}
+
+\begin{document}
 
 \maketitle
 
@@ -49,7 +52,7 @@
 \section*{Acknowledgments}
 The authors thanks  Jacob Abernethy, Nicol\`{o} Cesa-Bianchi, Satyen Kale, and Chansoo Lee for the useful discussions on this work.
 
-\bibliographystyle{plainnat}
+%\bibliographystyle{plainnat}
 \bibliography{learning}
 
 \input{appendix}

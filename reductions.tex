@@ -15,6 +15,7 @@ Assume that there exists a function $f:\R \times 2^\R \rightarrow \R$ convex and
 $.
 \end{itemize}
 \end{assumption}
+In the following we will use the abbreviated notation $f_t(x)$ to denote the function $f(x,\cdot)$ when the dependency on the set is only on its cardinality.
 
 We call it \ac{MBA} because it is easy to show by induction that such algorithm can indeed be used as a betting algorithm.
 The quantities $\epsilon_t, t=1,\cdots,T$ represents the loans that we ask to bet with leverage, while $\epsilon_0$ is our initial investement.
@@ -104,3 +105,8 @@ Then for the reduction gives a regret of
 \Regret(u) = \sum_{t=1}^T \langle p_t, \ell_t \rangle - \sum_{t=1}^T \langle u, \ell_t \rangle \leq f_T^{-1}\left(\DKL(u||q) + \ln \sum_{t=0}^T \epsilon_t\right) \;.
 \]
 \end{theorem}
+
+Also, as noted in \citet{LuoS15}, the above bound implies $\epsilon$-quantile bounds when $q$ is chosen as the uniform distribution, that is
+\[
+\Regret_T(u_{S_\epsilon}) \leq f_T^{-1}\left(\ln\left(\frac{1}{\epsilon}\right) + \ln \sum_{t=0}^T \epsilon_t\right) \; .
+\]
