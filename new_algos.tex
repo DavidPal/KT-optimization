@@ -1,4 +1,4 @@
-\section{A Betting and Expert Algorithm for Known $T$}
+\section{A Better Betting Algorithm for Known $T$ and its Application to the Expert Setting}
 
 In this section we show how it is straightforward to obtain new parameter-free expert algorithms with quantile guarantees.
 As seen in the previous section, we need a 1-dimensional algorithm that has an exponential gain, up to negative logarithm terms. In alternative, given the duality between regret and wealth, we can look for 1-dimensional \ac{OLO} algorithms that have a $\scO(|u|\sqrt{T \log(\sqrt{T} |u|)})$ regret.
@@ -14,10 +14,11 @@ f_t(x)=\epsilon_0 \exp\left(\frac{x^2}{T+t}-\ln\left(1+\frac{t}{T}\right)\right)
 \end{equation}
 with associated betting function
 \[
-b_t=2 S\left(\frac{4 x_{t-1}}{T+t}\right)-1,
+b_t=2 S\left(\frac{2 x_{t-1}}{T+t}\right)-1,
 \]
-where $S(x)=\frac{1}{1+\exp(-x)}$ is the classic sigmoidal function. Note that the sigmoidal function is just squashing the extreme value of
-$\frac{x_{t-1}}{T+t}$ to avoid to bet a large amount of money.
+where $S(x)=\frac{1}{1+\exp(-2 x)}$ is the classic sigmoidal function.
+The betting function comes directly from the proof, in order to have the terms $\epsilon_t=0$ in the third condition in Assumption~1.
+Note that the role of the sigmoidal function is to keep the estimate around zero , i.e. $2 S(x)-1\approx x$, while squashing the extreme value of $\frac{x_{t-1}}{0.5 (T+t)}$ to avoid to bet a large amount of money on either side of the coin.
 
 This function satisfies the first two conditions of Assumption~1.
 We have to prove the third one.
@@ -32,7 +33,7 @@ Hence, using the above betting strategy, we have the following guarantee
 \[
 \Wealth_T = \epsilon_0 + \sum_{t=1}^T w_t g_t \geq \epsilon_0 \exp\left( \frac{(\sum_{t=1}^T g_t)^2}{2 T} - \ln 2\right),
 \]
-where $T$ is parameter of the algorithm.
+where $T$ is parameter of the algorithm. This guarantee has the suprising property of being better of the \ac{KT} bettor when $(\sum_{t=1}^T g_t)^2\approx0$. In other words, knowing the lenght of the betting game allows to gain up to a costant fraction of $\frac{1}{2}$, present in the \ac{KT} bound as well, of the wealth of the bettor the bets the optimal fixed fraction of money. Note that this does not contradict the upper bound on the wealth because here the leading term is $\frac{(\sum_{t=1}^T g_t)^2}{2 T}$ instead of $\DKL\left(\frac{T}{2}+\frac{\sum_{t=1}^T g_t}{2T}\middle\|\frac{1}{2}\right)$. However, as altready said at the beginning of this Section, this leading term is enough to prove the bounds we are interested in.
 
 Using this algorithm in Theorem~\ref{theo:expert_reduction}, we obtain a very clean quantile guarantee.
 \begin{cor}
