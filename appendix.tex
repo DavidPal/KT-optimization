@@ -1,6 +1,26 @@
 \appendix
 \section{Appendix}
 
+\subsection{Proof of Theorem~\ref{theo:opt_beta}}
+\begin{proof}
+Minimizing $\frac{f(x+z)}{1+b z}$ is equivalent to minimize the function $\phi(z)$ defined as
+\[
+\phi(z) := \ln f(x+z) - \log(1+b z)~.
+\]
+We have that $\phi(z)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. 
+Hence, the maximum of $\phi(z)$ is attained in $z=-1$, $z=0$ or $z=1$.
+The case $z=0$ is escluded by assumption.
+Hence, we want to choose $b$ such that
+\[
+b = \argmin_{\beta} \max_{z \in \{-1, 1\}} \ \ln f(x+z) - \log(1+\beta z),
+\]
+in other words we want to set $b$ such that $\phi(1)=\phi(-1)$, that is
+\[
+b_t = \frac{\exp\left(\ln f(x+1) - \ln f(x-1)\right)-1}{\exp\left(\ln f(x+1) - \ln f(x-1)\right)+1} 
+= \frac{f(x+1) - f(x-1)}{f(x+1) + f(x-1)}~.
+\]
+\end{proof}
+
 \subsection{Proof of Theorems \ref{theo:1-d_reward} and \ref{theo:hilbert_reward}}
 
 The following Lemma is from~\cite{McMahanO14} and reported here with our notation for completeness.
