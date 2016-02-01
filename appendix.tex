@@ -340,33 +340,6 @@ Also, for any $-\frac{1}{2} \leq x\leq \frac{1}{2}$ we have
 \frac{x^2}{2} +\frac{x^4}{12}\leq D\left(\frac{1}{2}+\frac{x}{2}\middle\|\frac{1}{2}\right) \leq \frac{x^2}{2} + \frac{x^4}{5}.
 \]
 
-% \begin{lemma}
-% \label{lemma:approx_potential}
-% Let $T \in \N$ and $x \in \R, |x| \leq T$. Then
-% \[
-% \ln \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2} x \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} x \right)}{\pi \cdot T!}
-% \geq 
-% \frac{x^2}{8(T+1)} \; .
-% \]
-% \end{lemma}
-% \begin{proof}
-% For the case $T=1$, the statement is easily proved comparing the minimum of the lhs with the maximum of the rhs. Hence we can assume $T\geq2$.
-% We use the fact proved in Lemma~\ref{lemma:gamma-function}, that the function $\f(x)=\log \Gamma(a+x) \Gamma(a-x)$ has positive coefficients in its Maclaurin expansion to build a lower bound.
-% Hence we have
-% \begin{align*}
-% \ln \left(\Gamma \left(\frac{T+1}{2} + \frac{1}{2} x \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} x \right)\right)
-% &\geq 2 \ln \Gamma\left(\frac{T+1}{2}\right) + \frac{\Psi^{(1)}\left(\frac{T+1}{2}\right)}{16} x^2 \\
-% &\geq 2 \ln \Gamma\left(\frac{T+1}{2}\right) + \frac{1}{8(T+1)} x^2,
-% \end{align*}
-% where in the second inequality we used the fact that $\Psi^{(1)}(x)\geq \frac{1}{x}, \ \forall x>0$~\citep{GuoQ13}.
-% 
-% Moreover, using the assumptions on $T$, we have that
-% \[
-% T \log(2) + 2 \ln \Gamma\left(\frac{T+1}{2}\right) - \ln \pi - \ln T! \geq 0 \; .
-% \]
-% Putting all together, we have the state bound.
-% \end{proof}
-
 We can now prove Corollary~\ref{cor:kt_hilbert}.
 \begin{proof}[Proof of Corollary~\ref{cor:kt_hilbert}]
 Using Theorem~\ref{theo:hilbert_reward}, we should compute the Fenchel conjugate function of \eqref{eq:kt_potential}.
