@@ -1,0 +1,80 @@
+\section{Potential}
+
+Consider
+$$
+F_t(x) = \exp\left( f_t(x) \right) \; .
+$$
+where $f_t(x) = \sum_{n=1}^\infty a_{2n} x^{2n}$ and where $a_2 > 0$ and $a_4,
+a_6 \dots, \ge 0$. Then $f_t$ is even, strictly convex and satisfies $x \cdot
+f_t''(x) \ge f_t'(x)$. Consequently, $F_t(x)$ is even, logarithmically convex,
+and satisfies $x\cdot F_t''(x) \ge F_t'(x)$.
+
+We need to define prediction fraction $b_t$ and verify that
+$$
+(1 + z_t b_t) F_t(x_{t-1}) \ge F_{t+1}(z_t + x_{t-1}) \; .
+$$
+Taking logarithm, this is equivalent to
+$$
+f_t(x_{t-1}) \ge f_{t+1}(z_t + x_{t-1}) - \ln(1 + z_t b_t) \; .
+$$
+Let $\phi_t(z) = f_{t+1}(z + x_{t-1}) - \ln (1 + z b_t)$ be right hand side of the inequality.
+Since $\phi_t(z)$ is convex, we have
+$$
+\phi_t(z) \le \max\{ \phi_t(1), \phi_t(-1) \} \; .
+$$
+We define $b_t$ so that $\phi_t(1) = \phi(-1)$, which is equivalent to
+$$
+f_{t+1}(x_{t-1} + 1) - \ln (1 + b_t) = f_{t+1}(x_{t-1} - 1) - \ln (1 - b_t) \; .
+$$
+Taking $\exp()$ of both sides, gives
+$$
+\frac{F_{t+1}(x_{t-1} + 1)}{1 + b_t} = \frac{F_{t+1}(x_{t-1} - 1)}{1 - b_t} \; .
+$$
+Solving for $b_t$ gives
+$$
+b_t  =  \frac{F_{t+1}(x_{t-1} + 1) - F_{t+1}(x_{t-1} - 1)}{F_{t+1}(x_{t-1} - 1) + F_{t+1}(x_{t-1} + 1)} \; .
+$$
+With this choice of $b_t$, we have
+\begin{align*}
+\phi_t(0) = \phi_t(1)
+& = f_{t+1}(x_{t-1} + 1) - \ln (1 + b_t) \\
+& = f_{t+1}(x_{t-1} + 1) - \ln\left(1 + \frac{F_{t+1}(x_{t-1} + 1) - F_{t+1}(x_{t-1} - 1)}{F_{t+1}(x_{t-1} - 1) + F_{t+1}(x_{t-1} + 1)}\right) \\
+& = f_{t+1}(x_{t-1} + 1) - \ln\left(\frac{2 F_{t+1}(x_{t-1} + 1)}{F_{t+1}(x_{t-1} - 1) + F_{t+1}(x_{t-1} + 1)}\right) \\
+& = f_{t+1}(x_{t-1} + 1) - \ln(2) - f_{t+1}(x_{t-1} + 1) + \ln \left(F_{t+1}(x_{t-1} - 1) + F_{t+1}(x_{t-1} + 1)\right) \\
+& = - \ln(2) + \ln \left(F_{t+1}(x_{t-1} - 1) + F_{t+1}(x_{t-1} + 1)\right) \\
+& =  \ln \left( \frac{F_{t+1}(x_{t-1} - 1) + F_{t+1}(x_{t-1} + 1)}{2}\right) \; .
+\end{align*}
+Thus, it remains to prove that
+$$
+f_t(x_{t-1}) \ge \ln \left( \frac{F_{t+1}(x_{t-1} - 1) + F_{t+1}(x_{t-1} + 1)}{2}\right)
+$$
+Which is equivalent to
+$$
+F_t(x_{t-1}) \ge \frac{F_{t+1}(x_{t-1} - 1) + F_{t+1}(x_{t-1} + 1)}{2} \; .
+$$
+
+\subsection{Gamma Potential}
+
+We consider
+$$
+F_t(x) = \frac{2^{t-1} \Gamma(\frac{t+1}{2} + \frac{x}{2})\Gamma(\frac{t+1}{2} - \frac{x}{2})}{\pi t!} \; .
+$$
+The inequality
+\begin{align*}
+\frac{F_{t+1}(x_{t-1} - 1) + F_{t+1}(x_{t-1} + 1)}{2}
+& = \frac{2^t \Gamma(\frac{t+2}{2} + \frac{x-1}{2})\Gamma(\frac{t+2}{2} - \frac{x-1}{2})}{2\pi (t+1)!} + \frac{2^t \Gamma(\frac{t+2}{2} + \frac{x+1}{2})\Gamma(\frac{t+2}{2} - \frac{x+1}{2})}{2\pi (t+1)!} \\
+& = \frac{2^t \Gamma(\frac{t+1}{2} + \frac{x}{2})\Gamma(\frac{t+3}{2} - \frac{x}{2})}{2\pi (t+1)!} + \frac{2^t \Gamma(\frac{t+3}{2} + \frac{x}{2})\Gamma(\frac{t+1}{2} - \frac{x}{2})}{2\pi (t+1)!} \\
+& = \frac{2^t \Gamma(\frac{t+1}{2} + \frac{x}{2})\Gamma(\frac{t+1}{2} - \frac{x}{2})(\frac{t+1}{2} - \frac{x}{2})}{2\pi (t+1)!} + \frac{2^t (\frac{t+1}{2} + \frac{x}{2})\Gamma(\frac{t+1}{2} + \frac{x}{2})\Gamma(\frac{t+1}{2} - \frac{x}{2})}{2\pi (t+1)!} \\
+& = \left( \frac{t+1}{2} - \frac{x}{2} + \frac{t+1}{2} + \frac{x}{2} \right) \frac{2^t \Gamma(\frac{t+1}{2} + \frac{x}{2})\Gamma(\frac{t+1}{2} - \frac{x}{2})}{2\pi (t+1)!} \\
+& = 2^{t-1} \frac{\Gamma(\frac{t+1}{2} + \frac{x}{2})\Gamma(\frac{t+1}{2} - \frac{x}{2})}{\pi t!} \\
+& = F_t(x_{t-1}) \\
+\end{align*}
+
+
+\subsection{Concrete Example 2}
+
+We consider
+$$
+F_t(x) = \exp\left( \frac{x^2}{2t} - \ln\left(2 - \frac{1}{t} \right) \right) \; .
+$$
+The inequality
