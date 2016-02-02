@@ -17,16 +17,15 @@ $.
 \end{assumption}
 In the following we will use the abbreviated notation $f_t(x)$ to denote the function $f(x,\cdot)$ when the dependency on the set is only on its cardinality. We will denote this case as the data-independent case.
 
-Even if the conditions are very general, it turns out that the optimal betting strategy is given by the choice of $f$ in the data-independent case.
+Even if the conditions are very general, it turns out that, when $\epsilon_t=0$, an optimal betting strategy is given by the choice of $f$.
 \begin{theorem}
 \label{theo:opt_beta}
-Assume that the function $f:\R \rightarrow \R$ is piece-wise logarithmically convex in $[-\infty,0)$ and $(0,\infty]$. Then, for any $x\in \R$,  the following choice of $b$
+Assume that the function $\phi(z)=f(x+z,\{S, |z|\})$, where $S$ is a set of non-negative numbers, is piece-wise logarithmically convex in $[-\infty,0)$ and $(0,\infty]$. Then, for any $z\in \R$,  the following choice of $b$
 \[
-b^* = \argmin_{b} \max_{0<|z|\leq 1} \ \frac{f(x+z)}{1+b z} =\frac{f(x+1) - f(x-1)}{f(x+1) + f(x-1)}~.
-%b = \frac{f(x+1) - f(x-1)}{f(x+1) + f(x-1)} 
+b^* = \argmin_{b} \max_{0<|z|\leq 1} \ \frac{f(x+z,\{S, |z|\})}{1+b z} =\frac{f(x+1,\{S, 1\}) - f(x-1,\{S, 1\})}{f(x+1,\{S, 1\}) + f(x-1,\{S, 1\})}~.
 \]
-Moreover, this choice for $b$ guarantees that $\max_{0<|z|\leq 1} \ \frac{f(x+z)}{1+b^* z} = \frac{f(x+1)}{1+b^*}=\frac{f(x-1)}{1-b^*}$.
 \end{theorem}
+
 
 We call it \ac{MBA} because it is easy to show by induction that such algorithm can indeed be used as a betting algorithm.
 The quantities $\epsilon_t, t=1,\cdots,T$ represents the loans that we ask to bet with leverage, while $\epsilon_0$ is our initial investement.

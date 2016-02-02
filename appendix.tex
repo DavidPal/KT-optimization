@@ -2,23 +2,54 @@
 \section{Appendix}
 
 \subsection{Proof of Theorem~\ref{theo:opt_beta}}
-\begin{proof}
-Minimizing $\frac{f(x+z)}{1+b z}$ is equivalent to minimize the function $\phi(z)$ defined as
+
+We state and prove the following more general result.
+\begin{theorem}
+\label{theo:opt_beta_expanded}
+Assume that the function $\phi(z)=f(x+z,\{S, |z|\})$, where $S$ is a set of non-negative numbers, is piece-wise logarithmically convex in $[-\infty,0)$ and $(0,\infty]$. Then, for any $z\in \R$,  the following choice of $b$
 \[
-\phi(z) := \ln f(x+z) - \log(1+b z)~.
+b^* = \argmin_{b} \max_{0<|z|\leq 1} \ \frac{\phi(z)}{1+b z} =\frac{f(x+1,\{S, 1\}) - f(x-1,\{S, 1\})}{f(x+1,\{S, 1\}) + f(x-1,\{S, 1\})}~.
 \]
-We have that $\phi(z)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. 
-Hence, the maximum of $\phi(z)$ is attained in $z=-1$, $z=0$ or $z=1$.
-The case $z=0$ is escluded by assumption.
+Moreover, this choice for $b$ guarantees, $\forall -1 \leq z\leq 1$, that 
+\[
+\ln \frac{\phi(z)}{1+b^* z} - \ln \phi(0)\leq  |z| \left(\ln \phi(1) - \ln (1+b^*)- \ln \phi(0)\right) =  |z| \left(\ln \left(\frac{\phi(1)+\phi(-1)}{2}\right)- \ln \phi(0)\right)
+\]
+\end{theorem}
+\begin{proof}
+Minimizing $\frac{\phi(z)}{1+b z}$ is equivalent to minimize the function $g(z)$ defined as
+\[
+g(z) := \ln \phi(z) - \log(1+b z)~.
+\]
+We have that $g(z)$ is piece-wise convex on $[-\infty,0)$ and $(0,\infty]$. 
+Hence, the maximum of $g(z)$ is attained in $z=-1$ or $z=1$, given that the case $z=0$ is escluded by assumption.
 Hence, we want to choose $b$ such that
 \[
-b = \argmin_{\beta} \max_{z \in \{-1, 1\}} \ \ln f(x+z) - \log(1+\beta z),
+b = \argmin_{\beta} \max_{z \in \{-1, 1\}} \ g(z),
 \]
-in other words we want to set $b$ such that $\phi(1)=\phi(-1)$, that is
+in other words we want to set $b$ such that $g(1)=g(-1)$, that is
 \[
-b_t = \frac{\exp\left(\ln f(x+1) - \ln f(x-1)\right)-1}{\exp\left(\ln f(x+1) - \ln f(x-1)\right)+1} 
-= \frac{f(x+1) - f(x-1)}{f(x+1) + f(x-1)}~.
+b_t = \frac{\exp\left(\ln \phi(1) - \ln \phi(-1)\right)-1}{\exp\left(\ln \phi(1) - \ln \phi(-1)\right)+1} 
+= \frac{\phi(1) - \phi(-1)}{\phi(1) + \phi(-1)}~.
 \]
+
+For the second statement, given the piece-wise convexity of $g(z)$, we have
+\begin{align*}
+g(z) &\leq g(0) + z (g(1)-g(0)), \ \forall 0 \leq z\leq 1 \\
+g(z) &\leq g(0) + z (g(0)-g(-1)), \ \forall -1 \leq z\leq 0~.
+\end{align*}
+Using the above inequalities and the fact that $b^*$ makes $g(1)=g(-1)$, we have
+\[
+g(z) \leq g(0) + |z| (g(1)-g(0)), \ \forall -1 \leq z\leq 1~.
+\]
+Using the definition of $b^*$ we have
+\begin{align*}
+\ln \frac{\phi(z)}{1+b^* z} - \ln f(0)
+&= g(z) - g(0) \\
+& \leq |z| (g(1)-g(0)) \\
+& = |z| \left(\ln \phi(1) - \log(1+b^*) - \ln \phi(0)\right) \\
+& = |z| \left(\ln\left(\frac{\phi(1)+\phi(-1)}{2}\right) - \ln \phi(0)\right)~.
+\end{align*}
+
 \end{proof}
 
 \subsection{Proof of Theorems \ref{theo:1-d_reward} and \ref{theo:hilbert_reward}}
@@ -147,6 +178,30 @@ We have
 \end{align*}
 where in the third and fourth inequality we used Jensen's, and in the last one
 we used \eqref{eq:bounded_potential}.
+\end{proof}
+
+\section{Proof of Lemma~\ref{lemma:approx_gamma}}
+\begin{proof}
+Using \cite{WhittakerW27}[p. 263 Ex. 45], implies that
+\[
+\frac{\Gamma(a+1/2)\Gamma(b+1/2)}{\Gamma(a+b+1)} > \sqrt{2\pi} \frac{(a+1/2)^a (b+1/2)^b}{(a+b+1)^{a+b+1/2}} \ \forall a,b>0~.
+\]
+It remains to show that
+$$
+\sqrt{2\pi} \frac{(a+1/2)^a (b+1/2)^b}{(a+b+1)^{a+b+1/2}} > \frac{\sqrt{\pi}}{e} \frac{1}{\sqrt{a+b}} \left( \frac{a}{a+b} \right)^a \left( \frac{b}{a+b} \right)^b \; ,
+$$
+which is equavivalent to
+$$
+\frac{(1+\frac{1}{2a})^a (1+\frac{1}{2b})^b}{(1+\frac{1}{a+b})^{a+b+1/2}} > \frac{1}{e\sqrt{2}} \; .
+$$
+From the inequality $1 \le (1+1/x)^x < e$ valid for any $x \ge 0$, it follows
+that $1 \le (1+\frac{1}{2a})^a < \sqrt{e}$ and $1 \le (1+\frac{1}{2b})^b < \sqrt{e}$
+and $1 \le (1+1/(a+b))^{a+b} < e$. Hence,
+$$
+\frac{(1+\frac{1}{2a})^a (1+\frac{1}{2b})^b}{(1+\frac{1}{a+b})^{a+b+1/2}}
+> \frac{1}{e \sqrt{1 + \frac{1}{a+b}}}
+\ge \frac{1}{e \sqrt{2}} \; .
+$$
 \end{proof}
 
 \section{Proof of Theorem~\ref{theo:kt_is_mba}}
@@ -366,17 +421,17 @@ Using Theorem~\ref{theo:hilbert_reward}, we should compute the Fenchel conjugate
 However, given the complexity of the function, we prefer first lower bound the wealth at time $T$ and then compute the Fenchel conjugate.
 Using Lemma~\ref{lemma:approx_gamma}, we have
 \begin{align*}
-\epsilon  \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2} x_{T} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} x_{T} \right)}{\pi \cdot T!} 
+\ln \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2} x_{T} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} x_{T} \right)}{\pi \cdot T!} 
 %\geq \epsilon\exp\left(\frac{x_T^2}{8(T+1)}\right) \; .
-&\geq -\ln(2) -\frac{1}{2} \ln(T) +\ln \left(\left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b\right) \\
-&= -\ln(2) -\frac{1}{2} \ln(T) -T \ln (2) + T \, \DKL\left(\frac{b}{T}\middle\|\frac{1}{2}\right) \; .
+&\geq -\ln(e \pi \sqrt{2}) -\frac{1}{2} \ln(T) +\ln \left(\left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b\right) \\
+&= -\ln(e \pi \sqrt{2}) -\frac{1}{2} \ln(T) -T \ln (2) + T \, \DKL\left(\frac{b}{T}\middle\|\frac{1}{2}\right) \; .
 \end{align*}
 Hence, we have
 \begin{align*}
 \epsilon  \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2} x_{T} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} x_{T} \right)}{\pi \cdot T!} 
-&\geq \epsilon \exp\left(-\ln(2) -\frac{1}{2} \ln(T) + T \, \DKL\left(\frac{1}{2}+\frac{x_T}{2T}\middle\|\frac{1}{2}\right)\right) \\
-&= \frac{\epsilon}{2 \sqrt{T}} \exp\left(T \, \DKL\left(\frac{1}{2}+\frac{x_T}{2T}\middle\|\frac{1}{2}\right)\right) \\
-&\geq \frac{\epsilon}{2 \sqrt{T}} \exp\left(\frac{x_T^2}{2T}\right)
+&\geq \epsilon \exp\left(-\ln(e \pi \sqrt{2}) -\frac{1}{2} \ln(T) + T \, \DKL\left(\frac{1}{2}+\frac{x_T}{2T}\middle\|\frac{1}{2}\right)\right) \\
+&= \frac{\epsilon}{e \pi \sqrt{2} \sqrt{T}} \exp\left(T \, \DKL\left(\frac{1}{2}+\frac{x_T}{2T}\middle\|\frac{1}{2}\right)\right) \\
+&\geq \frac{\epsilon}{e \pi \sqrt{2} \sqrt{T}} \exp\left(\frac{x_T^2}{2T}\right)
 \end{align*}
 Using Corollary~\ref{cor:dual_exp_square}, we have that the Fenchel conjugate of $f(\theta)=\frac{\epsilon}{2\sqrt{T}} \exp\left(\frac{\norm{\theta}^2}{2 T}\right)$ is upper bounded by $f^*(w) \leq \norm{w} \sqrt{T \log \left(\frac{4 T^2 \norm{w}^2}{\epsilon^2} +1 \right)}+\epsilon\left(1-\frac{1}{2\sqrt{T}}\right)$.
 \end{proof}
@@ -386,66 +441,25 @@ Using Corollary~\ref{cor:dual_exp_square}, we have that the Fenchel conjugate of
 \begin{proof}
 We want to prove that, for any $t$
 \[
-(1+b_t z_t) \epsilon_0 \exp\left(\frac{x^2}{T+t-1} - \ln\left(1+\frac{t-1}{T}\right)\right)
-\geq \epsilon_0 \exp\left(\frac{(x+z_t)^2}{T+t} - \ln\left(1+\frac{t}{T}\right)\right)~.
+(1+b_t z_t) \epsilon_0 \exp\left(\frac{x^2}{T+\sum_{i=1}^{t-1} |z_i|} - \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right)\right)
+\geq \epsilon_0 \exp\left(\frac{(x+z_t)^2}{T+\sum_{i=1}^{t} |z_i|} - \ln\left(1+\frac{\sum_{i=1}^{t} |z_i|}{T}\right)\right)~.
 \]
 The above is equivalent to prove
 \[
-\ln(1+b_t z_t) + \frac{x^2}{T+t-1} - \ln\left(1+\frac{t-1}{T}\right)
-\geq \frac{(x+z_t)^2}{T+t} - \ln\left(1+\frac{t}{T}\right)~.
+\ln(1+b_t z_t) + \frac{x^2}{T+\sum_{i=1}^{t-1} |z_i|} - \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right)
+\geq \frac{(x+z_t)^2}{T+\sum_{i=1}^{t} |z_i|} - \ln\left(1+\frac{\sum_{i=1}^{t} |z_i|}{T}\right)~.
 \]
 
-Denote by $g(1)=\frac{(x+z_t)^2}{T+t}$ and by $g(-1)=\frac{(x-1)^2}{T+t}$ and consider the function 
-\[
-\phi(z)=-\log(1+b_t z) + \frac{(x+z)^2}{T+t}~.
-\]
-We have that $\phi(z)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. Hence, we have that
+We use Lemma~\ref{} to the function $\phi(z)=\exp\left(\frac{(x+z)^2}{T+\sum_{i=1}^{t-1} |z_i|+ |z|}-\ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|+|z|}{T}  \right)\right)$, to have that 
 \begin{align*}
-&\phi(z) \leq \phi(0)+z (\phi(1)-\phi(0)), \forall 0 \leq z\leq 1\\
-&\phi(z) \leq \phi(0)+z (\phi(0)-\phi(-1)), \forall -1 \leq z\leq 0~.
+&\log(1+b_t z_t) + \frac{x^2}{T+\sum_{i=1}^{t-1} |z_i|}- \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right) -\frac{(x+z_t)^2}{T+\sum_{i=1}^{t} |z_i|} + \ln\left(1+\frac{\sum_{i=1}^{t} |z_i|}{T}\right) \\
+&\quad \geq |z_t| \left(\frac{x^2}{T+\sum_{i=1}^{t-1} |z_i|} - \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right) -\frac{x^2+1}{T+\sum_{i=1}^{t-1} |z_i|+1}+\ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|+1}{T}\right) \right)  \\
+&\quad \geq |z_t| \left( -\frac{1}{T+\sum_{i=1}^{t-1} |z_i|+1}+\ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|+1}{T}  \right) - \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right) \right) \\
+&\quad \geq 0,
 \end{align*}
-Also, we set $b_t$ such that $\phi(1)=\phi(-1)$, that is
+where in the last inequality we the fact that 
 \[
-b_t = \frac{A_{t-1}-1}{A_{t-1}+1} 
-%= 2 \, S\left(\frac{4 x}{a (\sg_{t-1} + 1)}\right)-1
+\ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|+1}{T}  \right) - \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right) \geq \frac{1}{T+\sum_{i=1}^{t-1} |z_i|+1},
 \]
-where $A_{t-1}=g(1)-g(-1)$ and $S(x) =\frac{1}{1+\exp(-x)}$.
-Hence we have
-\[
-\phi(z) \leq \phi(0)+ |z| (\phi(1)-\phi(0)), \forall -1 \leq z\leq 1,
-\]
-that is
-\begin{align*}
-\frac{x^2}{T+t-1}-\frac{(x+z)^2}{T+t} + \log(1+b_t z_t) 
-& = \phi(0) - \phi(z) \\
-& \geq |z| \left(\phi(0) - \phi(1)\right) \\
-&= |z| \left(\frac{x^2}{T+t-1} - \frac{(x+1)^2}{T+t} + \log(1+b_t)\right), \forall -1 \leq z\leq 1~.
-\end{align*}
-
-Also, using the elementary inequality $1-\frac{b}{a} \leq \ln(a) -\ln(b)$, we have
-\[
-\ln\left(1+\frac{t}{T}\right) - \ln\left(1+\frac{t-1}{T}\right) \geq \frac{1}{T+t} \;.
-\]
-Putting all togheter, we have
-\begin{align*}
-&-\frac{(x+z_t)^2}{T+t} + \frac{x^2}{T+t-1}+\log(1+b_t z_t) +\frac{1}{T+t} \\
-&\qquad \geq |z_t| \left(\frac{x^2}{T+t-1} - \frac{(x+1)^2}{T+t} + \log(1+b_t)\right) + \frac{1}{T+t}\\
-&\qquad = |z_t| \left(\frac{(T+t) x^2 - (x^2+2 x )(T+t-1) }{(T+t-1)(T+t)} + \log(1+b_t)\right)\\
-&\qquad = |z_t| \left(\frac{x^2}{(T+t-1)(T+t)}-\frac{2 x}{T+t} + \log(1+b_t)\right)~.
-\end{align*}
-We now use the Taylor expansion, to obtain
-\[
-\log\left(1+\frac{\exp(x)-1}{\exp(x)+1}\right) \geq \frac{x}{2} -\frac{x^2}{8} \qquad \forall x \in \R
-\]
-and, using the expression of $b_t$, have
-\[
-\log\left(1+b_t\right) 
-= \log\left(1+\frac{\exp\left(\frac{4 x}{T+t}\right)-1}{\exp\left(\frac{4 x}{T+t}\right)+1}\right) 
-\geq \frac{2 x}{T+t} -\frac{2 x^2}{(T+t)^2}.
-\]
-Hence the expression 
-\[
-\frac{x^2}{(T+t-1)(T+t)}-\frac{2 x}{T+t} + \log(1+b_t) \geq 0
-\]
-proving the assumption.
+that comes from the elementary inequality $\ln(a) -\ln(b) \geq 1-\frac{b}{a} $.
 \end{proof}

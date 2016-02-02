@@ -10,11 +10,11 @@ Hence, we present a betting algorithm for the case that the number of rounds $T$
 We will use the following potential function
 \begin{equation}
 \label{eq:known_t}
-f_t(x)=\epsilon_0 \exp\left(\frac{x^2}{T+t}-\ln\left(1+\frac{t}{T}\right)\right),
+f(x,\{|z_1|,\cdots, |z_t|\})=\epsilon_0 \exp\left(\frac{x^2}{T+\sum_{i=1}^{t} |z_t|}-\ln\left(1+\frac{\sum_{i=1}^{t} |z_t|}{T}\right)\right),
 \end{equation}
 with associated betting function
 \[
-b_t=2 S\left(\frac{2 x_{t-1}}{T+t}\right)-1,
+b_t=2 S\left(\frac{2 x_{t-1}}{T+\sum_{i=1}^{t-1} |z_t|+1}\right)-1,
 \]
 where $S(x)=\frac{1}{1+\exp(-2 x)}$ is the classic sigmoidal function.
 The betting function comes directly from the proof, in order to have the terms $\epsilon_t=0$ in the third condition in Assumption~1.
