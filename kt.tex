@@ -114,14 +114,13 @@ where $a_T = \sum_{t=1}^T q_t$ and $b_T = T - a_T$ and $\Gamma(x) =
 % Notice that this theorem is exactly the same as before, the only difference ???
 
 
-Also, it is easy to show the following inequality.\footnote{The same lower bound is proven in \cite{WillemsST95} with $-\ln(2)$ instead of $- \ln(e \pi \sqrt{2})$ on the lhs, but only for $a,b$ integers.}
+Also, the following inequality holds~\citep{WillemsST95}.
 \begin{lemma}
-\label{lemma:approx_gamma}
-If $T\geq1$ is an integer and $a,b$ are non-negative reals such that $a +
-b = T$ then
+\label{lemma:approx_gamma_integer}
+If $a,b$ are integers such that $a + b = T \geq 1$, then
 $$
 \ln \frac{\Gamma(a + 1/2) \cdot \Gamma(b + 1/2)}{\pi \cdot T!} 
-\geq - \ln(e \pi \sqrt{2}) -\frac{1}{2} \ln(T) +\ln \left(\left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b\right) 
+\geq - \ln(2) -\frac{1}{2} \ln(T) +\ln \left(\left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b\right) 
 %= -\ln(2) -\frac{1}{2} \ln(T) -T \ln (2) + T \, \DKL\left(\frac{b}{T}\middle\|\frac{1}{2}\right)\; .
 $$
 \end{lemma}
@@ -180,6 +179,18 @@ and $b_t= \frac{x_{t-1}}{t}$.
 The couple $(f,b_t)$ satisfies the conditions in Assumption~1.
 \end{theorem}
 It is also important to note that the \ac{KT} betting strategy is equal to the $b^*$ strategy in Theorem~\ref{theo:1-d_reward}.
+
+Also, it is easy to show a corresponding of Lemma~\ref{lemma:approx_gamma_integer} for real numbers.
+\begin{lemma}
+\label{lemma:approx_gamma_real}
+If $T\geq1$ is an integer and $a,b$ are non-negative reals such that $a +
+b = T$ then
+$$
+\ln \frac{\Gamma(a + 1/2) \cdot \Gamma(b + 1/2)}{\pi \cdot T!} 
+\geq - \ln(e \pi \sqrt{2}) -\frac{1}{2} \ln(T) +\ln \left(\left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b\right) 
+%= -\ln(2) -\frac{1}{2} \ln(T) -T \ln (2) + T \, \DKL\left(\frac{b}{T}\middle\|\frac{1}{2}\right)\; .
+$$
+\end{lemma}
 
 Hence, given the results in the previous two Sections and the last Theorem, we can state the following Corollaries
 \begin{cor}
