@@ -408,6 +408,7 @@ Using Corollary~\ref{cor:dual_exp_square}, we have that the Fenchel conjugate of
 \subsection{Proof of Theorem~\ref{theo:known_t}}
 We first state a prove the following lemma.
 \begin{lemma}
+\label{lemma:bound_ratio}
 Under the assumptions of Theorem~\ref{theo:opt_beta}, we have , $\forall -1 \leq z\leq 1$, that 
 \[
 \ln \frac{\phi(z)}{1+b^* z} - \ln \phi(0)\leq  |z| \left(\ln \phi(1) - \ln (1+b^*)- \ln \phi(0)\right) =  |z| \left(\ln \left(\frac{\phi(1)+\phi(-1)}{2}\right)- \ln \phi(0)\right)~.
@@ -425,7 +426,7 @@ g(z) \leq g(0) + |z| (g(1)-g(0)), \ \forall -1 \leq z\leq 1~.
 \]
 Using the definition of $b^*$ we have
 \begin{align*}
-\ln \frac{\phi(z)}{1+b^* z} - \ln f(0)
+\ln \frac{\phi(z)}{1+b^* z} - \ln \phi(0)
 &= g(z) - g(0) \\
 & \leq |z| (g(1)-g(0)) \\
 & = |z| \left(\ln \phi(1) - \log(1+b^*) - \ln \phi(0)\right) \\
@@ -436,25 +437,34 @@ Using the definition of $b^*$ we have
 \begin{proof}[Proof of Theorem~\ref{theo:known_t}]
 We want to prove that, for any $t$
 \[
-(1+b_t z_t) \epsilon_0 \exp\left(\frac{x^2}{T+\sum_{i=1}^{t-1} |z_i|} - \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right)\right)
-\geq \epsilon_0 \exp\left(\frac{(x+z_t)^2}{T+\sum_{i=1}^{t} |z_i|} - \ln\left(1+\frac{\sum_{i=1}^{t} |z_i|}{T}\right)\right)~.
+(1+b_t z_t) \epsilon_0 \exp\left(\frac{x^2}{T + 2 \sum_{i=1}^{t-1} |z_i|} - \frac{1}{2}\ln\left(1+\frac{2\sum_{i=1}^{t-1} |z_i|}{T}\right)\right)
+\geq \epsilon_0 \exp\left(\frac{(x+z_t)^2}{T + 2 \sum_{i=1}^{t} |z_i|} - \frac{1}{2} \ln\left(1+\frac{2\sum_{i=1}^{t} |z_i|}{T}\right)\right)~.
 \]
 The above is equivalent to prove
 \[
-\ln(1+b_t z_t) + \frac{x^2}{T+\sum_{i=1}^{t-1} |z_i|} - \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right)
-\geq \frac{(x+z_t)^2}{T+\sum_{i=1}^{t} |z_i|} - \ln\left(1+\frac{\sum_{i=1}^{t} |z_i|}{T}\right)~.
+\ln(1+b_t z_t) + \frac{x^2}{T + 2 \sum_{i=1}^{t-1} |z_i|} - \frac{1}{2} \ln\left(1+\frac{2\sum_{i=1}^{t-1} |z_i|}{T}\right)
+\geq \frac{(x+z_t)^2}{T + 2 \sum_{i=1}^{t} |z_i|} - \frac{1}{2} \ln\left(1+\frac{2\sum_{i=1}^{t} |z_i|}{T}\right)~.
 \]
 
-We use Lemma~\ref{} to the function $\phi(z)=\exp\left(\frac{(x+z)^2}{T+\sum_{i=1}^{t-1} |z_i|+ |z|}-\ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|+|z|}{T}  \right)\right)$, to have that 
+We use Lemma~\ref{lemma:bound_ratio} to the function $\phi(z)=\exp\left( \frac{(x+z)^2}{T+ 2 \sum_{i=1}^{t-1} |z_i|+ 2 |z|}-\frac{1}{2}\ln\left(1+ 2 \frac{\sum_{i=1}^{t-1} |z_i|+|z|}{T}\right) \right)$, to have that 
 \begin{align*}
-&\log(1+b_t z_t) + \frac{x^2}{T+\sum_{i=1}^{t-1} |z_i|}- \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right) -\frac{(x+z_t)^2}{T+\sum_{i=1}^{t} |z_i|} + \ln\left(1+\frac{\sum_{i=1}^{t} |z_i|}{T}\right) \\
-&\quad \geq |z_t| \left(\frac{x^2}{T+\sum_{i=1}^{t-1} |z_i|} - \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right) -\frac{x^2+1}{T+\sum_{i=1}^{t-1} |z_i|+1}+\ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|+1}{T}\right) \right)  \\
-&\quad \geq |z_t| \left( -\frac{1}{T+\sum_{i=1}^{t-1} |z_i|+1}+\ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|+1}{T}  \right) - \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right) \right) \\
+\ln &\frac{\phi(z)}{1+b^* z} - \ln \phi(0) \\
+&\leq |z| \left(\ln \left(\frac{\phi(1)+\phi(-1)}{2}\right)- \ln \phi(0)\right) \\
+&= |z| \left(-\ln\left(1+\frac{2 \sum_{i=1}^{t-1} |z_i|+2}{T}\right) + \frac{x^2+1}{T + 2 \sum_{i=1}^{t-1} |z_i| + 2} + \ln \cosh \frac{2 x}{T + 2 \sum_{i=1}^{t-1} |z_i|+ 2}- \ln \phi(0)\right) \\
+&\leq |z| \left(-\ln\left(1+\frac{2 \sum_{i=1}^{t-1} |z_i|+2}{T}\right) + \frac{x^2+1}{T + 2 \sum_{i=1}^{t-1} |z_i| + 2} + \frac{2 x^2}{(T + 2 \sum_{i=1}^{t-1} |z_i|+ 2)^2} - \ln \phi(0)\right),
+\end{align*}
+where in the last inequality we used $\ln \cosh (x) \leq \frac{x^2}{2}$.
+Hence, we have
+\begin{align*}
+&\log(1+b_t z_t) + \frac{x^2}{T+2 \sum_{i=1}^{t-1} |z_i|}- \frac{1}{2}\ln\left(1+\frac{2 \sum_{i=1}^{t-1} |z_i|}{T}\right) -\frac{(x+z_t)^2}{T + 2 \sum_{i=1}^{t} |z_i|} + \frac{1}{2}\ln\left(1+\frac{2 \sum_{i=1}^{t} |z_i|}{T}\right) \\
+&\quad \geq |z_t| \left(\frac{x^2}{T+2 \sum_{i=1}^{t-1} |z_i|} - \frac{1}{2}\ln\left(1+2\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right) -\frac{x^2+1}{T+2 \sum_{i=1}^{t-1} |z_i|+2}-\frac{2 x^2}{(T + 2 \sum_{i=1}^{t-1} |z_i|+ 2)^2}+\frac{1}{2}\ln\left(1+2\frac{\sum_{i=1}^{t-1} |z_i|+1}{T}\right) \right)  \\
+&\quad \geq |z_t| \left( -\frac{1}{T+2\sum_{i=1}^{t-1} |z_i|+2}+\frac{1}{2}\ln\left(1+2\frac{\sum_{i=1}^{t-1} |z_i|+1}{T}  \right) - \frac{1}{2}\ln\left(1+2\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right) \right) \\
 &\quad \geq 0,
 \end{align*}
 where in the last inequality we the fact that 
 \[
-\ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|+1}{T}  \right) - \ln\left(1+\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right) \geq \frac{1}{T+\sum_{i=1}^{t-1} |z_i|+1},
+\frac{1}{2}\ln\left(1+2\frac{\sum_{i=1}^{t-1} |z_i|+1}{T}  \right) - \frac{1}{2}\ln\left(1+2\frac{\sum_{i=1}^{t-1} |z_i|}{T}\right) 
+\geq \frac{1}{T+2\sum_{i=1}^{t-1} |z_i|+2},
 \]
 that comes from the elementary inequality $\ln(a) -\ln(b) \geq 1-\frac{b}{a} $.
 \end{proof}

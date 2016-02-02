@@ -10,11 +10,11 @@ Hence, we present a betting algorithm for the case that the number of rounds $T$
 We will use the following potential function
 \begin{equation}
 \label{eq:known_t}
-f(x,\{|z_1|,\cdots, |z_t|\})=\epsilon_0 \exp\left(\frac{x^2}{T+\sum_{i=1}^{t} |z_t|}-\ln\left(1+\frac{\sum_{i=1}^{t} |z_t|}{T}\right)\right),
+f(x,\{|z_1|,\cdots, |z_t|\})=\epsilon_0 \exp\left(\frac{x^2}{T + 2 \sum_{i=1}^{t} |z_t|}-\frac{1}{2}\ln\left(1+\frac{2 \sum_{i=1}^{t} |z_t|}{T}\right)\right),
 \end{equation}
 with associated betting function
 \[
-b_t=2 S\left(\frac{2 x_{t-1}}{T+\sum_{i=1}^{t-1} |z_t|+1}\right)-1,
+b_t=2 S\left(\frac{2 x_{t-1}}{T+2 \sum_{i=1}^{t-1} |z_t|+2}\right)-1,
 \]
 where $S(x)=\frac{1}{1+\exp(-2 x)}$ is the classic sigmoidal function.
 The betting function comes directly from the proof, in order to have the terms $\epsilon_t=0$ in the third condition in Assumption~1.
@@ -31,9 +31,9 @@ The function in \eqref{eq:known_t} satisfies the third condition in Assumption~1
 
 Hence, using the above betting strategy, we have the following guarantee
 \[
-\Wealth_T = \epsilon_0 + \sum_{t=1}^T w_t g_t \geq \epsilon_0 \exp\left( \frac{(\sum_{t=1}^T g_t)^2}{2 T} - \ln 2\right),
+\Wealth_T = \epsilon_0 + \sum_{t=1}^T w_t g_t \geq \epsilon_0 \exp\left( \frac{(\sum_{t=1}^T g_t)^2}{3 T} - \frac{1}{2}\ln 3\right),
 \]
-where $T$ is parameter of the algorithm. This guarantee has the suprising property of being better of the \ac{KT} bettor when $(\sum_{t=1}^T g_t)^2\approx0$. In other words, knowing the lenght of the betting game allows to gain up to a costant fraction of $\frac{1}{2}$, present in the \ac{KT} bound as well, of the wealth of the bettor the bets the optimal fixed fraction of money. Note that this does not contradict the upper bound on the wealth because here the leading term is $\frac{(\sum_{t=1}^T g_t)^2}{2 T}$ instead of $\DKL\left(\frac{T}{2}+\frac{\sum_{t=1}^T g_t}{2T}\middle\|\frac{1}{2}\right)$. However, as altready said at the beginning of this Section, this leading term is enough to prove the bounds we are interested in.
+where $T$ is parameter of the algorithm. This guarantee has the suprising property of being better of the \ac{KT} bettor when $(\sum_{t=1}^T g_t)^2\approx0$. In other words, knowing the lenght of the betting game allows to gain up to a costant fraction of $\frac{1}{2}$, present in the \ac{KT} bound as well, of the wealth of the bettor the bets the optimal fixed fraction of money. Note that this does not contradict the upper bound on the wealth because here the leading term is $\frac{(\sum_{t=1}^T g_t)^2}{3 T}$ instead of $\DKL\left(\frac{T}{2}+\frac{\sum_{t=1}^T g_t}{2T}\middle\|\frac{1}{2}\right)$. However, as altready said at the beginning of this Section, this leading term is enough to prove the bounds we are interested in.
 
 Using this algorithm in Theorem~\ref{theo:expert_reduction}, we obtain a very clean quantile guarantee.
 \begin{cor}
@@ -41,7 +41,7 @@ Using this algorithm in Theorem~\ref{theo:expert_reduction}, we obtain a very cl
 Fix $T>0$. Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation the Normal Potential as a base learner, where $\epsilon_0=1$, the following holds
 \[
 \sum_{t=1}^T \langle p_t, l_t\rangle -\sum_{t=1}^T \langle u , l_t\rangle 
-\leq \sqrt{2 T \left(\DKL(u||q) +\ln 2 \right)} \; .
+\leq \sqrt{3 T \left(\DKL(u||q) +\frac{1}{2}\ln 3 \right)} \; .
 \]
 \end{cor}
 
@@ -52,7 +52,7 @@ Using a standard doubling-trick argument, see for example~\citet{Shalev-Shwartz1
 Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation the Normal Potential as a base learner, where $\epsilon_0=1$, the following holds for any $T>0$.
 \[
 \sum_{t=1}^T \langle p_t, l_t\rangle -\sum_{t=1}^T \langle u , l_t\rangle 
-\leq \frac{\sqrt{2}}{\sqrt{2}-1}\sqrt{2 T \left(\DKL(u||q) +\ln 2 \right)} \; .
+\leq \frac{\sqrt{2}}{\sqrt{2}-1}\sqrt{3 T \left(\DKL(u||q) + \frac{1}{2}\ln 3 \right)} \; .
 \]
 \end{cor}
 
