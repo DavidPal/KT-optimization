@@ -1,0 +1,53 @@
+\section{Gamma and Beta Functions}
+
+\begin{lemma}[Stirling's approximation for Gamma]
+For any real $x > 0$,
+$$
+\sqrt{\frac{2\pi}{x}} \left( \frac{x}{e} \right)^x \le \Gamma(x) \le \sqrt{\frac{2\pi}{x}} \left( \frac{x}{e} \right)^x e^{1/(12x)} \; .
+$$
+\end{lemma}
+
+\begin{lemma}[Beta Function (Grenie \& Molteni)]
+The beta function
+$$
+B(x,y) = \frac{\Gamma(x) \Gamma(y)}{\Gamma(x + y)}
+$$
+satisfies the following inequality for any real $x,y > 0$
+$$
+B(x,y) > \sqrt{2\pi} \frac{x^{x-1/2} y^{y-1/2}}{(x+y)^{x+y-1/2}} \; .
+$$
+\end{lemma}
+
+
+\begin{lemma}
+For any reals $a,b \ge 0$ such that $a+b \ge 1$,
+$$
+\frac{\Gamma(a+1/2)\Gamma(b+1/2)}{\Gamma(a+b+1)} >
+\frac{\sqrt{\pi}}{e} \frac{1}{\sqrt{a+b}} \left( \frac{a}{a+b} \right)^a \left( \frac{b}{a+b} \right)^b \; .
+$$
+\end{lemma}
+
+\begin{proof}
+By the previous lemma,
+\begin{align*}
+\frac{\Gamma(a+1/2)\Gamma(b+1/2)}{\Gamma(a+b+1)}
+> \sqrt{2\pi} \frac{(a+1/2)^a (b+1/2)^b}{(a+b+1)^{a+b+1/2}}
+\end{align*}
+It remains to show that
+$$
+\sqrt{2\pi} \frac{(a+1/2)^a (b+1/2)^b}{(a+b+1)^{a+b+1/2}} > \frac{\sqrt{\pi}}{e} \frac{1}{\sqrt{a+b}} \left( \frac{a}{a+b} \right)^a \left( \frac{b}{a+b} \right)^b \; ,
+$$
+which is equavivalent to
+$$
+\frac{(1+\frac{1}{2a})^a (1+\frac{1}{2b})^b}{(1+\frac{1}{a+b})^{a+b+1/2}} > \frac{1}{e\sqrt{2}} \; .
+$$
+From the inequality $1 \le (1+1/x)^x < e$ valid for any $x \ge 0$, it follows
+that $1 \le (1+\frac{1}{2a})^a < \sqrt{e}$ and $1 \le (1+\frac{1}{2b})^b < \sqrt{e}$
+and $1 \le (1+1/(a+b))^{a+b} < e$. Hence,
+$$
+\frac{(1+\frac{1}{2a})^a (1+\frac{1}{2b})^b}{(1+\frac{1}{a+b})^{a+b+1/2}}
+> \frac{1}{e \sqrt{1 + \frac{1}{a+b}}}
+\ge \frac{1}{e \sqrt{2}} \; .
+$$
+
+\end{proof}
