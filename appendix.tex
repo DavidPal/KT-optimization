@@ -389,17 +389,16 @@ Using Theorem~\ref{theo:hilbert_reward}, we should compute the Fenchel conjugate
 However, given the complexity of the function, we prefer first lower bound the wealth at time $T$ and then compute the Fenchel conjugate.
 Using Lemma~\ref{lemma:approx_gamma_real}, we have
 \begin{align*}
-\ln \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2} x_{T} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} x_{T} \right)}{\pi \cdot T!} 
-%\geq \epsilon\exp\left(\frac{x_T^2}{8(T+1)}\right) \; .
-&\geq -\ln(e \pi \sqrt{2}) -\frac{1}{2} \ln(T) +\ln \left(\left( \frac{a}{T} \right)^a \left( \frac{b}{T} \right)^b\right) \\
-&= -\ln(e \pi \sqrt{2}) -\frac{1}{2} \ln(T) -T \ln (2) + T \, \DKL\left(\frac{b}{T}\middle\|\frac{1}{2}\right) \; .
+\ln \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2} \|\theta_T\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \|\theta_T\| \right)}{\pi \cdot T!} 
+&\geq -\ln(e \pi \sqrt{2}) -\frac{1}{2} \ln(T) +\ln \left(\left( 1+\frac{\|\theta_T\|}{T} \right)^\frac{T+\|\theta_T\|}{2} \left( 1+\frac{\|\theta_T\|}{T} \right)^\frac{T-\|\theta_T\|}{2}\right) \\
+&= -\ln(e \pi \sqrt{2}) -\frac{1}{2} \ln(T)+ T \, \DKL\left(\frac{1}{2}+\frac{\|\theta_T\|}{2T}\middle\|\frac{1}{2}\right) \; .
 \end{align*}
 Hence, we have
 \begin{align*}
-\epsilon  \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2} x_{T} \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} x_{T} \right)}{\pi \cdot T!} 
-&\geq \epsilon \exp\left(-\ln(e \pi \sqrt{2}) -\frac{1}{2} \ln(T) + T \, \DKL\left(\frac{1}{2}+\frac{x_T}{2T}\middle\|\frac{1}{2}\right)\right) \\
-&= \frac{\epsilon}{e \pi \sqrt{2} \sqrt{T}} \exp\left(T \, \DKL\left(\frac{1}{2}+\frac{x_T}{2T}\middle\|\frac{1}{2}\right)\right) \\
-&\geq \frac{\epsilon}{e \pi \sqrt{2} \sqrt{T}} \exp\left(\frac{x_T^2}{2T}\right)
+\epsilon  \frac{2^T \cdot \Gamma \left(\frac{T+1}{2} + \frac{1}{2} \|\theta_T\| \right) \cdot \Gamma \left(\frac{T+1}{2} - \frac{1}{2} \|\theta_T\| \right)}{\pi \cdot T!} 
+&\geq \epsilon \exp\left(-\ln(e \pi \sqrt{2}) -\frac{1}{2} \ln(T) + T \, \DKL\left(\frac{1}{2}+\frac{\|\theta_T\|}{2T}\middle\|\frac{1}{2}\right)\right) \\
+&= \frac{\epsilon}{e \pi \sqrt{2} \sqrt{T}} \exp\left(T \, \DKL\left(\frac{1}{2}+\frac{\|\theta_T\|}{2T}\middle\|\frac{1}{2}\right)\right) \\
+&\geq \frac{\epsilon}{e \pi \sqrt{2} \sqrt{T}} \exp\left(\frac{\|\theta_T\|^2}{2T}\right)
 \end{align*}
 Using Corollary~\ref{cor:dual_exp_square}, we have that the Fenchel conjugate of $f(\theta)=\frac{\epsilon}{2\sqrt{T}} \exp\left(\frac{\norm{\theta}^2}{2 T}\right)$ is upper bounded by $f^*(w) \leq \norm{w} \sqrt{T \log \left(\frac{4 T^2 \norm{w}^2}{\epsilon^2} +1 \right)}+\epsilon\left(1-\frac{1}{2\sqrt{T}}\right)$.
 \end{proof}
