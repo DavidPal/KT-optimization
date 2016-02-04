@@ -62,7 +62,7 @@ Using this algorithm in Theorem~\ref{theo:expert_reduction}, we obtain a very cl
 Fix $T>0$. Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation the Normal Potential as a base learner, where $\epsilon_0=1$, the following holds
 \[
 \sum_{t=1}^T \langle p_t, l_t\rangle -\sum_{t=1}^T \langle u , l_t\rangle 
-\leq \sqrt{3 T \left(\DKL(u||q) + \ln 4 \right)} \; .
+\leq \sqrt{3 T \left(\DKL(u||q) + 4 \right)} \; .
 \]
 \end{cor}
 Other choices of $\delta$ allow different trade-offs between the leading multiplicative term of the bound and the logarithmic constant inside the square root.
@@ -73,7 +73,7 @@ Now, using a standard doubling-trick argument, see for example~\citet{Shalev-Shw
 Let $l_t$ an arbitrary sequence of loss vectors in $[0,1]^d$. Using the notation the Normal Potential as a base learner, where $\epsilon_0=1$, the following holds for any $T>0$.
 \[
 \sum_{t=1}^T \langle p_t, l_t\rangle -\sum_{t=1}^T \langle u , l_t\rangle 
-\leq \frac{\sqrt{2}}{\sqrt{2}-1}\sqrt{3 T \left(\DKL(u||q) + \ln 4 \right)} \; .
+\leq \frac{\sqrt{2}}{\sqrt{2}-1}\sqrt{3 T \left(\DKL(u||q) + 4 \right)} \; .
 \]
 \end{cor}
 The above one is the first quantile bound for expert that holds uniformly over time and does not contain $\ln \ln T$ terms.
